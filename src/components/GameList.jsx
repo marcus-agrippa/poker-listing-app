@@ -34,7 +34,7 @@ const GameList = ({ activeDay }) => {
 
   return (
     <div>
-  <h2 className="text-4xl font-bold mb-6 mt-8 text-center text-gray-100">Games for {activeDay}</h2>
+  <h2 className="text-4xl font-bold mb-6 mt-8 text-center text-gray-100">{activeDay} Games</h2>
   <div className="container mx-auto px-4">
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredGames.length > 0 ? (

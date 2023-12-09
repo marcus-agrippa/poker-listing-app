@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   
   useState(() => {

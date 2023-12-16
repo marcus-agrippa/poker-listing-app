@@ -7,6 +7,11 @@ import GamesPage from './components/GamesPage';
 import ContactPage from './components/ContactPage';
 
 function App() {
+  useEffect(() => {
+    ReactGA.initialize('G-PXFQ31JSSG');
+    ReactGA.send('pageview');
+  }, []);
+
   return (
     <div className="App flex flex-col min-h-screen">
       <Router>

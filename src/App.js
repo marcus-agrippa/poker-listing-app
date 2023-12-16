@@ -5,6 +5,7 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 import GamesPage from './components/GamesPage'; 
 import ContactPage from './components/ContactPage';
+import ReactGA from 'react-ga4';
 
 function App() {
   useEffect(() => {

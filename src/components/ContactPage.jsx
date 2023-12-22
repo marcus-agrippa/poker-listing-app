@@ -3,24 +3,23 @@ import React, { useState } from 'react';
 const ContactPage = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const myForm = event.target;
     const formData = new FormData(myForm);
 
-    fetch("/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData).toString(),
-    })
-    .then(() => {
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
+      });
       setSubmitted(true);
       myForm.reset(); // Reset the form fields
-    })
-    .catch((error) => {
+    } catch (error) {
       alert(error);
       setSubmitted(false);
-    });
+    }
   };
 
   return (
@@ -28,9 +27,6 @@ const ContactPage = () => {
       <h1 className="text-3xl text-white font-bold text-center mb-6">Contact Us</h1>
       {!submitted ? (
         <form 
-          name="contact" 
-          method="POST" 
-          data-netlify="true" 
           onSubmit={handleSubmit} 
           className="max-w-lg mx-auto"
         >

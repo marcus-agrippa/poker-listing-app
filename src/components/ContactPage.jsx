@@ -27,8 +27,11 @@ const ContactPage = () => {
       <h1 className="text-3xl text-white font-bold text-center mb-6">Contact Us</h1>
       {!submitted ? (
         <form 
+          name="contact" 
+          netlify
           onSubmit={handleSubmit} 
           className="max-w-lg mx-auto"
+          hidden
         >
           <input type="hidden" name="form-name" value="contact" />
 

@@ -9,7 +9,7 @@ const ContactPage = () => {
     const formData = new FormData(myForm);
 
     try {
-      await fetch('/', {
+      await fetch('/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formData).toString(),

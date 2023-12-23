@@ -28,7 +28,6 @@ const ContactPage = () => {
       {!submitted ? (
         <form 
           name="contact" 
-          netlify
           onSubmit={handleSubmit} 
           className="max-w-lg mx-auto"
         >

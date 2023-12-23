@@ -31,7 +31,6 @@ const ContactPage = () => {
           netlify
           onSubmit={handleSubmit} 
           className="max-w-lg mx-auto"
-          hidden
         >
           <input type="hidden" name="form-name" value="contact" />
 

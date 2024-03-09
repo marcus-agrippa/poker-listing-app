@@ -54,7 +54,7 @@ const ContactPage = () => {
           </div>
 
           <div className="text-center">
-            <button type="submit" className="btn btn-primary">Send</button>
+            <button type="submit" className="btn btn-primary w-full text-white">Send</button>
           </div>
         </form>
       ) : (

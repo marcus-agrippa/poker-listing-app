@@ -10,7 +10,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
 
   return (
     <div>
-      <p><span className="font-medium text-white">Location </span><br></br> Central Coast, NSW, AUS</p><br></br>
+      <p className="font-medium text-white mb-3">Location: <br></br><span className='text-xl text-blue-500 font-semibold'>Central Coast, NSW, AUS</span></p>
       <LastUpdated lastUpdated="March 9, 2024" />
       <br></br>
       <div className="lg:hidden mb-4">

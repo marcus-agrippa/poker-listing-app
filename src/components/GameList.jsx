@@ -52,7 +52,7 @@ const GameList = ({ activeDay }) => {
           {filteredGames.length > 0 ? (
             filteredGames.map((game, index) => (
               <a key={index} href={facebookPageUrls[game.competition]} target="_blank" rel="noopener noreferrer" className={`block ${facebookPageUrls[game.competition] ? 'cursor-pointer' : ''}`}>
-                <div className="bg-gray-800 rounded-xl shadow-2xl p-6 hover:shadow-md transition-shadow duration-300 ease-in-out">
+                <div className="bg-gray-800 hover:bg-gray-700 rounded-xl shadow-2xl p-6 hover:shadow-md transition-shadow duration-300 ease-in-out">
                   {competitionLogos[game.competition] && (
                     <img src={competitionLogos[game.competition]} alt={`${game.competition} logo`} className="mb-3 w-20 h-20 mx-auto" />
                   )}

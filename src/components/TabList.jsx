@@ -19,7 +19,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
           id="day-select"
           value={activeDay}
           onChange={(e) => setActiveDay(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          className="bg-gray-50 border border-gray-300 text-gray-900 hover:text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         >
           {daysOfWeek.map((day) => (
             <option key={day} value={day}>{day}</option>
@@ -31,7 +31,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
         {daysOfWeek.map((day) => (
           <button
             key={day}
-            className={`tab tab-lifted text-xl ${activeDay === day ? 'bg-blue-600 text-white rounded' : 'text-gray-200'}`}
+            className={`tab tab-lifted text-xl ${activeDay === day ? 'bg-blue-600 text-white rounded' : 'text-gray-300 hover:text-gray-100'}`}
             onClick={() => setActiveDay(day)}
           >
             {day}

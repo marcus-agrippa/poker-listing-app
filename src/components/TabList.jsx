@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LastUpdated from './LastUpdated';
 
 const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
@@ -10,6 +11,8 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
   return (
     <div>
       <p><span className="font-medium text-white">Location </span><br></br> Central Coast, NSW, AUS</p><br></br>
+      <LastUpdated lastUpdated="March 9, 2024" />
+      <br></br>
       <div className="lg:hidden mb-4">
         <label htmlFor="day-select" className="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-400">Select a day</label>
         <select

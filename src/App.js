@@ -2,8 +2,8 @@
 import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './layout/Header';
-import Footer from './layout/Footer';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import GamesPage from './components/GamesPage'; 
 import ContactPage from './components/ContactPage';
 import ReactGA from 'react-ga4';

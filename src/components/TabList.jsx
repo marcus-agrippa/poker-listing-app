@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LastUpdated from './LastUpdated';
+import LastUpdated from './ui/LastUpdated';
 
 const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });

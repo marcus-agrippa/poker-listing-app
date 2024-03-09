@@ -18,7 +18,7 @@ function App() {
     <div className="App flex flex-col min-h-screen">
       <Router>
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow bg-gray-900">
           <Routes>
             <Route path="/" element={<GamesPage />} />
             <Route path="/contact" element={<ContactPage />} />

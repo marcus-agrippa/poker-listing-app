@@ -62,8 +62,13 @@ const GameList = ({ activeDay }) => {
                   <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Competition:</span> {game.competition}</p>
                   <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Registration Time: </span>{game.rego_time ? formatTime(game.rego_time) : 'TBC'}</p>
                   <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Game Time: </span>{formatTime(game.game_time)}</p>
+                  <p className="text-md text-gray-300 mb-2">
+                    <span className="font-medium text-white">Late Rego: </span>
+                    {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
+                  </p>
                   <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Buy-in:</span> {game.buy_in}</p>
-                  <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Starting Stack:</span> {game.starting_stack || 'N/A'}</p>
+                  <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Re-Buy:</span> {game.re_buy || 'TBC'}</p>
+                  <p className="text-md text-gray-300 mb-2"><span className="font-medium text-white">Starting Stack:</span> {game.starting_stack || 'TBC'}</p>
                 </div>
               </a>
             ))

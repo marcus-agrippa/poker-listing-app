@@ -11,7 +11,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
   return (
     <div>
       <p className="font-medium text-white mb-3">Location: <br></br><span className='text-xl text-blue-500 font-semibold'>Central Coast, NSW, AUS</span></p>
-      <LastUpdated lastUpdated="March 9, 2024" />
+      <LastUpdated lastUpdated="March 23rd, 2024" />
       <br></br>
       <div className="lg:hidden mb-4">
         <label htmlFor="day-select" className="block mb-2 text-lg font-medium text-gray-400">Select a day</label>

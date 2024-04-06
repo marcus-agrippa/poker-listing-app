@@ -45,7 +45,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     if (diffHrs < -7) {
       return { status: 'Completed', isStarted: true };
     } else if (diffMs < 0) {
-      return { status: 'Started/In-progress', isStarted: true };
+      return { status: 'In Progress', isStarted: true };
     }
 
     if (diffHrs > 0) {

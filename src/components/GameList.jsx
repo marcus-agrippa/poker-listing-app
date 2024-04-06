@@ -81,7 +81,9 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                     {game.rego_time ? formatTime(game.rego_time) : 'TBC'}
                   </p>
                   <p className='text-md text-gray-300 mb-2'>
-                    <span className='font-medium text-white'>Game Time: </span>
+                    <span className='font-medium text-white'>
+                      ⏰Game Time:{' '}
+                    </span>
                     {formatTime(game.game_time)}
                   </p>
                   <p className='text-md text-gray-300 mb-2'>
@@ -89,7 +91,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                     {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
                   </p>
                   <p className='text-md text-gray-300 mb-2'>
-                    <span className='font-medium text-white'>Buy-in:</span>{' '}
+                    <span className='font-medium text-white'>💲Buy-in:</span>{' '}
                     {game.buy_in}
                   </p>
                   <p className='text-md text-gray-300 mb-2'>

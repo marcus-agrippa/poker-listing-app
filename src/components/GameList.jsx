@@ -32,6 +32,40 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     return `${hours12}:${minutes} ${amPm}`;
   };
 
+  function getTimeUntil(gameTime) {
+    const now = new Date();
+    const gameDate = new Date(`1970/01/01 ${gameTime}`);
+    gameDate.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const diffMs = gameDate - now;
+    if (diffMs < 0) {
+      return 'Started/Inprogress';
+    }
+
+    const diffHrs = Math.floor(diffMs / 1000 / 60 / 60);
+    const diffMins = Math.floor((diffMs / 1000 / 60) % 60);
+
+    if (diffHrs > 0) {
+      return `${diffHrs} hrs and ${diffMins} min`;
+    } else {
+      return `${diffMins} mins`;
+    }
+  }
+
+  function getCurrentDay() {
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const now = new Date();
+    return days[now.getDay()];
+  }
+
   const competitionLogos = {
     'APL Poker': '/apl-poker-logo.png',
     'UPT Poker': '/upt-poker-logo.png',
@@ -61,7 +95,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                   className={`block ${
                     facebookPageUrls[game.competition] ? 'cursor-pointer' : ''
                   }`}>
-                  <div className='bg-gray-800 hover:bg-gray-700 transition-colors rounded-xl shadow-2xl p-6 hover:shadow-md transition-shadow duration-300 ease-in-out relative'>
+                  <div className='bg-gray-800 transition-colors rounded-xl shadow-2xl p-6 hover:bg-gray-700 transition-shadow duration-300 ease-in-out relative'>
                     {competitionLogos[game.competition] && (
                       <img
                         src={competitionLogos[game.competition]}
@@ -76,44 +110,60 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                     <h3 className='text-xl text-blue-500 font-semibold mb-3'>
                       {game.venue}
                     </h3>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>
+                    <div className='grid grid-cols-[auto,1fr] gap-4'>
+                      <div className='font-medium text-white text-left p-1'>
                         Competition:
-                      </span>{' '}
-                      {game.competition}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>
-                        Registration Time:{' '}
-                      </span>
-                      {game.rego_time ? formatTime(game.rego_time) : 'TBC'}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>
-                        ⏰Game Time:{' '}
-                      </span>
-                      {formatTime(game.game_time)}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>
-                        Late Rego:{' '}
-                      </span>
-                      {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>💲Buy-in:</span>{' '}
-                      {game.buy_in}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>Re-Buy:</span>{' '}
-                      {game.re_buy || 'TBC'}
-                    </p>
-                    <p className='text-md text-gray-300 mb-2'>
-                      <span className='font-medium text-white'>
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.competition}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
+                        Reg. Time:
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.rego_time ? formatTime(game.rego_time) : 'TBC'}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
+                        Game Start:
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {formatTime(game.game_time)}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
+                        Late Rego:
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
+                        Buy-in:
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.buy_in}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
+                        Re-Buy:
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.re_buy || 'TBC'}
+                      </div>
+                      <div className='font-medium text-white text-left p-1'>
                         Starting Stack:
-                      </span>{' '}
-                      {game.starting_stack || 'TBC'}
-                    </p>
+                      </div>
+                      <div className='text-center border border-gray-700 p-1'>
+                        {game.starting_stack || 'TBC'}
+                      </div>
+                      {game.day === getCurrentDay() && (
+                        <>
+                          <div className='font-medium text-white text-left p-1'>
+                            Starts In:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1 text-yellow-300 '>
+                            {getTimeUntil(game.game_time)}
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </a>
               ))

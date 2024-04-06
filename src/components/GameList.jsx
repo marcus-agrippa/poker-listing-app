@@ -134,7 +134,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                         <div className='font-medium text-white text-left p-1'>
                           Game Start:
                         </div>
-                        <div className='text-center border border-gray-700 p-1'>
+                        <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
                           {formatTime(game.game_time)}
                         </div>
                         <div className='font-medium text-white text-left p-1'>

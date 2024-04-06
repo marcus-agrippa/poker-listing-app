@@ -49,9 +49,9 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     }
 
     if (diffHrs > 0) {
-      status = `${diffHrs} hrs and ${diffMins} min`;
+      status = `Starts in ${diffHrs}hrs ${diffMins}m`;
     } else {
-      status = `${diffMins} mins`;
+      status = `Starts in ${diffMins}m`;
     }
 
     return { status, isStarted: false };
@@ -164,7 +164,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                         {game.day === getCurrentDay() && (
                           <>
                             <div className='font-medium text-white text-left p-1'>
-                              Starts In:
+                              Status:
                             </div>
                             <div
                               className={`text-center border border-gray-700 p-1 ${

@@ -103,7 +103,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                     className={`block ${
                       facebookPageUrls[game.competition] ? 'cursor-pointer' : ''
                     }`}>
-                    <div className='bg-gray-800 transition-colors rounded-xl shadow-2xl p-6 hover:bg-gray-700 transition-shadow duration-300 ease-in-out relative'>
+                    <div className='bg-gray-800 rounded-xl shadow-2xl p-6 relative'>
                       {competitionLogos[game.competition] && (
                         <img
                           src={competitionLogos[game.competition]}
@@ -115,7 +115,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                         gameTime={game.game_time}
                         className='absolute top-4 right-4'
                       />
-                      <h3 className='text-xl text-blue-500 font-semibold mb-3'>
+                      <h3 className='text-xl text-blue-500 font-semibold mb-6'>
                         {game.venue}
                       </h3>
                       <div className='grid grid-cols-[auto,1fr] gap-4'>

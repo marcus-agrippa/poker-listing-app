@@ -39,7 +39,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
 
     const diffMs = gameDate - now;
     if (diffMs < 0) {
-      return 'Started/Inprogress';
+      return 'Started/In-progress';
     }
 
     const diffHrs = Math.floor(diffMs / 1000 / 60 / 60);

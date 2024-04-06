@@ -1,7 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { hostname } from '../../hostname';
 
 const Footer = () => {
+  const copyright =
+    hostname === 'pokercentralcoast.com'
+      ? 'PokerCentralCoast'
+      : hostname === 'pokernewcastle.com'
+      ? 'PokerNewcastle'
+      : 'Poker';
+
   return (
     <footer className='bg-slate-800 text-center p-6 bottom-0 w-full'>
       <p className='text-white'>
@@ -17,10 +25,10 @@ const Footer = () => {
         sources or the respective organizers.
       </p>
       <p className='text-xs mt-4 text-neutral-400'>
-        PokerCentralCoast © {new Date().getFullYear()}
+        {copyright} © {new Date().getFullYear()}
       </p>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

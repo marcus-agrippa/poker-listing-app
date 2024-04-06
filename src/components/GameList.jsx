@@ -1,49 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import DayNightTag from './ui/DayNightTag'
+import React, { useState, useEffect } from 'react';
+import DayNightTag from './ui/DayNightTag';
 
-const GameList = ({ activeDay }) => {
-  const [games, setGames] = useState([])
-  const [filteredGames, setFilteredGames] = useState([])
+const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
+  const [games, setGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data.json')
-        const data = await response.json()
-        setGames(data)
+        const response = await fetch(dataUrl);
+        const data = await response.json();
+        setGames(data);
       } catch (error) {
-        console.error('Error fetching data: ', error)
+        console.error('Error fetching data: ', error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, [dataUrl]);
 
   useEffect(() => {
-    const filtered = games.filter(game => game.day === activeDay)
-    setFilteredGames(filtered)
-  }, [games, activeDay])
+    const filtered = games.filter(game => game.day === activeDay);
+    setFilteredGames(filtered);
+  }, [games, activeDay]);
 
   const formatTime = time24 => {
-    const [hours, minutes] = time24.split(':')
-    const hoursInt = parseInt(hours, 10)
-    const hours12 = hoursInt % 12 || 12
-    const amPm = hoursInt >= 12 ? 'PM' : 'AM'
-    return `${hours12}:${minutes} ${amPm}`
-  }
+    const [hours, minutes] = time24.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const hours12 = hoursInt % 12 || 12;
+    const amPm = hoursInt >= 12 ? 'PM' : 'AM';
+    return `${hours12}:${minutes} ${amPm}`;
+  };
 
   const competitionLogos = {
     'APL Poker': '/apl-poker-logo.png',
     'UPT Poker': '/upt-poker-logo.png',
     'WPT League': '/wpt-poker-logo.png',
-  }
-
-  const facebookPageUrls = {
-    'APL Poker':
-      'https://www.facebook.com/p/APL-Central-Coast-NSW-100063534522335/',
-    'UPT Poker': 'https://www.facebook.com/centralcoastpokerchampionships/',
-    'WPT League': 'https://au.wptleague.com/venue.aspx',
-  }
+  };
 
   return (
     <div>
@@ -120,7 +113,7 @@ const GameList = ({ activeDay }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GameList
+export default GameList;

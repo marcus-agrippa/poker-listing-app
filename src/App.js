@@ -1,33 +1,66 @@
 // App.js
-import './App.css'
-import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-import GamesPage from './components/GamesPage'
-import ContactPage from './components/ContactPage'
-import ReactGA from 'react-ga4'
+import './App.css';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import GamesPage from './components/GamesPage';
+import ContactPage from './components/ContactPage';
+import ReactGA from 'react-ga4';
 
 function App() {
+  const hostname = window.location.hostname;
+  const isCentralCoast = hostname === 'pokercentralcoast.com';
+  const isNewcastle = hostname === 'pokernewcastle.com';
+  const dataUrl =
+    hostname === 'pokercentralcoast.com'
+      ? '/data.json'
+      : '/data-newcastle.json';
+  const trackingId = isCentralCoast
+    ? 'G-PXFQ31JSSG'
+    : isNewcastle
+    ? 'G-9N4FLFNY2X'
+    : 'G-PXFQ31JSSG';
+
   useEffect(() => {
-    ReactGA.initialize('G-PXFQ31JSSG')
-    ReactGA.send('pageview')
-  }, [])
+    ReactGA.initialize(trackingId);
+    ReactGA.send('pageview');
+  }, [trackingId]);
 
   return (
     <div className='App flex flex-col min-h-screen'>
+      <Helmet>
+        <title>
+          {isCentralCoast
+            ? 'Poker Central Coast'
+            : isNewcastle
+            ? 'Poker Newcastle'
+            : 'Poker Game Information'}
+        </title>
+        <meta
+          name='description'
+          content={
+            isCentralCoast
+              ? 'Discover and join poker games on the Central Coast. A central hub for all poker enthusiasts.'
+              : isNewcastle
+              ? 'Discover and join poker games in Newcastle. A central hub for all poker enthusiasts.'
+              : 'Poker game information'
+          }
+        />
+      </Helmet>
       <Router>
         <Header />
         <main className='flex-grow bg-gray-900'>
           <Routes>
-            <Route path='/' element={<GamesPage />} />
+            <Route path='/' element={<GamesPage dataUrl={dataUrl} />} />
             <Route path='/contact' element={<ContactPage />} />
           </Routes>
         </main>
         <Footer />
       </Router>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

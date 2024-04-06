@@ -1,20 +1,26 @@
-import React, { useState } from 'react'
-import LastUpdated from './ui/LastUpdated'
+import React, { useState } from 'react';
+import { hostname } from '../hostname';
+import LastUpdated from './ui/LastUpdated';
 
 const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long' })
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
   useState(() => {
-    setActiveDay(today)
-  }, [setActiveDay, today])
+    setActiveDay(today);
+  }, [setActiveDay, today]);
+
+  const location =
+    hostname === 'pokercentralcoast.com'
+      ? 'Central Coast, NSW, AUS'
+      : hostname === 'pokernewcastle.com'
+      ? 'Newcastle, NSW, AUS'
+      : 'NSW, AUS';
 
   return (
     <div>
       <p className='font-medium text-white mb-3'>
         Location: <br></br>
-        <span className='text-xl text-blue-500 font-semibold'>
-          Central Coast, NSW, AUS
-        </span>
+        <span className='text-xl text-blue-500 font-semibold'>{location}</span>
       </p>
       <LastUpdated lastUpdated='March 29th, 2024' />
       <br></br>
@@ -52,7 +58,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TabList
+export default TabList;

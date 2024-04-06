@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import DayNightTag from './ui/DayNightTag';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +16,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
+      setIsLoading(false);
     };
 
     fetchData();
@@ -83,112 +86,124 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
         {activeDay} Games
       </h2>
       <div className='container mx-auto px-4'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {filteredGames.length > 0 ? (
-            filteredGames
-              .sort(
-                (a, b) =>
-                  new Date(`1970/01/01 ${a.game_time}`) -
-                  new Date(`1970/01/01 ${b.game_time}`)
-              )
-              .map((game, index) => {
-                const gameStatus = getTimeUntil(game.game_time);
+        {isLoading ? (
+          <div className='flex justify-center items-center'>
+            <BeatLoader color='#ffffff' />
+          </div>
+        ) : (
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {filteredGames.length > 0 ? (
+              filteredGames
+                .sort(
+                  (a, b) =>
+                    new Date(`1970/01/01 ${a.game_time}`) -
+                    new Date(`1970/01/01 ${b.game_time}`)
+                )
+                .map((game, index) => {
+                  const gameStatus = getTimeUntil(game.game_time);
 
-                return (
-                  <a
-                    key={index}
-                    href={facebookPageUrls[game.competition]}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className={`block ${
-                      facebookPageUrls[game.competition] ? 'cursor-pointer' : ''
-                    }`}>
-                    <div className='bg-gray-800 rounded-xl shadow-2xl p-6 relative'>
-                      {competitionLogos[game.competition] && (
-                        <img
-                          src={competitionLogos[game.competition]}
-                          alt={`${game.competition} logo`}
-                          className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
-                        />
-                      )}
-                      <DayNightTag
-                        gameTime={game.game_time}
-                        className='absolute top-4 right-4'
-                      />
-                      <h3 className='text-xl text-blue-500 font-semibold mb-6'>
-                        {game.venue}
-                      </h3>
-                      <div className='grid grid-cols-[auto,1fr] gap-4'>
-                        <div className='font-medium text-white text-left p-1'>
-                          Competition:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.competition}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Reg. Time:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.rego_time ? formatTime(game.rego_time) : 'TBC'}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Game Start:
-                        </div>
-                        <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
-                          {formatTime(game.game_time)}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Late Rego:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Buy-in:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.buy_in}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Re-Buy:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.re_buy || 'TBC'}
-                        </div>
-                        <div className='font-medium text-white text-left p-1'>
-                          Starting Stack:
-                        </div>
-                        <div className='text-center border border-gray-700 p-1'>
-                          {game.starting_stack || 'TBC'}
-                        </div>
-                        {game.day === getCurrentDay() && (
-                          <>
-                            <div className='font-medium text-white text-left p-1'>
-                              Status:
-                            </div>
-                            <div
-                              className={`text-center border border-gray-700 p-1 ${
-                                gameStatus.status === 'Completed'
-                                  ? 'text-red-400'
-                                  : gameStatus.isStarted
-                                  ? 'text-green-500'
-                                  : 'text-yellow-300'
-                              }`}>
-                              {gameStatus.status}
-                            </div>
-                          </>
+                  return (
+                    <a
+                      key={index}
+                      href={facebookPageUrls[game.competition]}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`block ${
+                        facebookPageUrls[game.competition]
+                          ? 'cursor-pointer'
+                          : ''
+                      }`}>
+                      <div className='bg-gray-800 rounded-xl shadow-2xl p-6 relative'>
+                        {competitionLogos[game.competition] && (
+                          <img
+                            src={competitionLogos[game.competition]}
+                            alt={`${game.competition} logo`}
+                            className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
+                          />
                         )}
+                        <DayNightTag
+                          gameTime={game.game_time}
+                          className='absolute top-4 right-4'
+                        />
+                        <h3 className='text-xl text-blue-500 font-semibold mb-6'>
+                          {game.venue}
+                        </h3>
+                        <div className='grid grid-cols-[auto,1fr] gap-4'>
+                          <div className='font-medium text-white text-left p-1'>
+                            Competition:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.competition}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Reg. Time:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.rego_time
+                              ? formatTime(game.rego_time)
+                              : 'TBC'}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Game Start:
+                          </div>
+                          <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
+                            {formatTime(game.game_time)}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Late Rego:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.late_rego
+                              ? formatTime(game.late_rego)
+                              : 'TBC'}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Buy-in:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.buy_in}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Re-Buy:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.re_buy || 'TBC'}
+                          </div>
+                          <div className='font-medium text-white text-left p-1'>
+                            Starting Stack:
+                          </div>
+                          <div className='text-center border border-gray-700 p-1'>
+                            {game.starting_stack || 'TBC'}
+                          </div>
+                          {game.day === getCurrentDay() && (
+                            <>
+                              <div className='font-medium text-white text-left p-1'>
+                                Status:
+                              </div>
+                              <div
+                                className={`text-center border border-gray-700 p-1 ${
+                                  gameStatus.status === 'Completed'
+                                    ? 'text-red-400'
+                                    : gameStatus.isStarted
+                                    ? 'text-green-500'
+                                    : 'text-yellow-300'
+                                }`}>
+                                {gameStatus.status}
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                );
-              })
-          ) : (
-            <p className='text-center col-span-full text-xl text-gray-300'>
-              No games available for {activeDay}.
-            </p>
-          )}
-        </div>
+                    </a>
+                  );
+                })
+            ) : (
+              <p className='text-center col-span-full text-xl text-gray-300'>
+                No games available for {activeDay}.
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

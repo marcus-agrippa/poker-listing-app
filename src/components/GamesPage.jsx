@@ -28,6 +28,7 @@ const newcastleFacebookPageUrls = {
   'APL Poker': 'https://www.facebook.com/groups/APLNewcastle/',
   'UPT Poker': 'https://www.facebook.com/NPC.Poker/',
   'WPT League': 'https://au.wptleague.com/venue.aspx',
+  'Kings Poker': 'https://www.facebook.com/KingsPokerNewcastle/',
 };
 
 const facebookPageUrls = isCentralCoast

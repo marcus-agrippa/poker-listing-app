@@ -47,7 +47,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
         {daysOfWeek.map(day => (
           <button
             key={day}
-            className={`tab tab-lifted text-xl ${
+            className={`tab tab-lifted text-lg ${
               activeDay === day
                 ? 'bg-blue-600 text-white rounded'
                 : 'text-gray-300 hover:text-gray-100'

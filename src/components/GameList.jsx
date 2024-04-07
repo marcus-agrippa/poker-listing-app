@@ -126,7 +126,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           gameTime={game.game_time}
                           className='absolute top-4 right-4'
                         />
-                        <h3 className='text-xl text-blue-500 font-semibold mb-6'>
+                        <h3 className='text-xl text-blue-500 font-bold mb-6'>
                           {game.venue}
                         </h3>
                         <div className='grid grid-cols-[auto,1fr] gap-4'>

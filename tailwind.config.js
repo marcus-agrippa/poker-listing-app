@@ -1,14 +1,22 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
       keyframes: {
         pulse: {
-          '0%, 100%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(0, 255, 0, 0.7)' },
-          '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(0, 255, 0, 0)' },
+          '0%, 100%': {
+            transform: 'scale(0.95)',
+            boxShadow: '0 0 0 0 rgba(0, 255, 0, 0.7)',
+          },
+          '70%': {
+            transform: 'scale(1)',
+            boxShadow: '0 0 0 10px rgba(0, 255, 0, 0)',
+          },
         },
       },
       animation: {
@@ -16,5 +24,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("daisyui")],
-}
+  plugins: [require('daisyui')],
+};

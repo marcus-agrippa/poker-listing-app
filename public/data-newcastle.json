@@ -91,7 +91,7 @@
     "re_entry": "",
     "addons": "10",
     "bounty": "",
-    "starting_stack": "20000",
+    "starting_stack": "20,000",
     "guarantee": "",
     "prize_pool": ""
   },
@@ -123,7 +123,7 @@
     "re_entry": "",
     "addons": "10",
     "bounty": "",
-    "starting_stack": "20000",
+    "starting_stack": "20,000",
     "guarantee": "",
     "prize_pool": ""
   },
@@ -235,7 +235,7 @@
     "re_entry": "",
     "addons": "20",
     "bounty": "",
-    "starting_stack": "30000",
+    "starting_stack": "30,000",
     "guarantee": "",
     "prize_pool": ""
   },
@@ -715,7 +715,7 @@
     "re_entry": "",
     "addons": "10",
     "bounty": "",
-    "starting_stack": "20000",
+    "starting_stack": "20,000",
     "guarantee": "",
     "prize_pool": ""
   },
@@ -747,7 +747,7 @@
     "re_entry": "85",
     "addons": "",
     "bounty": "",
-    "starting_stack": "30000",
+    "starting_stack": "30,000",
     "guarantee": "",
     "prize_pool": ""
   },
@@ -779,7 +779,7 @@
     "re_entry": "35",
     "addons": "",
     "bounty": "",
-    "starting_stack": "40000",
+    "starting_stack": "40,000",
     "guarantee": "",
     "prize_pool": ""
   }

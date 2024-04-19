@@ -45,7 +45,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     const diffMins = Math.floor((diffMs / 1000 / 60) % 60);
     let status;
 
-    if (diffHrs < -7) {
+    if (diffHrs < -5) {
       return { status: 'Completed', isStarted: true };
     } else if (diffMs < 0) {
       return { status: 'In Progress', isStarted: true };

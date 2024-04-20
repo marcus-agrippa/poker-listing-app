@@ -16,6 +16,7 @@ const daysOfWeek = [
 const hostname = window.location.hostname;
 const isCentralCoast = hostname === 'pokercentralcoast.com';
 const isNewcastle = hostname === 'pokernewcastle.com';
+const isBallarat = hostname === 'pokerballarat.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -31,10 +32,18 @@ const newcastleFacebookPageUrls = {
   'Kings Poker': 'https://www.facebook.com/KingsPokerNewcastle/',
 };
 
+const ballaratFacebookPageUrls = {
+  'APL Poker': 'https://www.facebook.com/groups/305550272818441/',
+  'Poker Nation':
+    'https://www.facebook.com/p/Poker-Nation-Ballarat-100067701552687/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
   ? newcastleFacebookPageUrls
+  : isBallarat
+  ? ballaratFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

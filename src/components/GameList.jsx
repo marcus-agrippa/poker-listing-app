@@ -79,6 +79,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     'UPT Poker': '/upt-poker-logo.png',
     'WPT League': '/wpt-poker-logo.png',
     'Kings Poker': '/kings-poker-logo.png',
+    'Poker Nation': '/poker-nation-logo.png',
   };
 
   return (

@@ -11,6 +11,8 @@ const Header = () => {
       ? 'POKER NEWCASTLE'
       : hostname === 'pokerballarat.com'
       ? 'POKER BALLARAT'
+      : hostname === 'pokerwollongong.com'
+      ? 'POKER WOLLONGONG'
       : 'POKER';
 
   return (

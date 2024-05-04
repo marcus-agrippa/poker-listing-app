@@ -18,6 +18,7 @@ const isCentralCoast = hostname === 'pokercentralcoast.com';
 const isNewcastle = hostname === 'pokernewcastle.com';
 const isBallarat = hostname === 'pokerballarat.com';
 const isWollongong = hostname === 'pokerwollongong.com';
+const isTownsville = hostname === 'pokertownsville.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -44,6 +45,10 @@ const wollongongFacebookPageUrls = {
   'NPL Poker': 'https://www.facebook.com/npl.wollongong/',
 };
 
+const townsvilleFacebookPageUrls = {
+  'APL Poker': 'https://www.facebook.com/townsvilleapl/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
@@ -52,6 +57,8 @@ const facebookPageUrls = isCentralCoast
   ? ballaratFacebookPageUrls
   : isWollongong
   ? wollongongFacebookPageUrls
+  : isTownsville
+  ? townsvilleFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

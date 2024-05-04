@@ -18,6 +18,8 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
       ? 'Ballarat, VIC, AUS'
       : hostname === 'pokerwollongong.com'
       ? 'Wollongong, NSW, AUS'
+      : hostname === 'pokertownsville.com'
+      ? 'Townsville, NSW, AUS'
       : 'NSW, AUS';
 
   return (

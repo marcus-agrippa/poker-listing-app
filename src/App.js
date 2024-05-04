@@ -15,6 +15,7 @@ function App() {
   const isNewcastle = hostname === 'pokernewcastle.com';
   const isBallarat = hostname === 'pokerballarat.com';
   const isWollongong = hostname === 'pokerwollongong.com';
+  const isTownsville = hostname === 'pokertownsville.com';
   const dataUrl =
     hostname === 'pokercentralcoast.com'
       ? '/data.json'
@@ -24,6 +25,8 @@ function App() {
       ? '/data-ballarat.json'
       : hostname === 'pokerwollongong.com'
       ? '/data-wollongong.json'
+      : hostname === 'pokertownsville.com'
+      ? '/data-townsville.json'
       : '/data.json';
   const trackingId = isCentralCoast
     ? 'G-PXFQ31JSSG'
@@ -33,6 +36,8 @@ function App() {
     ? 'G-5HY5J8HSYL'
     : isWollongong
     ? 'G-F9TJTVNPYW'
+    : isTownsville
+    ? 'G-BXXGBVYVLY'
     : 'G-PXFQ31JSSG';
 
   useEffect(() => {
@@ -52,6 +57,8 @@ function App() {
             ? 'Poker Ballarat'
             : isWollongong
             ? 'Poker Wollongong'
+            : isTownsville
+            ? 'Poker Townsville'
             : 'Poker Game Information'}
         </title>
         <meta
@@ -65,6 +72,8 @@ function App() {
               ? 'Discover and join poker games in Ballarat. A central hub for all poker enthusiasts.'
               : isWollongong
               ? 'Discover and join poker games in Wollongong. A central hub for all poker enthusiasts.'
+              : isTownsville
+              ? 'Discover and join poker games in Townsville. A central hub for all poker enthusiasts.'
               : 'Poker game information'
           }
         />

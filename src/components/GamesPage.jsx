@@ -19,6 +19,7 @@ const isNewcastle = hostname === 'pokernewcastle.com';
 const isBallarat = hostname === 'pokerballarat.com';
 const isWollongong = hostname === 'pokerwollongong.com';
 const isTownsville = hostname === 'pokertownsville.com';
+const isSunshineCoast = hostname === 'pokersunshinecoast.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -49,6 +50,10 @@ const townsvilleFacebookPageUrls = {
   'APL Poker': 'https://www.facebook.com/townsvilleapl/',
 };
 
+const sunshineCoastFacebookPageUrls = {
+  'APL Poker': 'https://www.facebook.com/888PLSunshineCoast/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
@@ -59,6 +64,8 @@ const facebookPageUrls = isCentralCoast
   ? wollongongFacebookPageUrls
   : isTownsville
   ? townsvilleFacebookPageUrls
+  : isSunshineCoast
+  ? sunshineCoastFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

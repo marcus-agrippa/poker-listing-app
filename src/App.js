@@ -31,7 +31,7 @@ function App() {
       ? '/data-townsville.json'
       : hostname === 'pokersunshinecoast.com'
       ? '/data-sunshine-coast.json'
-      : hostname === 'perth.com'
+      : hostname === 'pokerperth.com'
       ? '/data-perth.json'
       : '/data.json';
   const trackingId = isCentralCoast

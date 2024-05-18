@@ -20,6 +20,7 @@ const isBallarat = hostname === 'pokerballarat.com';
 const isWollongong = hostname === 'pokerwollongong.com';
 const isTownsville = hostname === 'pokertownsville.com';
 const isSunshineCoast = hostname === 'pokersunshinecoast.com';
+const isPerth = hostname === 'pokerperth.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -54,6 +55,11 @@ const sunshineCoastFacebookPageUrls = {
   'APL Poker': 'https://www.facebook.com/888PLSunshineCoast/',
 };
 
+const perthFacebookPageUrls = {
+  'APL Poker': 'https://www.facebook.com/groups/APLWASOUTH/',
+  'Perth Poker League': 'https://www.facebook.com/perthpokerleague.com.au/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
@@ -66,6 +72,8 @@ const facebookPageUrls = isCentralCoast
   ? townsvilleFacebookPageUrls
   : isSunshineCoast
   ? sunshineCoastFacebookPageUrls
+  : isPerth
+  ? perthFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

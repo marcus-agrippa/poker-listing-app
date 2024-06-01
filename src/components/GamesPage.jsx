@@ -58,6 +58,7 @@ const sunshineCoastFacebookPageUrls = {
 const perthFacebookPageUrls = {
   'APL Poker': 'https://www.facebook.com/groups/APLWASOUTH/',
   'Perth Poker League': 'https://www.facebook.com/perthpokerleague.com.au/',
+  'Shark Poker': 'https://www.facebook.com/sharkpokerperth/',
 };
 
 const facebookPageUrls = isCentralCoast

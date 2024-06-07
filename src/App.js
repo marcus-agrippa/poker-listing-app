@@ -18,6 +18,7 @@ function App() {
   const isTownsville = hostname === 'pokertownsville.com';
   const isSunshineCoast = hostname === 'pokersunshinecoast.com';
   const isPerth = hostname === 'pokerperth.com';
+  const isGeelong = hostname === 'pokergeelong.com';
   const dataUrl =
     hostname === 'pokercentralcoast.com'
       ? '/data.json'
@@ -33,6 +34,8 @@ function App() {
       ? '/data-sunshine-coast.json'
       : hostname === 'pokerperth.com'
       ? '/data-perth.json'
+      : hostname === 'pokergeelong.com'
+      ? '/data-geelong.json'
       : '/data.json';
   const trackingId = isCentralCoast
     ? 'G-PXFQ31JSSG'
@@ -48,6 +51,8 @@ function App() {
     ? 'G-YVEMHWM9RS'
     : isPerth
     ? 'G-8SH60W18PM'
+    : isGeelong
+    ? 'G-E7FSLHCS2M'
     : 'G-PXFQ31JSSG';
 
   useEffect(() => {
@@ -73,6 +78,8 @@ function App() {
             ? 'Poker Sunshine Coast'
             : isPerth
             ? 'Poker Perth'
+            : isGeelong
+            ? 'Poker Geelong'
             : 'Poker Game Information'}
         </title>
         <meta
@@ -92,6 +99,8 @@ function App() {
               ? 'Discover and join poker games in Sunshine Coast. A central hub for all poker enthusiasts.'
               : isPerth
               ? 'Discover and join poker games in Perth. A central hub for all poker enthusiasts.'
+              : isGeelong
+              ? 'Discover and join poker games in Geelong. A central hub for all poker enthusiasts.'
               : 'Poker game information'
           }
         />

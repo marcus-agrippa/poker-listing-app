@@ -83,6 +83,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     'National Poker League': '/npl-poker-logo.png',
     'Perth Poker League': '/perth-poker-league-logo.png',
     'Shark Poker': '/shark-poker-logo.png',
+    'Star Poker': '/star-poker-logo.png',
   };
 
   return (

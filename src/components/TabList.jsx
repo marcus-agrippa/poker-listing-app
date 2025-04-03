@@ -36,7 +36,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
         Location: <br></br>
         <span className='text-xl text-blue-500 font-bold'>{location}</span>
       </p>
-      <LastUpdated lastUpdated='March 15th, 2025' />
+      <LastUpdated lastUpdated='April 3, 2025' />
       <br></br>
       <div className='lg:hidden mb-4'>
         <label

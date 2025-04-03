@@ -26,7 +26,21 @@ const Footer = () => {
 
   return (
     <footer className='bg-slate-800 text-center p-6 bottom-0 w-full'>
-      <p className='text-white'>
+      <div className='mb-4'>
+        <p className='text-white text-sm mb-5'>
+          Like the app? Help me keep games up-to-date and add more cool
+          features!
+        </p>
+        <a
+          href='https://buymeacoffee.com/billypilgrim'
+          target='_blank'
+          rel='noopener noreferrer'>
+          <button className='bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded'>
+            Buy me a coffee ☕
+          </button>
+        </a>
+      </div>
+      <p className='text-white text-sm'>
         Game information needs updating? Register a game? Something else?
       </p>
       <Link to='/contact'>

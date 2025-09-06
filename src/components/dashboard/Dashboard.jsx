@@ -159,6 +159,17 @@ const Dashboard = () => {
     }
   };
 
+  const handleRefreshVerification = async () => {
+    try {
+      // Reload the user to get the latest verification status
+      await currentUser.reload();
+      // Force re-evaluation of auth state
+      window.location.href = '/dashboard';
+    } catch (error) {
+      toast.error('Failed to refresh verification status. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-64">
@@ -190,7 +201,7 @@ const Dashboard = () => {
             </p>
             <div className="flex flex-col gap-2">
               <button 
-                onClick={() => window.location.reload()} 
+                onClick={handleRefreshVerification} 
                 className="btn btn-primary"
               >
                 I've verified my email - Refresh

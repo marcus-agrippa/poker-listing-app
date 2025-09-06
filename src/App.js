@@ -2,14 +2,21 @@
 import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import GamesPage from './components/GamesPage';
+import RegionFilteredGamesPage from './components/RegionFilteredGamesPage';
 import ContactPage from './components/ContactPage';
+import Dashboard from './components/dashboard/Dashboard';
+import SuggestionsView from './components/admin/SuggestionsView';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminRoute from './components/auth/AdminRoute';
+import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
 import ReactGA from 'react-ga4';
 
-function App() {
+const AppContent = () => {
   const hostname = window.location.hostname;
   const isCentralCoast = hostname === 'pokercentralcoast.com';
   const isNewcastle = hostname === 'pokernewcastle.com';
@@ -20,6 +27,7 @@ function App() {
   const isPerth = hostname === 'pokerperth.com';
   const isGeelong = hostname === 'pokergeelong.com';
   const isGoldCoast = hostname === 'pokergoldcoast.com';
+  
   const dataUrl =
     hostname === 'pokercentralcoast.com'
       ? '/data.json'
@@ -40,6 +48,7 @@ function App() {
       : hostname === 'pokergoldcoast.com'
       ? '/data-gold-coast.json'
       : '/data.json';
+
   const trackingId = isCentralCoast
     ? 'G-PXFQ31JSSG'
     : isNewcastle
@@ -66,9 +75,10 @@ function App() {
   }, [trackingId]);
 
   return (
-    <div className='App flex flex-col min-h-screen'>
-      <Helmet>
-        <title>
+    <HelmetProvider>
+      <div className='App flex flex-col min-h-screen'>
+        <Helmet>
+          <title>
           {isCentralCoast
             ? 'Poker Central Coast'
             : isNewcastle
@@ -118,13 +128,61 @@ function App() {
         <Header />
         <main className='flex-grow bg-gray-900'>
           <Routes>
-            <Route path='/' element={<GamesPage dataUrl={dataUrl} />} />
+            <Route path='/' element={<RegionFilteredGamesPage />} />
             <Route path='/contact' element={<ContactPage />} />
+            <Route
+              path='/dashboard'
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/admin/suggestions'
+              element={
+                <AdminRoute>
+                  <SuggestionsView />
+                </AdminRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
       </Router>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#374151',
+            color: '#ffffff',
+            border: '1px solid #4B5563',
+          },
+          success: {
+            iconTheme: {
+              primary: '#10B981',
+              secondary: '#ffffff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#ffffff',
+            },
+          },
+        }}
+      />
     </div>
+    </HelmetProvider>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

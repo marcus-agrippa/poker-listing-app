@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import DayNightTag from './ui/DayNightTag';
 import BeatLoader from 'react-spinners/BeatLoader';
+import { useAuth } from '../contexts/AuthContext';
+import { FiEdit3 } from 'react-icons/fi';
+import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
+  const { currentUser } = useAuth();
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [suggestionFormOpen, setSuggestionFormOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,6 +137,21 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           gameTime={game.game_time}
                           className='absolute top-4 right-4'
                         />
+                        
+                        {currentUser && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedGame(game);
+                              setSuggestionFormOpen(true);
+                            }}
+                            className="absolute top-4 left-4 btn btn-circle btn-xs bg-blue-500 bg-opacity-80 hover:bg-blue-600 border-none text-white"
+                            title="Suggest edit to this game"
+                          >
+                            <FiEdit3 />
+                          </button>
+                        )}
                         <h3 className='text-xl text-blue-500 font-bold mb-6'>
                           {game.venue}
                         </h3>
@@ -211,6 +232,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
           </div>
         )}
       </div>
+      
+      <GameEditSuggestionForm
+        isOpen={suggestionFormOpen}
+        onClose={() => {
+          setSuggestionFormOpen(false);
+          setSelectedGame(null);
+        }}
+        game={selectedGame}
+      />
     </div>
   );
 };

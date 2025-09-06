@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { hostname } from '../hostname';
 import LastUpdated from './ui/LastUpdated';
 
 const TabList = ({ activeDay, setActiveDay, daysOfWeek }) => {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
-  useState(() => {
+  useEffect(() => {
     setActiveDay(today);
   }, [setActiveDay, today]);
 

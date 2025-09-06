@@ -28,8 +28,11 @@ export const AuthProvider = ({ children }) => {
     
     await updateProfile(user, { displayName });
     
-    // Send email verification
-    await sendEmailVerification(user);
+    // Send email verification with homepage redirect
+    await sendEmailVerification(user, {
+      url: window.location.origin,
+      handleCodeInApp: false
+    });
     
     await setDoc(doc(db, 'users', user.uid), {
       displayName,
@@ -57,7 +60,10 @@ export const AuthProvider = ({ children }) => {
 
   const resendVerification = () => {
     if (currentUser && !currentUser.emailVerified) {
-      return sendEmailVerification(currentUser);
+      return sendEmailVerification(currentUser, {
+        url: window.location.origin,
+        handleCodeInApp: false
+      });
     }
   };
 

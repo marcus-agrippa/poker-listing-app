@@ -133,8 +133,8 @@ const RegionFilteredGamesPage = () => {
     <div className='mx-auto p-4 mt-8 max-w-screen-xl mb-8'>
       {currentUser && selectedRegion && (
         <div className='text-center mb-6'>
-          <div className='flex items-center justify-center space-x-4 mb-4'>
-            <h1 className='text-2xl font-bold text-white'>
+          <div className='flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-2 sm:space-y-0 mb-4'>
+            <h1 className='text-xl sm:text-2xl font-bold text-white'>
               {selectedRegion} Poker Games
             </h1>
             <button

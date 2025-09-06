@@ -53,27 +53,29 @@ const Header = () => {
   return (
     <>
       <div className='navbar bg-slate-800 text-center justify-between px-4'>
-        <Link to='/' className='text-xl text-white font-bold py-4'>
-          <GiPokerHand className='text-5xl mr-3' /> {title}
+        <Link to='/' className='text-lg sm:text-xl text-white font-bold py-4'>
+          <GiPokerHand className='text-4xl sm:text-5xl mr-2 sm:mr-3' /> 
+          <span className="hidden xs:inline">{title}</span>
+          <span className="xs:hidden">{title.split(' ')[0]}</span>
         </Link>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {currentUser ? (
             <>
-              <Link to="/dashboard" className="text-white hover:text-gray-300" title="Dashboard">
-                <FiUser className="text-xl" />
+              <Link to="/dashboard" className="text-white hover:text-gray-300 p-3 sm:p-2" title="Dashboard">
+                <FiUser className="text-xl sm:text-xl" />
               </Link>
               {isAdmin && (
-                <Link to="/admin/suggestions" className="text-orange-400 hover:text-orange-300" title="Admin Panel">
-                  <FiSettings className="text-xl" />
+                <Link to="/admin/suggestions" className="text-orange-400 hover:text-orange-300 p-3 sm:p-2" title="Admin Panel">
+                  <FiSettings className="text-xl sm:text-xl" />
                 </Link>
               )}
               <button
                 onClick={handleLogout}
-                className="text-white hover:text-gray-300"
+                className="text-white hover:text-gray-300 p-3 sm:p-2"
                 title="Logout"
               >
-                <FiLogOut className="text-xl" />
+                <FiLogOut className="text-xl sm:text-xl" />
               </button>
             </>
           ) : (

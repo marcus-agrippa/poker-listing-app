@@ -8,6 +8,8 @@ import Footer from './components/layout/Footer';
 import GamesPage from './components/GamesPage';
 import RegionFilteredGamesPage from './components/RegionFilteredGamesPage';
 import ContactPage from './components/ContactPage';
+import TermsPage from './components/TermsPage';
+import PrivacyPage from './components/PrivacyPage';
 import Dashboard from './components/dashboard/Dashboard';
 import SuggestionsView from './components/admin/SuggestionsView';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -130,6 +132,8 @@ const AppContent = () => {
           <Routes>
             <Route path='/' element={<RegionFilteredGamesPage />} />
             <Route path='/contact' element={<ContactPage />} />
+            <Route path='/terms' element={<TermsPage />} />
+            <Route path='/privacy' element={<PrivacyPage />} />
             <Route
               path='/dashboard'
               element={

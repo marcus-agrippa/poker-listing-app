@@ -39,7 +39,7 @@ const Dashboard = () => {
       let queryConstraints = [
         collection(db, 'results'),
         where('userId', '==', currentUser.uid),
-        orderBy('date', 'desc'),
+        orderBy('createdAt', 'desc'), // Use createdAt instead of date for more reliable ordering
         limit(resultsPerPage + 1) // Get one extra to check if there's a next page
       ];
 
@@ -74,6 +74,7 @@ const Dashboard = () => {
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching results:', error);
+      console.error('Error details:', error.code, error.message);
       // Ensure we don't leave results in inconsistent state
       setResults([]);
       setHasNextPage(false);
@@ -94,7 +95,7 @@ const Dashboard = () => {
       const q = query(
         collection(db, 'results'),
         where('userId', '==', currentUser.uid),
-        orderBy('date', 'desc')
+        orderBy('createdAt', 'desc')
       );
       
       const querySnapshot = await getDocs(q);

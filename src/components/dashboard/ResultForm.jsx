@@ -107,6 +107,13 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
     e.preventDefault();
     setLoading(true);
 
+    // Validate required fields
+    if (!gameName || !venue) {
+      toast.error('Game name and venue are required fields.');
+      setLoading(false);
+      return;
+    }
+
     const resultData = {
       gameName,
       venue,
@@ -183,7 +190,7 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
               <>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text text-white">Game/Tournament Name</span>
+                    <span className="label-text text-white">Game/Tournament Name *</span>
                   </label>
                   <input
                     type="text"
@@ -197,7 +204,7 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
 
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text text-white">Venue</span>
+                    <span className="label-text text-white">Venue *</span>
                   </label>
                   <input
                     type="text"

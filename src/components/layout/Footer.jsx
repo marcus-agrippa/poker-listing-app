@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { hostname } from '../../hostname';
+import { useAuth } from '../../contexts/AuthContext';
+import AuthModal from '../auth/AuthModal';
 
 const Footer = () => {
+  const { currentUser } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  
   const copyright =
     hostname === 'pokercentralcoast.com'
       ? 'PokerCentralCoast'
@@ -41,8 +46,26 @@ const Footer = () => {
         </a>
       </div>
       <p className='text-white text-sm'>
-        Game information needs updating? Register a game? Something else?
+        {currentUser 
+          ? 'Track your results in your dashboard! Game info needs updating? Register a new game? Something else?'
+          : 'Game information needs updating? Register a game? Track your poker results?'
+        }
       </p>
+      
+      {!currentUser && (
+        <div className="mt-4 mb-4">
+          <p className='text-gray-300 text-xs mb-3'>
+            Sign up to track your poker results and suggest game edits directly!
+          </p>
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
+            className='bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded text-sm mr-3'
+          >
+            Sign Up / Login
+          </button>
+        </div>
+      )}
+      
       <Link to='/contact'>
         <p className='font-bold text-blue-500 hover:text-blue-400 mt-4'>
           Contact Us
@@ -58,6 +81,11 @@ const Footer = () => {
       <p className='text-xs mt-4 text-neutral-400'>
         {copyright} © {new Date().getFullYear()}
       </p>
+      
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </footer>
   );
 };

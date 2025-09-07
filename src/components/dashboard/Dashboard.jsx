@@ -54,7 +54,7 @@ const Dashboard = () => {
       const userResults = [];
       let lastDoc = null;
       
-      querySnapshot.forEach((docSnap, index) => {
+      querySnapshot.docs.forEach((docSnap, index) => {
         if (index < resultsPerPage) {
           userResults.push({ id: docSnap.id, ...docSnap.data() });
           lastDoc = docSnap;
@@ -68,13 +68,10 @@ const Dashboard = () => {
       if (lastDoc) {
         setPageDocuments(prev => ({ ...prev, [page]: lastDoc }));
       }
-      
-      console.log(`fetchResults: Found ${userResults.length} results for page ${page}`);
       setResults(userResults);
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching results:', error);
-      console.error('Error details:', error.code, error.message);
       // Ensure we don't leave results in inconsistent state
       setResults([]);
       setHasNextPage(false);
@@ -104,7 +101,6 @@ const Dashboard = () => {
         userResults.push({ id: docSnap.id, ...docSnap.data() });
       });
       
-      console.log(`fetchAllResultsForStats: Found ${userResults.length} results`);
       setAllResults(userResults);
     } catch (error) {
       console.error('Error fetching stats results:', error);
@@ -264,10 +260,9 @@ const Dashboard = () => {
     setPageDocuments({});
     setHasNextPage(false);
     
-    // Reset to page 1 if current page would be empty after deletion
-    const totalPages = Math.ceil(updatedResults.length / resultsPerPage);
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
+    // Always redirect to page 1 after deletion for better UX
+    if (currentPage > 1) {
+      setCurrentPage(1);
     }
 
     try {

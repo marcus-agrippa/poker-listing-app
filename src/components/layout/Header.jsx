@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { GiPokerHand } from 'react-icons/gi';
 import { FiUser, FiLogOut } from 'react-icons/fi';
 import { hostname } from '../../hostname';
@@ -11,6 +11,7 @@ import { FiSettings } from 'react-icons/fi';
 const Header = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
   // Get admin emails from environment variables
   const adminEmails = process.env.REACT_APP_ADMIN_EMAILS
@@ -44,6 +45,7 @@ const Header = () => {
     try {
       await logout();
       toast.success('Successfully logged out. See you next time!');
+      navigate('/'); // Redirect to main page after logout
     } catch (error) {
       console.error('Failed to logout:', error);
       toast.error('Failed to logout. Please try again.');

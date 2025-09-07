@@ -69,10 +69,14 @@ const Dashboard = () => {
         setPageDocuments(prev => ({ ...prev, [page]: lastDoc }));
       }
       
+      console.log(`fetchResults: Found ${userResults.length} results for page ${page}`);
       setResults(userResults);
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching results:', error);
+      // Ensure we don't leave results in inconsistent state
+      setResults([]);
+      setHasNextPage(false);
     } finally {
       setLoading(false);
     }
@@ -99,9 +103,12 @@ const Dashboard = () => {
         userResults.push({ id: docSnap.id, ...docSnap.data() });
       });
       
+      console.log(`fetchAllResultsForStats: Found ${userResults.length} results`);
       setAllResults(userResults);
     } catch (error) {
       console.error('Error fetching stats results:', error);
+      // Ensure stats don't show invalid data
+      setAllResults([]);
     } finally {
       setStatsLoading(false);
     }

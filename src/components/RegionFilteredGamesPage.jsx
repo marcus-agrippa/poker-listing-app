@@ -107,8 +107,22 @@ const RegionFilteredGamesPage = () => {
     setShowRegionSelector(false);
   };
 
+  // Detect region from domain if no selectedRegion
+  const getDomainBasedRegion = () => {
+    const hostname = window.location.hostname;
+    if (hostname === 'pokernewcastle.com') return 'Newcastle';
+    if (hostname === 'pokerballarat.com') return 'Ballarat';
+    if (hostname === 'pokerwollongong.com') return 'Wollongong';
+    if (hostname === 'pokertownsville.com') return 'Townsville';
+    if (hostname === 'pokersunshinecoast.com') return 'Sunshine Coast';
+    if (hostname === 'pokerperth.com') return 'Perth';
+    if (hostname === 'pokergeelong.com') return 'Geelong';
+    if (hostname === 'pokergoldcoast.com') return 'Gold Coast';
+    return 'Central Coast'; // default
+  };
+
   const currentConfig =
-    regionConfig[selectedRegion] || regionConfig['Central Coast'];
+    regionConfig[selectedRegion] || regionConfig[getDomainBasedRegion()];
 
   if (currentUser && showRegionSelector) {
     return (

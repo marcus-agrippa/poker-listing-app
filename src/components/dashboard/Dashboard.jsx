@@ -39,7 +39,7 @@ const Dashboard = () => {
       let queryConstraints = [
         collection(db, 'results'),
         where('userId', '==', currentUser.uid),
-        orderBy('createdAt', 'desc'), // Use createdAt instead of date for more reliable ordering
+        orderBy('date', 'desc'),
         limit(resultsPerPage + 1) // Get one extra to check if there's a next page
       ];
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
       const q = query(
         collection(db, 'results'),
         where('userId', '==', currentUser.uid),
-        orderBy('createdAt', 'desc')
+        orderBy('date', 'desc')
       );
       
       const querySnapshot = await getDocs(q);

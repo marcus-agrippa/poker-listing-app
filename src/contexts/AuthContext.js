@@ -70,26 +70,74 @@ export const AuthProvider = ({ children }) => {
   const loadUserProfile = async (user) => {
     if (user) {
       try {
+        // Check localStorage cache first
+        const cacheKey = `userProfile_${user.uid}`;
+        let cachedData, cacheExpiry;
+        
+        try {
+          cachedData = localStorage.getItem(cacheKey);
+          cacheExpiry = localStorage.getItem(`${cacheKey}_expiry`);
+        } catch (e) {
+          console.warn('localStorage not available:', e);
+          cachedData = null;
+          cacheExpiry = null;
+        }
+        
+        if (cachedData && cacheExpiry && new Date().getTime() < parseInt(cacheExpiry)) {
+          try {
+            // Use cached data
+            setUserProfile(JSON.parse(cachedData));
+            return;
+          } catch (e) {
+            console.warn('Failed to parse cached profile data:', e);
+            // Continue to fetch from Firestore
+          }
+        }
+
+        // Cache miss or expired - fetch from Firestore
         const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
+        let profileData;
+        
         if (docSnap.exists()) {
-          setUserProfile(docSnap.data());
+          profileData = docSnap.data();
         } else {
           // If user profile doesn't exist, create one
-          const newProfile = {
+          profileData = {
             displayName: user.displayName,
             email: user.email,
             region: '',
             createdAt: new Date().toISOString()
           };
-          await setDoc(docRef, newProfile);
-          setUserProfile(newProfile);
+          await setDoc(docRef, profileData);
+        }
+        
+        setUserProfile(profileData);
+        
+        // Cache for 24 hours
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(profileData));
+          localStorage.setItem(`${cacheKey}_expiry`, (new Date().getTime() + 24 * 60 * 60 * 1000).toString());
+        } catch (e) {
+          console.warn('Failed to cache profile data:', e);
+          // Continue without caching - app still works
         }
       } catch (error) {
         console.error('Error loading user profile:', error);
       }
     } else {
       setUserProfile(null);
+      // Clear cache when user logs out
+      try {
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('userProfile_')) {
+            localStorage.removeItem(key);
+          }
+        });
+      } catch (e) {
+        console.warn('Failed to clear profile cache:', e);
+        // Continue - logout still works
+      }
     }
   };
 
@@ -98,13 +146,26 @@ export const AuthProvider = ({ children }) => {
     
     try {
       const docRef = doc(db, 'users', currentUser.uid);
-      await updateDoc(docRef, {
+      const updatedProfile = {
         ...updates,
         updatedAt: new Date().toISOString()
-      });
+      };
+      
+      await updateDoc(docRef, updatedProfile);
       
       // Update local state
-      setUserProfile(prev => ({ ...prev, ...updates }));
+      const newProfile = { ...userProfile, ...updatedProfile };
+      setUserProfile(newProfile);
+      
+      // Update cache
+      try {
+        const cacheKey = `userProfile_${currentUser.uid}`;
+        localStorage.setItem(cacheKey, JSON.stringify(newProfile));
+        localStorage.setItem(`${cacheKey}_expiry`, (new Date().getTime() + 24 * 60 * 60 * 1000).toString());
+      } catch (e) {
+        console.warn('Failed to update profile cache:', e);
+        // Continue - profile update still works
+      }
     } catch (error) {
       console.error('Error updating user profile:', error);
       throw error;

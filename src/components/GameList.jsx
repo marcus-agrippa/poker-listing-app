@@ -146,7 +146,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                               setSelectedGame(game);
                               setSuggestionFormOpen(true);
                             }}
-                            className="absolute top-4 left-4 btn btn-circle btn-xs bg-blue-500 bg-opacity-80 hover:bg-blue-600 border-none text-white"
+                            className="absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm"
                             title="Suggest edit to this game"
                           >
                             <FiEdit3 />

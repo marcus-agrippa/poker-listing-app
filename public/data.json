@@ -224,6 +224,22 @@
     "prize_pool": ""
   },
   {
+    "day": "Tuesday",
+    "venue": "Northlakes Tavern",
+    "competition": "Australian Poker Experience",
+    "rego_time": "18:00",
+    "game_time": "19:00",
+    "late_rego": "20:15",
+    "buy_in": "55",
+    "re_buy": "55",
+    "re_entry": "55",
+    "addons": "",
+    "bounty": "",
+    "starting_stack": "",
+    "guarantee": "",
+    "prize_pool": ""
+  },
+  {
     "day": "Wednesday",
     "venue": "Gosford RSL Club",
     "competition": "APL Poker",

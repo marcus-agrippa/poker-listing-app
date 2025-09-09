@@ -82,6 +82,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
 
   const competitionLogos = {
     'APL Poker': '/apl-poker-logo.png',
+    'Australian Poker Experience': '/aus-poker-experience.png',
     'UPT Poker': '/upt-poker-logo.png',
     'WPT League': '/wpt-poker-logo.png',
     'Kings Poker': '/kings-poker-logo.png',
@@ -137,18 +138,17 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           gameTime={game.game_time}
                           className='absolute top-4 right-4'
                         />
-                        
+
                         {currentUser && (
                           <button
-                            onClick={(e) => {
+                            onClick={e => {
                               e.preventDefault();
                               e.stopPropagation();
                               setSelectedGame(game);
                               setSuggestionFormOpen(true);
                             }}
-                            className="absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm"
-                            title="Suggest edit to this game"
-                          >
+                            className='absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
+                            title='Suggest edit to this game'>
                             <FiEdit3 />
                           </button>
                         )}
@@ -232,7 +232,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
           </div>
         )}
       </div>
-      
+
       <GameEditSuggestionForm
         isOpen={suggestionFormOpen}
         onClose={() => {

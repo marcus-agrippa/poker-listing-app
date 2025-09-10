@@ -36,6 +36,7 @@ const newcastleFacebookPageUrls = {
   'UPT Poker': 'https://www.facebook.com/NPC.Poker/',
   'WPT League': 'https://au.wptleague.com/venue.aspx',
   'Kings Poker': 'https://www.facebook.com/KingsPokerNewcastle/',
+  'APS Newcastle': 'https://apsnewcastle.com/',
 };
 
 const ballaratFacebookPageUrls = {

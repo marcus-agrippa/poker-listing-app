@@ -40,6 +40,7 @@ const RegionFilteredGamesPage = () => {
         'UPT Poker': 'https://www.facebook.com/NPC.Poker/',
         'WPT League': 'https://au.wptleague.com/venue.aspx',
         'Kings Poker': 'https://www.facebook.com/KingsPokerNewcastle/',
+        'APS Newcastle': 'https://apsnewcastle.com/',
       },
     },
     Ballarat: {
@@ -170,10 +171,10 @@ const RegionFilteredGamesPage = () => {
         dataUrl={currentConfig.dataUrl}
         facebookPageUrls={currentConfig.facebookPageUrls}
       />
-      
+
       {/* Show promotion card to logged-out users */}
       {!currentUser && (
-        <div className="mt-12">
+        <div className='mt-12'>
           <SignupPromotionCard />
         </div>
       )}

@@ -88,7 +88,7 @@ const HeroSection = ({ regionName, currentUser }) => {
                   ✨ No credit card required • Made by poker players
                 </p>
                 <p className='text-xs text-green-400 mt-1 font-semibold'>
-                  🚀 Join one of the fastest growing poker community in
+                  🚀 Join one of the fastest growing poker communities in
                   Australia!
                 </p>
               </div>

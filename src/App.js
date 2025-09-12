@@ -17,6 +17,7 @@ import OperatorClaimsView from './components/admin/OperatorClaimsView';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 import { Toaster } from 'react-hot-toast';
 import ReactGA from 'react-ga4';
 
@@ -203,7 +204,9 @@ const AppContent = () => {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <FavoritesProvider>
+        <AppContent />
+      </FavoritesProvider>
     </AuthProvider>
   );
 }

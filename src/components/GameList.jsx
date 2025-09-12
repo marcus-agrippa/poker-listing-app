@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import DayNightTag from './ui/DayNightTag';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
-import { FiEdit3 } from 'react-icons/fi';
+import { useFavorites } from '../contexts/FavoritesContext';
+import { FiEdit3, FiHeart, FiClock } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const { currentUser } = useAuth();
+  const {
+    isFavorite,
+    toggleFavorite,
+    getLastPlayedText,
+    sortGamesByFavorites,
+  } = useFavorites();
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,8 +37,10 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
 
   useEffect(() => {
     const filtered = games.filter(game => game.day === activeDay);
-    setFilteredGames(filtered);
-  }, [games, activeDay]);
+    // Sort by favorites first, then by time
+    const sorted = sortGamesByFavorites(filtered);
+    setFilteredGames(sorted);
+  }, [games, activeDay, sortGamesByFavorites]);
 
   const formatTime = time24 => {
     const [hours, minutes] = time24.split(':');
@@ -107,124 +116,163 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
             {filteredGames.length > 0 ? (
-              filteredGames
-                .sort(
-                  (a, b) =>
-                    new Date(`1970/01/01 ${a.game_time}`) -
-                    new Date(`1970/01/01 ${b.game_time}`)
-                )
-                .map((game, index) => {
-                  const gameStatus = getTimeUntil(game.game_time);
+              filteredGames.map((game, index) => {
+                const gameStatus = getTimeUntil(game.game_time);
+                const isVenueFavorite = currentUser
+                  ? isFavorite(game.venue)
+                  : false;
+                const lastPlayedText = currentUser
+                  ? getLastPlayedText(game.venue)
+                  : null;
 
-                  return (
-                    <a
-                      key={index}
-                      href={facebookPageUrls[game.competition]}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className={`block ${
-                        facebookPageUrls[game.competition]
-                          ? 'cursor-pointer'
+                return (
+                  <a
+                    key={index}
+                    href={facebookPageUrls[game.competition]}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={`block ${
+                      facebookPageUrls[game.competition] ? 'cursor-pointer' : ''
+                    }`}>
+                    <div
+                      className={`bg-gray-800 rounded-xl shadow-2xl p-6 relative transition-all ${
+                        isVenueFavorite
+                          ? 'ring-2 ring-yellow-400 ring-opacity-50'
                           : ''
                       }`}>
-                      <div className='bg-gray-800 rounded-xl shadow-2xl p-6 relative'>
-                        {competitionLogos[game.competition] && (
-                          <img
-                            src={competitionLogos[game.competition]}
-                            alt={`${game.competition} logo`}
-                            className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
-                          />
-                        )}
-                        <DayNightTag
-                          gameTime={game.game_time}
-                          className='absolute top-4 right-4'
+                      {competitionLogos[game.competition] && (
+                        <img
+                          src={competitionLogos[game.competition]}
+                          alt={`${game.competition} logo`}
+                          className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
                         />
+                      )}
+                      <DayNightTag
+                        gameTime={game.game_time}
+                        className='absolute top-4 right-4'
+                      />
 
+                      {/* Action buttons */}
+                      <div className='absolute top-2 left-2 flex gap-2'>
                         {currentUser && (
-                          <button
-                            onClick={e => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setSelectedGame(game);
-                              setSuggestionFormOpen(true);
-                            }}
-                            className='absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
-                            title='Suggest edit to this game'>
-                            <FiEdit3 />
-                          </button>
+                          <>
+                            <button
+                              onClick={e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setSelectedGame(game);
+                                setSuggestionFormOpen(true);
+                              }}
+                              className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
+                              title='Suggest edit to this game'>
+                              <FiEdit3 />
+                            </button>
+                            <button
+                              onClick={e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleFavorite(game.venue);
+                              }}
+                              className={`w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
+                                isVenueFavorite
+                                  ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
+                                  : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
+                              }`}
+                              title={
+                                isVenueFavorite
+                                  ? 'Remove from favorites'
+                                  : 'Add to favorites'
+                              }>
+                              <FiHeart
+                                className={
+                                  isVenueFavorite ? 'fill-current' : ''
+                                }
+                              />
+                            </button>
+                          </>
                         )}
-                        <h3 className='text-xl text-blue-500 font-bold mb-6'>
+                      </div>
+                      <div className='mb-6'>
+                        <h3 className='text-xl text-blue-500 font-bold mb-1'>
+                          {isVenueFavorite && (
+                            <span className='text-yellow-400 mr-2'>⭐</span>
+                          )}
                           {game.venue}
                         </h3>
-                        <div className='grid grid-cols-[auto,1fr] gap-4'>
-                          <div className='font-medium text-white text-left p-1'>
-                            Competition:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.competition}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Reg. Time:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.rego_time
-                              ? formatTime(game.rego_time)
-                              : 'TBC'}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Game Start:
-                          </div>
-                          <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
-                            {formatTime(game.game_time)}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Late Rego:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.late_rego
-                              ? formatTime(game.late_rego)
-                              : 'TBC'}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Buy-in:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.buy_in}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Re-Buy:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.re_buy || 'TBC'}
-                          </div>
-                          <div className='font-medium text-white text-left p-1'>
-                            Starting Stack:
-                          </div>
-                          <div className='text-center border border-gray-700 p-1'>
-                            {game.starting_stack || 'TBC'}
-                          </div>
-                          {game.day === getCurrentDay() && (
+                        <div className='flex justify-center items-center text-xs text-gray-400 min-h-[1.5rem]'>
+                          {lastPlayedText && (
                             <>
-                              <div className='font-medium text-white text-left p-1'>
-                                Status:
-                              </div>
-                              <div
-                                className={`text-center border border-gray-700 p-1 ${
-                                  gameStatus.status === 'Completed'
-                                    ? 'text-red-400'
-                                    : gameStatus.isStarted
-                                    ? 'text-green-500'
-                                    : 'text-yellow-300'
-                                }`}>
-                                {gameStatus.status}
-                              </div>
+                              <FiClock className='mr-1' />
+                              {lastPlayedText}
                             </>
                           )}
                         </div>
                       </div>
-                    </a>
-                  );
-                })
+                      <div className='grid grid-cols-[auto,1fr] gap-4'>
+                        <div className='font-medium text-white text-left p-1'>
+                          Competition:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.competition}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Reg. Time:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.rego_time ? formatTime(game.rego_time) : 'TBC'}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Game Start:
+                        </div>
+                        <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
+                          {formatTime(game.game_time)}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Late Rego:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.late_rego ? formatTime(game.late_rego) : 'TBC'}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Buy-in:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.buy_in}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Re-Buy:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.re_buy || 'TBC'}
+                        </div>
+                        <div className='font-medium text-white text-left p-1'>
+                          Starting Stack:
+                        </div>
+                        <div className='text-center border border-gray-700 p-1'>
+                          {game.starting_stack || 'TBC'}
+                        </div>
+                        {game.day === getCurrentDay() && (
+                          <>
+                            <div className='font-medium text-white text-left p-1'>
+                              Status:
+                            </div>
+                            <div
+                              className={`text-center border border-gray-700 p-1 ${
+                                gameStatus.status === 'Completed'
+                                  ? 'text-red-400'
+                                  : gameStatus.isStarted
+                                  ? 'text-green-500'
+                                  : 'text-yellow-300'
+                              }`}>
+                              {gameStatus.status}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                );
+              })
             ) : (
               <p className='text-center col-span-full text-xl text-gray-300'>
                 No games available for {activeDay}.

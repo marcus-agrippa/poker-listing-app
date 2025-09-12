@@ -5,6 +5,8 @@ import {
   FiSettings,
   FiTrendingUp,
   FiArrowRight,
+  FiHeart,
+  FiClipboard,
 } from 'react-icons/fi';
 import AuthModal from '../auth/AuthModal';
 
@@ -34,6 +36,17 @@ const SignupPromotionCard = () => {
       title: 'Suggest Game Updates',
       description:
         'Help keep game information accurate by reporting incorrect details',
+    },
+    {
+      icon: <FiHeart className='text-red-400' />,
+      title: 'Favourite Games',
+      description:
+        'Choose your favourite games and see when you last played there',
+    },
+    {
+      icon: <FiClipboard className='text-orange-400' />,
+      title: 'Track Game Notes',
+      description: 'Keep notes on specific games to remember important details',
     },
   ];
 

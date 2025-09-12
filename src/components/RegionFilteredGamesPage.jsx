@@ -4,6 +4,8 @@ import TabList from './TabList';
 import GameList from './GameList';
 import RegionSelector from './auth/RegionSelector';
 import SignupPromotionCard from './ui/SignupPromotionCard';
+import HeroSection from './ui/HeroSection';
+import SocialProofSection from './ui/SocialProofSection';
 
 const daysOfWeek = [
   'Sunday',
@@ -145,55 +147,68 @@ const RegionFilteredGamesPage = () => {
   }
 
   return (
-    <div className='mx-auto p-4 mt-8 max-w-screen-xl mb-8'>
-      {currentUser && selectedRegion && (
-        <div className='text-center mb-6'>
-          <div className='flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-2 sm:space-y-0 mb-4'>
-            <h1 className='text-xl sm:text-2xl font-bold text-white'>
-              {selectedRegion} Poker Games
-            </h1>
-            <button
-              onClick={() => setShowRegionSelector(true)}
-              className='btn btn-outline btn-sm text-white hover:btn-primary'>
-              Change Region
-            </button>
-          </div>
-        </div>
-      )}
-
-      <TabList
-        activeDay={activeDay}
-        setActiveDay={setActiveDay}
-        daysOfWeek={daysOfWeek}
-      />
-      <GameList
-        activeDay={activeDay}
-        dataUrl={currentConfig.dataUrl}
-        facebookPageUrls={currentConfig.facebookPageUrls}
-      />
-
-      {/* Show promotion card to logged-out users */}
+    <div>
+      {/* Hero Section - only show for logged-out users */}
       {!currentUser && (
-        <div className='mt-12'>
-          <SignupPromotionCard />
-        </div>
+        <HeroSection 
+          regionName={selectedRegion || getDomainBasedRegion()} 
+          currentUser={currentUser} 
+        />
       )}
 
-      {showRegionSelector && currentUser && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
-          <div className='relative max-w-2xl w-full'>
-            <button
-              onClick={() => setShowRegionSelector(false)}
-              className='absolute -top-2 -right-2 btn btn-circle btn-sm bg-gray-700 text-white border-none hover:bg-gray-600 z-10'>
-              ✕
-            </button>
-            <RegionSelector
-              onRegionChange={handleRegionChange}
-              currentRegion={selectedRegion}
-            />
+      <div className='mx-auto p-4 mt-8 max-w-screen-xl mb-8'>
+        {currentUser && selectedRegion && (
+          <div className='text-center mb-6'>
+            <div className='flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-2 sm:space-y-0 mb-4'>
+              <h1 className='text-xl sm:text-2xl font-bold text-white'>
+                {selectedRegion} Poker Games
+              </h1>
+              <button
+                onClick={() => setShowRegionSelector(true)}
+                className='btn btn-outline btn-sm text-white hover:btn-primary'>
+                Change Region
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        <TabList
+          activeDay={activeDay}
+          setActiveDay={setActiveDay}
+          daysOfWeek={daysOfWeek}
+        />
+        <GameList
+          activeDay={activeDay}
+          dataUrl={currentConfig.dataUrl}
+          facebookPageUrls={currentConfig.facebookPageUrls}
+        />
+
+        {/* Show promotion card to logged-out users */}
+        {!currentUser && (
+          <div className='mt-12'>
+            <SignupPromotionCard />
+          </div>
+        )}
+
+        {showRegionSelector && currentUser && (
+          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+            <div className='relative max-w-2xl w-full'>
+              <button
+                onClick={() => setShowRegionSelector(false)}
+                className='absolute -top-2 -right-2 btn btn-circle btn-sm bg-gray-700 text-white border-none hover:bg-gray-600 z-10'>
+                ✕
+              </button>
+              <RegionSelector
+                onRegionChange={handleRegionChange}
+                currentRegion={selectedRegion}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Social Proof Section - only show for logged-out users */}
+      {!currentUser && <SocialProofSection />}
     </div>
   );
 };

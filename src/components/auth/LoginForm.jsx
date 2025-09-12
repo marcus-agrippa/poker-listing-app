@@ -9,7 +9,7 @@ const LoginForm = ({ onClose }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
-  const { login, resetPassword } = useAuth();
+  const { login, resetPassword, reactivateAccount } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,8 +18,16 @@ const LoginForm = ({ onClose }) => {
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
-      toast.success('Welcome back! Successfully logged in.');
+      
+      // Try to reactivate account if it was deactivated
+      const result = await reactivateAccount(email, password);
+      
+      if (result.wasDeactivated) {
+        toast.success('Welcome back! Your account has been reactivated.');
+      } else {
+        toast.success('Welcome back! Successfully logged in.');
+      }
+      
       onClose();
       navigate('/dashboard');
     } catch (error) {

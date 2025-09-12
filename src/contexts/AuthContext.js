@@ -172,6 +172,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const deactivateAccount = async () => {
+    if (!currentUser) return;
+    
+    try {
+      // Mark account as deactivated in Firestore
+      await updateUserProfile({
+        isDeactivated: true,
+        deactivatedAt: new Date().toISOString(),
+        deactivationReason: 'User requested deactivation'
+      });
+      
+      // Sign out the user
+      await signOut(auth);
+      
+      return true;
+    } catch (error) {
+      console.error('Error deactivating account:', error);
+      throw error;
+    }
+  };
+
+  const reactivateAccount = async (email, password) => {
+    try {
+      // Sign in the user
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Check if account was deactivated
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        if (userData.isDeactivated) {
+          // Reactivate the account
+          await updateDoc(docRef, {
+            isDeactivated: false,
+            reactivatedAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+          
+          return { success: true, wasDeactivated: true };
+        }
+      }
+      
+      return { success: true, wasDeactivated: false };
+    } catch (error) {
+      console.error('Error reactivating account:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -190,7 +242,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     resetPassword,
     resendVerification,
-    updateUserProfile
+    updateUserProfile,
+    deactivateAccount,
+    reactivateAccount
   };
 
   return (

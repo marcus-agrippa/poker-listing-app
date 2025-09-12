@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GiPokerHand } from 'react-icons/gi';
-import { FiUser, FiLogOut } from 'react-icons/fi';
+import { FiUser, FiLogOut, FiSettings as FiSettingsIcon, FiShield } from 'react-icons/fi';
 import { hostname } from '../../hostname';
 import { useAuth } from '../../contexts/AuthContext';
 import AuthModal from '../auth/AuthModal';
@@ -67,13 +67,27 @@ const Header = () => {
                 title='Dashboard'>
                 <FiUser className='text-xl sm:text-xl' />
               </Link>
+              <Link
+                to='/profile'
+                className='text-white hover:text-gray-300 p-3 sm:p-2'
+                title='Profile'>
+                <FiSettingsIcon className='text-xl sm:text-xl' />
+              </Link>
               {isAdmin && (
-                <Link
-                  to='/admin/suggestions'
-                  className='text-orange-400 hover:text-orange-300 p-3 sm:p-2'
-                  title='Admin Panel'>
-                  <FiSettings className='text-xl sm:text-xl' />
-                </Link>
+                <>
+                  <Link
+                    to='/admin/suggestions'
+                    className='text-orange-400 hover:text-orange-300 p-3 sm:p-2'
+                    title='Game Suggestions'>
+                    <FiSettings className='text-xl sm:text-xl' />
+                  </Link>
+                  <Link
+                    to='/admin/operators'
+                    className='text-blue-400 hover:text-blue-300 p-3 sm:p-2'
+                    title='Operator Claims'>
+                    <FiShield className='text-xl sm:text-xl' />
+                  </Link>
+                </>
               )}
               <button
                 onClick={handleLogout}
@@ -83,11 +97,16 @@ const Header = () => {
               </button>
             </>
           ) : (
-            <button
-              onClick={() => setIsAuthModalOpen(true)}
-              className='btn btn-primary btn-sm'>
-              Login
-            </button>
+            <div className='flex items-center space-x-2'>
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className='btn btn-primary btn-sm hover:btn-primary-focus transition-all duration-200'>
+                Join Free
+              </button>
+              <div className='hidden sm:block text-xs text-green-400 font-semibold'>
+                Free to join!
+              </div>
+            </div>
           )}
         </div>
       </div>

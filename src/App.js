@@ -11,7 +11,9 @@ import ContactPage from './components/ContactPage';
 import TermsPage from './components/TermsPage';
 import PrivacyPage from './components/PrivacyPage';
 import Dashboard from './components/dashboard/Dashboard';
+import Profile from './components/profile/Profile';
 import SuggestionsView from './components/admin/SuggestionsView';
+import OperatorClaimsView from './components/admin/OperatorClaimsView';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -143,10 +145,26 @@ const AppContent = () => {
               }
             />
             <Route
+              path='/profile'
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path='/admin/suggestions'
               element={
                 <AdminRoute>
                   <SuggestionsView />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path='/admin/operators'
+              element={
+                <AdminRoute>
+                  <OperatorClaimsView />
                 </AdminRoute>
               }
             />

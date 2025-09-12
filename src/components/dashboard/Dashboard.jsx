@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { collection, query, where, orderBy, addDoc, getDocs, deleteDoc, doc, updateDoc, limit, startAfter } from 'firebase/firestore';
 import { db } from '../../firebase/config';
-import { FiPlus, FiTrash2, FiEdit, FiTrendingUp } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiEdit, FiTrendingUp, FiCalendar, FiDollarSign, FiTarget, FiAward } from 'react-icons/fi';
 import ResultForm from './ResultForm';
 import ResultsList from './ResultsList';
 import StatsCard from './StatsCard';
@@ -23,6 +23,9 @@ const Dashboard = () => {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [pageDocuments, setPageDocuments] = useState({}); // Store last doc for each page
   const resultsPerPage = 10;
+
+  const [timeFilter, setTimeFilter] = useState('all'); // all, week, month
+  const [outcomeFilter, setOutcomeFilter] = useState('all'); // all, wins, losses
 
   const fetchResults = async (page = 1, reset = false) => {
     if (!currentUser) return;
@@ -111,10 +114,65 @@ const Dashboard = () => {
     }
   };
 
+  // Filtered results based on filters
+  const filteredResults = useMemo(() => {
+    let filtered = [...results];
+    
+    // Time filter
+    if (timeFilter !== 'all') {
+      const now = new Date();
+      const startDate = new Date();
+      
+      if (timeFilter === 'week') {
+        startDate.setDate(now.getDate() - 7);
+      } else if (timeFilter === 'month') {
+        startDate.setMonth(now.getMonth() - 1);
+      }
+      
+      filtered = filtered.filter(result => new Date(result.date) >= startDate);
+    }
+    
+    // Outcome filter
+    if (outcomeFilter !== 'all') {
+      filtered = filtered.filter(result => {
+        const profit = (result.winnings || 0) - (result.buyIn || 0);
+        if (outcomeFilter === 'wins') return profit > 0;
+        if (outcomeFilter === 'losses') return profit <= 0;
+        return true;
+      });
+    }
+    
+    return filtered;
+  }, [results, timeFilter, outcomeFilter]);
+
+  // Calculate trend data for sparklines
+  const calculateTrendData = (results, metric) => {
+    const sortedResults = [...results].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const last7 = sortedResults.slice(-7);
+    
+    if (metric === 'profit') {
+      return last7.map(r => (r.winnings || 0) - (r.buyIn || 0));
+    } else if (metric === 'winnings') {
+      return last7.map(r => r.winnings || 0);
+    }
+    return [];
+  };
+
   // Memoized stats calculation - based on all results
   const stats = useMemo(() => {
     if (allResults.length === 0) {
-      return { totalGames: 0, totalWinnings: 0, totalProfit: 0, averagePosition: 'N/A', bestPosition: 'N/A' };
+      return { 
+        totalGames: 0, 
+        totalWinnings: 0, 
+        totalProfit: 0, 
+        averagePosition: 'N/A', 
+        bestPosition: 'N/A',
+        weekTrend: null,
+        profitTrendValue: null,
+        winningsTrendValue: null,
+        profitSparkline: [],
+        winningsSparkline: []
+      };
     }
 
     const totalGames = allResults.length;
@@ -134,12 +192,44 @@ const Dashboard = () => {
       bestPosition = Math.min(...resultsWithPosition.map(result => result.position));
     }
 
+    // Calculate week-over-week trend
+    const now = new Date();
+    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+    
+    const thisWeekResults = allResults.filter(r => new Date(r.date) >= oneWeekAgo);
+    const lastWeekResults = allResults.filter(r => 
+      new Date(r.date) >= twoWeeksAgo && new Date(r.date) < oneWeekAgo
+    );
+    
+    const thisWeekProfit = thisWeekResults.reduce((sum, r) => 
+      sum + ((r.winnings || 0) - (r.buyIn || 0)), 0
+    );
+    const lastWeekProfit = lastWeekResults.reduce((sum, r) => 
+      sum + ((r.winnings || 0) - (r.buyIn || 0)), 0
+    );
+    
+    let weekTrend = null;
+    let profitTrendValue = null;
+    if (lastWeekProfit !== 0) {
+      const change = ((thisWeekProfit - lastWeekProfit) / Math.abs(lastWeekProfit)) * 100;
+      weekTrend = thisWeekProfit > lastWeekProfit ? 'up' : thisWeekProfit < lastWeekProfit ? 'down' : 'neutral';
+      profitTrendValue = `${change > 0 ? '+' : ''}${change.toFixed(0)}%`;
+    } else if (thisWeekProfit > 0) {
+      weekTrend = 'up';
+      profitTrendValue = 'New';
+    }
+
     return {
       totalGames,
       totalWinnings,
       totalProfit,
       averagePosition,
-      bestPosition
+      bestPosition,
+      weekTrend,
+      profitTrendValue,
+      profitSparkline: calculateTrendData(allResults, 'profit'),
+      winningsSparkline: calculateTrendData(allResults, 'winnings')
     };
   }, [allResults]);
 
@@ -387,31 +477,90 @@ const Dashboard = () => {
         )}
       </div>
 
+      {/* Filter Controls */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <div className="flex items-center gap-2">
+          <FiCalendar className="text-gray-400" />
+          <span className="text-sm text-gray-400">Timeframe:</span>
+          <div className="join">
+            <button 
+              className={`join-item btn btn-sm ${timeFilter === 'all' ? 'btn-active' : ''}`}
+              onClick={() => setTimeFilter('all')}
+            >
+              All Time
+            </button>
+            <button 
+              className={`join-item btn btn-sm ${timeFilter === 'month' ? 'btn-active' : ''}`}
+              onClick={() => setTimeFilter('month')}
+            >
+              This Month
+            </button>
+            <button 
+              className={`join-item btn btn-sm ${timeFilter === 'week' ? 'btn-active' : ''}`}
+              onClick={() => setTimeFilter('week')}
+            >
+              This Week
+            </button>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <FiTarget className="text-gray-400" />
+          <span className="text-sm text-gray-400">Outcome:</span>
+          <div className="join">
+            <button 
+              className={`join-item btn btn-sm ${outcomeFilter === 'all' ? 'btn-active' : ''}`}
+              onClick={() => setOutcomeFilter('all')}
+            >
+              All
+            </button>
+            <button 
+              className={`join-item btn btn-sm ${outcomeFilter === 'wins' ? 'btn-active' : ''}`}
+              onClick={() => setOutcomeFilter('wins')}
+            >
+              Wins Only
+            </button>
+            <button 
+              className={`join-item btn btn-sm ${outcomeFilter === 'losses' ? 'btn-active' : ''}`}
+              onClick={() => setOutcomeFilter('losses')}
+            >
+              Losses Only
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
         <StatsCard
           title="Total Games"
           value={stats.totalGames}
-          icon={<FiTrendingUp />}
+          icon={<FiTarget />}
         />
         <StatsCard
           title="Total Winnings"
           value={`$${stats.totalWinnings.toFixed(2)}`}
-          icon={<FiTrendingUp />}
+          icon={<FiDollarSign />}
+          colorCode={true}
+          sparklineData={stats.winningsSparkline}
         />
         <StatsCard
           title="Total Profit"
           value={`$${stats.totalProfit.toFixed(2)}`}
           icon={<FiTrendingUp />}
+          trend={stats.weekTrend}
+          trendValue={stats.profitTrendValue}
+          colorCode={true}
+          sparklineData={stats.profitSparkline}
         />
         <StatsCard
           title="Average Position"
           value={stats.averagePosition}
-          icon={<FiTrendingUp />}
+          icon={<FiAward />}
         />
         <StatsCard
           title="Best Position"
           value={stats.bestPosition || 'N/A'}
-          icon={<FiTrendingUp />}
+          icon={<FiAward />}
         />
       </div>
 
@@ -428,11 +577,37 @@ const Dashboard = () => {
             </button>
           </div>
 
-          <ResultsList
-            results={results}
-            onDelete={handleDeleteConfirm}
-            onEdit={handleEditResult}
-          />
+          {filteredResults.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-6xl mb-4">🎲</div>
+              <h3 className="text-xl font-semibold text-white mb-2">No game results yet</h3>
+              <p className="text-gray-400 mb-6 max-w-md mx-auto">
+                Start tracking your poker sessions to see detailed statistics and improve your game!
+              </p>
+              <div className="bg-slate-700 rounded-lg p-4 max-w-md mx-auto mb-6">
+                <h4 className="text-sm font-semibold text-white mb-2">💡 Quick Tips:</h4>
+                <ul className="text-xs text-gray-300 space-y-1 text-left">
+                  <li>• Track every session, wins and losses</li>
+                  <li>• Note the venue and game type</li>
+                  <li>• Record buy-ins and final positions</li>
+                  <li>• Review your stats regularly to identify patterns</li>
+                </ul>
+              </div>
+              <button
+                onClick={() => setIsFormOpen(true)}
+                className="btn btn-primary"
+              >
+                <FiPlus className="mr-2" />
+                Add Your First Result
+              </button>
+            </div>
+          ) : (
+            <ResultsList
+              results={filteredResults}
+              onDelete={handleDeleteConfirm}
+              onEdit={handleEditResult}
+            />
+          )}
           
           {/* Pagination Controls */}
           {(currentPage > 1 || hasNextPage) && (

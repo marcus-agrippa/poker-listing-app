@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiPlay, FiUsers, FiTrendingUp, FiMapPin } from 'react-icons/fi';
+import { FiPlay, FiMapPin } from 'react-icons/fi';
 import { GiPokerHand, GiCardAceSpades, GiDiamonds } from 'react-icons/gi';
 import AuthModal from '../auth/AuthModal';
 
@@ -44,33 +44,6 @@ const HeroSection = ({ regionName, currentUser }) => {
               </span>{' '}
               in your area
             </p>
-
-            {/* Stats row */}
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-3 mb-6 max-w-2xl mx-auto'>
-              <div className='bg-slate-700 bg-opacity-50 rounded-lg p-3 backdrop-blur-sm border border-slate-600'>
-                <div className='flex items-center justify-center mb-1'>
-                  <FiUsers className='text-blue-400 text-xl mr-2' />
-                  <span className='text-xl font-bold text-white'>Many</span>
-                </div>
-                <p className='text-gray-300 text-sm'>Active Players</p>
-              </div>
-
-              <div className='bg-slate-700 bg-opacity-50 rounded-lg p-3 backdrop-blur-sm border border-slate-600'>
-                <div className='flex items-center justify-center mb-1'>
-                  <FiPlay className='text-green-400 text-xl mr-2' />
-                  <span className='text-xl font-bold text-white'>New</span>
-                </div>
-                <p className='text-gray-300 text-sm'>Games Added Frequently</p>
-              </div>
-
-              <div className='bg-slate-700 bg-opacity-50 rounded-lg p-3 backdrop-blur-sm border border-slate-600'>
-                <div className='flex items-center justify-center mb-1'>
-                  <FiTrendingUp className='text-purple-400 text-xl mr-2' />
-                  <span className='text-xl font-bold text-white'>Growing</span>
-                </div>
-                <p className='text-gray-300 text-sm'>Community</p>
-              </div>
-            </div>
 
             {/* CTA Button */}
             {!currentUser && (

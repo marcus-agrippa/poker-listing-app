@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DayNightTag from './ui/DayNightTag';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
@@ -147,51 +146,45 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
                         />
                       )}
-                      <DayNightTag
-                        gameTime={game.game_time}
-                        className='absolute top-4 right-4'
-                      />
 
                       {/* Action buttons */}
-                      <div className='absolute top-2 left-2 flex gap-2'>
-                        {currentUser && (
-                          <>
-                            <button
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setSelectedGame(game);
-                                setSuggestionFormOpen(true);
-                              }}
-                              className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
-                              title='Suggest edit to this game'>
-                              <FiEdit3 />
-                            </button>
-                            <button
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                toggleFavorite(game.venue);
-                              }}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
-                                isVenueFavorite
-                                  ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
-                                  : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
-                              }`}
-                              title={
-                                isVenueFavorite
-                                  ? 'Remove from favorites'
-                                  : 'Add to favorites'
-                              }>
-                              <FiHeart
-                                className={
-                                  isVenueFavorite ? 'fill-current' : ''
-                                }
-                              />
-                            </button>
-                          </>
-                        )}
-                      </div>
+                      {currentUser && (
+                        <>
+                          <button
+                            onClick={e => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedGame(game);
+                              setSuggestionFormOpen(true);
+                            }}
+                            className='absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
+                            title='Suggest edit to this game'>
+                            <FiEdit3 />
+                          </button>
+                          <button
+                            onClick={e => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleFavorite(game.venue);
+                            }}
+                            className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
+                              isVenueFavorite
+                                ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
+                                : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
+                            }`}
+                            title={
+                              isVenueFavorite
+                                ? 'Remove from favorites'
+                                : 'Add to favorites'
+                            }>
+                            <FiHeart
+                              className={
+                                isVenueFavorite ? 'fill-current' : ''
+                              }
+                            />
+                          </button>
+                        </>
+                      )}
                       <div className='mb-6'>
                         <h3 className='text-xl text-blue-500 font-bold mb-1'>
                           {isVenueFavorite && (
@@ -224,7 +217,12 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                         <div className='font-medium text-white text-left p-1'>
                           Game Start:
                         </div>
-                        <div className='text-center font-medium bg-gray-700 border border-gray-700 p-1'>
+                        <div
+                          className={`text-center font-medium border border-gray-700 p-1 ${
+                            parseInt(game.game_time.split(':')[0], 10) < 17
+                              ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-gray-900'
+                              : 'bg-gradient-to-r from-indigo-800 to-purple-900'
+                          }`}>
                           {formatTime(game.game_time)}
                         </div>
                         <div className='font-medium text-white text-left p-1'>

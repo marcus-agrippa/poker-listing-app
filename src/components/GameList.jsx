@@ -103,41 +103,41 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   };
 
   const SkeletonCard = () => (
-    <div className="bg-gray-800 rounded-xl shadow-2xl p-6 animate-pulse">
+    <div className='bg-gray-800 rounded-xl shadow-2xl p-6 animate-pulse'>
       {/* Logo skeleton */}
-      <div className="w-20 h-20 bg-gray-700 rounded mx-auto mb-6"></div>
+      <div className='w-20 h-20 bg-gray-700 rounded mx-auto mb-6'></div>
 
       {/* Venue name skeleton */}
-      <div className="mb-6">
-        <div className="h-6 bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
-        <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
+      <div className='mb-6'>
+        <div className='h-6 bg-gray-700 rounded w-3/4 mx-auto mb-2'></div>
+        <div className='h-4 bg-gray-700 rounded w-1/2 mx-auto'></div>
       </div>
 
       {/* Game details skeleton */}
-      <div className="space-y-4">
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-20"></div>
-          <div className="h-4 bg-gray-700 rounded w-full"></div>
+      <div className='space-y-4'>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-20'></div>
+          <div className='h-4 bg-gray-700 rounded w-full'></div>
         </div>
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-16"></div>
-          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-16'></div>
+          <div className='h-4 bg-gray-700 rounded w-full'></div>
         </div>
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-20"></div>
-          <div className="h-8 bg-gray-700 rounded w-full"></div>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-20'></div>
+          <div className='h-8 bg-gray-700 rounded w-full'></div>
         </div>
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-16"></div>
-          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-16'></div>
+          <div className='h-4 bg-gray-700 rounded w-full'></div>
         </div>
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-14"></div>
-          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-14'></div>
+          <div className='h-4 bg-gray-700 rounded w-full'></div>
         </div>
-        <div className="grid grid-cols-[auto,1fr] gap-4">
-          <div className="h-4 bg-gray-700 rounded w-18"></div>
-          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        <div className='grid grid-cols-[auto,1fr] gap-4'>
+          <div className='h-4 bg-gray-700 rounded w-18'></div>
+          <div className='h-4 bg-gray-700 rounded w-full'></div>
         </div>
       </div>
     </div>
@@ -221,9 +221,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                                 : 'Add to favorites'
                             }>
                             <FiHeart
-                              className={
-                                isVenueFavorite ? 'fill-current' : ''
-                              }
+                              className={isVenueFavorite ? 'fill-current' : ''}
                             />
                           </button>
                         </>
@@ -262,7 +260,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                         </div>
                         <div
                           className={`text-center font-medium border border-gray-700 p-1 ${
-                            parseInt(game.game_time.split(':')[0], 10) < 17
+                            parseInt(game.game_time.split(':')[0], 10) < 18
                               ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-gray-900'
                               : 'bg-gradient-to-r from-indigo-800 to-purple-900'
                           }`}>

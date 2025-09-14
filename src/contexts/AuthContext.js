@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         // Check localStorage cache first
         const cacheKey = `userProfile_${user.uid}`;
         let cachedData, cacheExpiry;
-        
+
         try {
           cachedData = localStorage.getItem(cacheKey);
           cacheExpiry = localStorage.getItem(`${cacheKey}_expiry`);
@@ -82,11 +82,17 @@ export const AuthProvider = ({ children }) => {
           cachedData = null;
           cacheExpiry = null;
         }
-        
+
         if (cachedData && cacheExpiry && new Date().getTime() < parseInt(cacheExpiry)) {
           try {
             // Use cached data
-            setUserProfile(JSON.parse(cachedData));
+            const parsedData = JSON.parse(cachedData);
+            setUserProfile(parsedData);
+
+            // Check if we need to sync email verification status
+            if (parsedData.emailVerified !== user.emailVerified) {
+              syncEmailVerificationStatus(user, parsedData);
+            }
             return;
           } catch (e) {
             console.warn('Failed to parse cached profile data:', e);
@@ -98,7 +104,7 @@ export const AuthProvider = ({ children }) => {
         const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         let profileData;
-        
+
         if (docSnap.exists()) {
           profileData = docSnap.data();
         } else {
@@ -107,13 +113,19 @@ export const AuthProvider = ({ children }) => {
             displayName: user.displayName,
             email: user.email,
             region: '',
+            emailVerified: user.emailVerified,
             createdAt: new Date().toISOString()
           };
           await setDoc(docRef, profileData);
         }
-        
+
+        // Sync email verification status if different
+        if (profileData.emailVerified !== user.emailVerified) {
+          profileData = await syncEmailVerificationStatus(user, profileData);
+        }
+
         setUserProfile(profileData);
-        
+
         // Cache for 24 hours
         try {
           localStorage.setItem(cacheKey, JSON.stringify(profileData));
@@ -139,6 +151,27 @@ export const AuthProvider = ({ children }) => {
         // Continue - logout still works
       }
     }
+  };
+
+  const syncEmailVerificationStatus = async (user, currentProfile) => {
+    if (user && currentProfile && currentProfile.emailVerified !== user.emailVerified) {
+      try {
+        const docRef = doc(db, 'users', user.uid);
+        const updatedData = {
+          emailVerified: user.emailVerified,
+          updatedAt: new Date().toISOString()
+        };
+
+        await updateDoc(docRef, updatedData);
+
+        // Return updated profile data
+        return { ...currentProfile, ...updatedData };
+      } catch (error) {
+        console.error('Error syncing email verification status:', error);
+        return currentProfile;
+      }
+    }
+    return currentProfile;
   };
 
   const updateUserProfile = async (updates) => {
@@ -233,6 +266,24 @@ export const AuthProvider = ({ children }) => {
 
     return unsubscribe;
   }, []);
+
+  // Auto-refresh email verification status when user returns to the app
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && currentUser && !currentUser.emailVerified) {
+        try {
+          // Reload user to get fresh email verification status
+          await currentUser.reload();
+          // This will trigger onAuthStateChanged if status changed
+        } catch (error) {
+          console.error('Error refreshing email verification status:', error);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [currentUser]);
 
   const value = {
     currentUser,

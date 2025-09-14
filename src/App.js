@@ -12,6 +12,7 @@ import TermsPage from './components/TermsPage';
 import PrivacyPage from './components/PrivacyPage';
 import Dashboard from './components/dashboard/Dashboard';
 import Profile from './components/profile/Profile';
+import Pokerdex from './components/pokerdex/Pokerdex';
 import SuggestionsView from './components/admin/SuggestionsView';
 import OperatorClaimsView from './components/admin/OperatorClaimsView';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -150,6 +151,14 @@ const AppContent = () => {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/pokerdex'
+              element={
+                <ProtectedRoute>
+                  <Pokerdex />
                 </ProtectedRoute>
               }
             />

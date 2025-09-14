@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       email,
       region,
       receiveNotifications,
+      isPremium: false,
       createdAt: new Date().toISOString(),
       emailVerified: false
     });
@@ -114,6 +115,7 @@ export const AuthProvider = ({ children }) => {
             email: user.email,
             region: '',
             emailVerified: user.emailVerified,
+            isPremium: false,
             createdAt: new Date().toISOString()
           };
           await setDoc(docRef, profileData);

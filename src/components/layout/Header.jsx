@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GiPokerHand } from 'react-icons/gi';
-import { FiUser, FiLogOut, FiSettings as FiSettingsIcon, FiShield, FiMenu, FiX } from 'react-icons/fi';
+import { FiUser, FiLogOut, FiSettings as FiSettingsIcon, FiShield, FiMenu, FiX, FiBook } from 'react-icons/fi';
 import { hostname } from '../../hostname';
 import { useAuth } from '../../contexts/AuthContext';
 import AuthModal from '../auth/AuthModal';
@@ -73,37 +73,49 @@ const Header = () => {
             <>
               <Link
                 to='/dashboard'
-                className='text-white hover:text-gray-300 p-2'
+                className='text-white hover:text-gray-300 p-2 flex items-center space-x-2'
                 title='Dashboard'>
                 <FiUser className='text-xl' />
+                <span>Dashboard</span>
+              </Link>
+              <Link
+                to='/pokerdex'
+                className='text-white hover:text-gray-300 p-2 flex items-center space-x-2'
+                title='Pokerdex'>
+                <FiBook className='text-xl' />
+                <span>Pokerdex</span>
               </Link>
               <Link
                 to='/profile'
-                className='text-white hover:text-gray-300 p-2'
+                className='text-white hover:text-gray-300 p-2 flex items-center space-x-2'
                 title='Profile'>
                 <FiSettingsIcon className='text-xl' />
+                <span>Profile</span>
               </Link>
               {isAdmin && (
                 <>
                   <Link
                     to='/admin/suggestions'
-                    className='text-orange-400 hover:text-orange-300 p-2'
+                    className='text-orange-400 hover:text-orange-300 p-2 flex items-center space-x-2'
                     title='Game Suggestions'>
                     <FiSettings className='text-xl' />
+                    <span>Suggestions</span>
                   </Link>
                   <Link
                     to='/admin/operators'
-                    className='text-blue-400 hover:text-blue-300 p-2'
+                    className='text-blue-400 hover:text-blue-300 p-2 flex items-center space-x-2'
                     title='Operator Claims'>
                     <FiShield className='text-xl' />
+                    <span>Operators</span>
                   </Link>
                 </>
               )}
               <button
                 onClick={handleLogout}
-                className='text-white hover:text-gray-300 p-2'
+                className='text-white hover:text-gray-300 p-2 flex items-center space-x-2'
                 title='Logout'>
                 <FiLogOut className='text-xl' />
+                <span>Logout</span>
               </button>
             </>
           ) : (
@@ -183,6 +195,13 @@ const Header = () => {
                 className='flex items-center text-white hover:text-blue-400 text-2xl font-semibold transition-colors transform hover:translate-x-2 duration-200'>
                 <FiUser className='text-3xl mr-4' />
                 Dashboard
+              </Link>
+              <Link
+                to='/pokerdex'
+                onClick={closeMobileMenu}
+                className='flex items-center text-white hover:text-blue-400 text-2xl font-semibold transition-colors transform hover:translate-x-2 duration-200'>
+                <FiBook className='text-3xl mr-4' />
+                Pokerdex
               </Link>
               <Link
                 to='/profile'

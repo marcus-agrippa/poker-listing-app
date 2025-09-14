@@ -41,10 +41,11 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     // Apply search filter
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(game =>
-        game.venue.toLowerCase().includes(searchLower) ||
-        game.competition.toLowerCase().includes(searchLower) ||
-        (game.location && game.location.toLowerCase().includes(searchLower))
+      filtered = filtered.filter(
+        game =>
+          game.venue.toLowerCase().includes(searchLower) ||
+          game.competition.toLowerCase().includes(searchLower) ||
+          (game.location && game.location.toLowerCase().includes(searchLower))
       );
     }
 
@@ -168,24 +169,24 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
             <FiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg' />
             <input
               type='text'
-              placeholder='Search by venue, competition, or location...'
+              placeholder='Search by venue or competition...'
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className='w-full pl-10 pr-10 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors'
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
                 className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
-                title='Clear search'
-              >
+                title='Clear search'>
                 <FiX className='text-lg' />
               </button>
             )}
           </div>
           {searchTerm && (
             <div className='text-center mt-2 text-sm text-gray-400'>
-              {filteredGames.length} game{filteredGames.length !== 1 ? 's' : ''} found
+              {filteredGames.length} game{filteredGames.length !== 1 ? 's' : ''}{' '}
+              found
             </div>
           )}
         </div>
@@ -359,11 +360,12 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
               <div className='text-center col-span-full text-xl text-gray-300'>
                 {searchTerm ? (
                   <div>
-                    <p className='mb-2'>No games found matching "{searchTerm}"</p>
+                    <p className='mb-2'>
+                      No games found matching "{searchTerm}"
+                    </p>
                     <button
                       onClick={() => setSearchTerm('')}
-                      className='text-blue-400 hover:text-blue-300 underline text-base'
-                    >
+                      className='text-blue-400 hover:text-blue-300 underline text-base'>
                       Clear search to see all {activeDay} games
                     </button>
                   </div>

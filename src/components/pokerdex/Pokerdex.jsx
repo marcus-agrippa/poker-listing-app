@@ -21,8 +21,10 @@ import {
   FiUser,
   FiCalendar,
   FiMapPin,
+  FiEdit,
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import DeleteConfirmModal from '../ui/DeleteConfirmModal';
 
 const MAX_FREE_NOTES = 5;
 
@@ -36,6 +38,9 @@ const Pokerdex = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
   const [regionGames, setRegionGames] = useState([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -171,16 +176,26 @@ const Pokerdex = () => {
     setIsFormOpen(true);
   };
 
-  const handleDelete = async noteId => {
-    if (!window.confirm('Are you sure you want to delete this note?')) return;
+  const handleDeleteConfirm = note => {
+    setNoteToDelete(note);
+    setDeleteModalOpen(true);
+  };
 
+  const handleDelete = async () => {
+    if (!noteToDelete) return;
+
+    setDeleteLoading(true);
     try {
-      await deleteDoc(doc(db, 'pokerdex', noteId));
+      await deleteDoc(doc(db, 'pokerdex', noteToDelete.id));
       toast.success('Note deleted successfully!');
       fetchNotes();
     } catch (error) {
       console.error('Error deleting note:', error);
       toast.error('Failed to delete note');
+    } finally {
+      setDeleteLoading(false);
+      setDeleteModalOpen(false);
+      setNoteToDelete(null);
     }
   };
 
@@ -432,16 +447,19 @@ const Pokerdex = () => {
                       {getCategoryLabel(note.category)}
                     </span>
                   </div>
-                  <div className='flex space-x-2'>
+                  {/* Desktop buttons - hidden on mobile */}
+                  <div className='hidden md:flex space-x-2'>
                     <button
                       onClick={() => handleEdit(note)}
-                      className='text-gray-400 hover:text-blue-400 transition-colors'>
-                      <FiEdit3 className='w-4 h-4' />
+                      className='btn btn-ghost btn-sm text-gray-400 hover:text-white'
+                      title='Edit note'>
+                      <FiEdit />
                     </button>
                     <button
-                      onClick={() => handleDelete(note.id)}
-                      className='text-gray-400 hover:text-red-400 transition-colors'>
-                      <FiTrash2 className='w-4 h-4' />
+                      onClick={() => handleDeleteConfirm(note)}
+                      className='btn btn-ghost btn-sm text-red-400 hover:text-red-300'
+                      title='Delete note'>
+                      <FiTrash2 />
                     </button>
                   </div>
                 </div>
@@ -483,7 +501,7 @@ const Pokerdex = () => {
                 )}
 
                 {note.tags && note.tags.length > 0 && (
-                  <div className='flex flex-wrap gap-1 mt-3'>
+                  <div className='flex flex-wrap gap-1 mt-3 justify-center'>
                     {note.tags.map((tag, index) => (
                       <span
                         key={index}
@@ -493,6 +511,24 @@ const Pokerdex = () => {
                     ))}
                   </div>
                 )}
+
+                {/* Mobile buttons - shown only on mobile */}
+                <div className='grid grid-cols-2 gap-2 mt-4 md:hidden'>
+                  <button
+                    onClick={() => handleEdit(note)}
+                    className='btn btn-sm btn-outline text-gray-400 hover:text-white hover:border-white'
+                    title='Edit note'>
+                    <FiEdit className='mr-1' />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteConfirm(note)}
+                    className='btn btn-sm btn-outline btn-error text-red-400 hover:text-white'
+                    title='Delete note'>
+                    <FiTrash2 className='mr-1' />
+                    Delete
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -676,6 +712,18 @@ const Pokerdex = () => {
           </div>
         </div>
       )}
+
+      <DeleteConfirmModal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setNoteToDelete(null);
+        }}
+        onConfirm={handleDelete}
+        loading={deleteLoading}
+        title="Delete Note"
+        message={`Are you sure you want to delete "${noteToDelete?.title}"? This action cannot be undone.`}
+      />
     </div>
   );
 };

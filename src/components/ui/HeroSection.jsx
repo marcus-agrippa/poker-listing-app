@@ -37,8 +37,11 @@ const HeroSection = ({ regionName, currentUser }) => {
             </h1>
 
             <p className='text-base md:text-lg text-gray-300 mb-5 max-w-3xl mx-auto leading-relaxed'>
-              Track your winnings across competitions, discover live games, and
-              join{' '}
+              Track your winnings, build your{' '}
+              <span className='text-purple-400 font-semibold'>
+                ⚡ Pokerdex
+              </span>{' '}
+              of player insights, discover live games, and join{' '}
               <span className='text-green-400 font-semibold'>
                 other players
               </span>{' '}

@@ -7,6 +7,7 @@ import {
   FiArrowRight,
   FiHeart,
   FiClipboard,
+  FiUsers,
 } from 'react-icons/fi';
 import AuthModal from '../auth/AuthModal';
 
@@ -45,8 +46,13 @@ const SignupPromotionCard = () => {
     },
     {
       icon: <FiClipboard className='text-orange-400' />,
-      title: 'Track Game Notes',
-      description: 'Keep notes on specific games to remember important details',
+      title: 'Pokerdex Notes',
+      description: 'Track player observations, strategies, and venue insights like a pro',
+    },
+    {
+      icon: <FiUsers className='text-cyan-400' />,
+      title: 'Player Intelligence',
+      description: 'Build a database of player tendencies and game dynamics for every venue',
     },
   ];
 

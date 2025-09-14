@@ -611,6 +611,7 @@ const Dashboard = () => {
                   <li>• Track every session, wins and losses</li>
                   <li>• Note the venue and game type</li>
                   <li>• Record buy-ins and final positions</li>
+                  <li>• Use the ⚡ Pokerdex to track player observations</li>
                   <li>• Review your stats regularly to identify patterns</li>
                 </ul>
               </div>

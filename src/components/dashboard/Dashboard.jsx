@@ -435,30 +435,51 @@ const Dashboard = () => {
 
   if (!currentUser.emailVerified) {
     return (
-      <div className="text-center text-white p-8 max-w-md mx-auto">
+      <div className="text-center text-white p-8 max-w-2xl mx-auto">
         <div className="card bg-slate-800 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title justify-center mb-4">Email Verification Required</h2>
-            <p className="mb-4">
-              Please verify your email address to access your dashboard. 
-              Check your inbox for a verification email from us.
+            <div className="text-6xl mb-4">📧</div>
+            <h2 className="card-title justify-center mb-4 text-2xl">Almost There!</h2>
+            <p className="mb-6 text-lg leading-relaxed">
+              We sent a verification email to <strong className="text-blue-400">{currentUser.email}</strong>
             </p>
-            <p className="text-sm text-gray-400 mb-4">
-              Email: {currentUser.email}
-            </p>
-            <div className="flex flex-col gap-2">
-              <button 
-                onClick={handleRefreshVerification} 
-                className="btn btn-primary"
+
+            <div className="bg-slate-700 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold mb-3 text-yellow-400">📍 Can't find the email?</h3>
+              <div className="text-sm space-y-2 text-left">
+                <div>• Check your <strong>spam/junk/promotions</strong> folder</div>
+                <div>• Look for an email from <strong>noreply@{window.location.hostname}</strong></div>
+                <div>• Email might take a few minutes to arrive</div>
+                <div>• Click the link in the email to verify your account</div>
+              </div>
+            </div>
+
+            <div className="bg-green-900/30 border border-green-600/50 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold mb-2 text-green-400">✨ What you'll unlock:</h3>
+              <div className="text-sm space-y-1 text-left">
+                <div>• Track your poker game results and winnings</div>
+                <div>• Mark favorite venues and get quick access</div>
+                <div>• See when you last played at each venue</div>
+                <div>• Advanced statistics and performance analytics</div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleRefreshVerification}
+                className="btn btn-primary btn-lg"
               >
-                I've verified my email - Refresh
+                ✅ I've verified - Take me to dashboard
               </button>
-              <button 
+              <button
                 onClick={handleResendVerification}
-                className="btn btn-outline btn-sm"
+                className="btn btn-outline"
               >
-                Resend verification email
+                📨 Resend verification email
               </button>
+              <p className="text-xs text-gray-500 mt-2">
+                Verification happens automatically - no need to refresh once you click the email link!
+              </p>
             </div>
           </div>
         </div>

@@ -43,7 +43,9 @@ const SignupForm = ({ onClose }) => {
       setError('');
       setLoading(true);
       await signup(email, password, displayName, region, receiveNotifications);
-      toast.success(`Account created! Please check your email and verify your address before logging in.`);
+      toast.success(`🎉 Account created! Check your email (including spam/promotion folders) for a verification link. You can start using the app right away!`, {
+        duration: 8000
+      });
       onClose();
       // Don't navigate to dashboard - user needs to verify email first
     } catch (error) {

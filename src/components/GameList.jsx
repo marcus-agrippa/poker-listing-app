@@ -102,6 +102,47 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     'APS Newcastle': '/aps-newcastle-logo.png',
   };
 
+  const SkeletonCard = () => (
+    <div className="bg-gray-800 rounded-xl shadow-2xl p-6 animate-pulse">
+      {/* Logo skeleton */}
+      <div className="w-20 h-20 bg-gray-700 rounded mx-auto mb-6"></div>
+
+      {/* Venue name skeleton */}
+      <div className="mb-6">
+        <div className="h-6 bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
+        <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
+      </div>
+
+      {/* Game details skeleton */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-20"></div>
+          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        </div>
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-16"></div>
+          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        </div>
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-20"></div>
+          <div className="h-8 bg-gray-700 rounded w-full"></div>
+        </div>
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-16"></div>
+          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        </div>
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-14"></div>
+          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        </div>
+        <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="h-4 bg-gray-700 rounded w-18"></div>
+          <div className="h-4 bg-gray-700 rounded w-full"></div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <h2 className='text-4xl font-bold mb-6 mt-8 text-center text-gray-100'>
@@ -109,8 +150,10 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
       </h2>
       <div className='container mx-auto px-4'>
         {isLoading ? (
-          <div className='flex justify-center items-center'>
-            <BeatLoader color='#ffffff' />
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {[...Array(6)].map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
           </div>
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>

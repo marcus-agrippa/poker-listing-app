@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
-import { FiEdit3, FiHeart, FiClock } from 'react-icons/fi';
+import { FiEdit3, FiHeart, FiClock, FiSearch, FiX } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
@@ -18,6 +18,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [suggestionFormOpen, setSuggestionFormOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,11 +36,22 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   }, [dataUrl]);
 
   useEffect(() => {
-    const filtered = games.filter(game => game.day === activeDay);
+    let filtered = games.filter(game => game.day === activeDay);
+
+    // Apply search filter
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(game =>
+        game.venue.toLowerCase().includes(searchLower) ||
+        game.competition.toLowerCase().includes(searchLower) ||
+        (game.location && game.location.toLowerCase().includes(searchLower))
+      );
+    }
+
     // Sort by favorites first, then by time
     const sorted = sortGamesByFavorites(filtered);
     setFilteredGames(sorted);
-  }, [games, activeDay, sortGamesByFavorites]);
+  }, [games, activeDay, searchTerm, sortGamesByFavorites]);
 
   const formatTime = time24 => {
     const [hours, minutes] = time24.split(':');
@@ -148,6 +160,37 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
       <h2 className='text-4xl font-bold mb-6 mt-8 text-center text-gray-100'>
         {activeDay} Games
       </h2>
+
+      {/* Search Bar */}
+      <div className='container mx-auto px-4 mb-6'>
+        <div className='max-w-md mx-auto'>
+          <div className='relative'>
+            <FiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg' />
+            <input
+              type='text'
+              placeholder='Search by venue, competition, or location...'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className='w-full pl-10 pr-10 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors'
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
+                title='Clear search'
+              >
+                <FiX className='text-lg' />
+              </button>
+            )}
+          </div>
+          {searchTerm && (
+            <div className='text-center mt-2 text-sm text-gray-400'>
+              {filteredGames.length} game{filteredGames.length !== 1 ? 's' : ''} found
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className='container mx-auto px-4'>
         {isLoading ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -313,9 +356,21 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                 );
               })
             ) : (
-              <p className='text-center col-span-full text-xl text-gray-300'>
-                No games available for {activeDay}.
-              </p>
+              <div className='text-center col-span-full text-xl text-gray-300'>
+                {searchTerm ? (
+                  <div>
+                    <p className='mb-2'>No games found matching "{searchTerm}"</p>
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className='text-blue-400 hover:text-blue-300 underline text-base'
+                    >
+                      Clear search to see all {activeDay} games
+                    </button>
+                  </div>
+                ) : (
+                  <p>No games available for {activeDay}.</p>
+                )}
+              </div>
             )}
           </div>
         )}

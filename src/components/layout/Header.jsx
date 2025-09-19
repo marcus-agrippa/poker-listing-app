@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GiPokerHand } from 'react-icons/gi';
-import { FiUser, FiLogOut, FiSettings as FiSettingsIcon, FiShield, FiMenu, FiX, FiBook } from 'react-icons/fi';
+import {
+  FiUser,
+  FiLogOut,
+  FiSettings as FiSettingsIcon,
+  FiShield,
+  FiMenu,
+  FiX,
+  FiBook,
+} from 'react-icons/fi';
 import { hostname } from '../../hostname';
 import { useAuth } from '../../contexts/AuthContext';
 import AuthModal from '../auth/AuthModal';
@@ -40,6 +48,8 @@ const Header = () => {
       ? 'POKER GEELONG'
       : hostname === 'pokergoldcoast.com'
       ? 'POKER GOLD COAST'
+      : hostname === 'pokerbrisbane.com'
+      ? 'POKER BRISBANE'
       : 'POKER';
 
   const handleLogout = async () => {
@@ -64,7 +74,12 @@ const Header = () => {
         <Link to='/' className='text-lg sm:text-xl text-white font-bold py-4'>
           <GiPokerHand className='text-2xl sm:text-3xl mr-2 sm:mr-3' />
           <span className='hidden xs:inline'>{title}</span>
-          <span className='xs:hidden'>{title.split(' ').map(word => word.charAt(0)).join('')}</span>
+          <span className='xs:hidden'>
+            {title
+              .split(' ')
+              .map(word => word.charAt(0))
+              .join('')}
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -151,11 +166,11 @@ const Header = () => {
         </div>
       </div>
 
-
       {/* Mobile Full Screen Menu */}
-      <div className={`fixed top-0 right-0 h-full w-full bg-slate-900 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
+      <div
+        className={`fixed top-0 right-0 h-full w-full bg-slate-900 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}>
         <div className='flex flex-col h-full'>
           {/* Mobile Menu Header */}
           <div className='flex justify-between items-center p-4 border-b border-slate-700'>
@@ -178,10 +193,9 @@ const Header = () => {
                 Did You Know?
               </h4>
               <p className='text-gray-300 text-xs leading-relaxed'>
-                {isAdmin ?
-                  'As an admin, you can review game suggestions and operator claims to keep the community updated!' :
-                  'You can suggest game edits by clicking the blue edit button on any game card, or claim ownership of your venue in your profile!'
-                }
+                {isAdmin
+                  ? 'As an admin, you can review game suggestions and operator claims to keep the community updated!'
+                  : 'You can suggest game edits by clicking the blue edit button on any game card, or claim ownership of your venue in your profile!'}
               </p>
             </div>
           </div>

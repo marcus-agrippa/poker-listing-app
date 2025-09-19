@@ -105,6 +105,7 @@ const Pokerdex = () => {
         Perth: '/data-perth.json',
         Geelong: '/data-geelong.json',
         'Gold Coast': '/data-gold-coast.json',
+        Brisbane: '/data-brisbane.json',
       };
 
       const dataUrl = regionDataMap[userProfile.region] || '/data.json';
@@ -217,10 +218,14 @@ const Pokerdex = () => {
   const uniqueVenues = [...new Set(regionGames.map(game => game.venue))].sort();
 
   // Get unique games from notes (using title as game name)
-  const uniqueGames = [...new Set(notes.map(note => note.title))].filter(title => title).sort();
+  const uniqueGames = [...new Set(notes.map(note => note.title))]
+    .filter(title => title)
+    .sort();
 
   // Get unique venues from notes
-  const uniqueVenuesFromNotes = [...new Set(notes.map(note => note.venue))].filter(venue => venue).sort();
+  const uniqueVenuesFromNotes = [...new Set(notes.map(note => note.venue))]
+    .filter(venue => venue)
+    .sort();
 
   const filteredNotes = notes.filter(note => {
     // Venue filter
@@ -494,9 +499,7 @@ const Pokerdex = () => {
                     <h4 className='text-sm font-medium text-gray-300 mb-1'>
                       Game Notes:
                     </h4>
-                    <p className='text-sm text-gray-400'>
-                      {note.gameNotes}
-                    </p>
+                    <p className='text-sm text-gray-400'>{note.gameNotes}</p>
                   </div>
                 )}
 
@@ -721,7 +724,7 @@ const Pokerdex = () => {
         }}
         onConfirm={handleDelete}
         loading={deleteLoading}
-        title="Delete Note"
+        title='Delete Note'
         message={`Are you sure you want to delete "${noteToDelete?.title}"? This action cannot be undone.`}
       />
     </div>

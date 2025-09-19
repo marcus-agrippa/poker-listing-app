@@ -87,6 +87,15 @@ const RegionFilteredGamesPage = () => {
         'APL Poker': 'https://www.facebook.com/APLGeelong/',
       },
     },
+    Brisbane: {
+      dataUrl: '/data-brisbane.json',
+      facebookPageUrls: {
+        'APL Poker': 'https://www.facebook.com/APLBrisbane/',
+        'WPT League': 'https://au.wptleague.com/live.aspx?G,1,1,9,0',
+        'National Poker League':
+          'https://www.facebook.com/people/NPL-Brisbane-South-Gold-Coast/100066979489839/',
+      },
+    },
     'Gold Coast': {
       dataUrl: '/data-gold-coast.json',
       facebookPageUrls: {
@@ -121,6 +130,7 @@ const RegionFilteredGamesPage = () => {
     if (hostname === 'pokerperth.com') return 'Perth';
     if (hostname === 'pokergeelong.com') return 'Geelong';
     if (hostname === 'pokergoldcoast.com') return 'Gold Coast';
+    if (hostname === 'pokerbrisbane.com') return 'Brisbane';
     return 'Central Coast'; // default
   };
 
@@ -150,9 +160,9 @@ const RegionFilteredGamesPage = () => {
     <div>
       {/* Hero Section - only show for logged-out users */}
       {!currentUser && (
-        <HeroSection 
-          regionName={selectedRegion || getDomainBasedRegion()} 
-          currentUser={currentUser} 
+        <HeroSection
+          regionName={selectedRegion || getDomainBasedRegion()}
+          currentUser={currentUser}
         />
       )}
 

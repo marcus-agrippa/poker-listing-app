@@ -32,8 +32,9 @@ const AppContent = () => {
   const isSunshineCoast = hostname === 'pokersunshinecoast.com';
   const isPerth = hostname === 'pokerperth.com';
   const isGeelong = hostname === 'pokergeelong.com';
+  const isBrisbane = hostname === 'pokerbrisbane.com';
   const isGoldCoast = hostname === 'pokergoldcoast.com';
-  
+
   const dataUrl =
     hostname === 'pokercentralcoast.com'
       ? '/data.json'
@@ -51,6 +52,8 @@ const AppContent = () => {
       ? '/data-perth.json'
       : hostname === 'pokergeelong.com'
       ? '/data-geelong.json'
+      : hostname === 'pokerbrisbane.com'
+      ? '/data-brisbane.json'
       : hostname === 'pokergoldcoast.com'
       ? '/data-gold-coast.json'
       : '/data.json';
@@ -71,6 +74,8 @@ const AppContent = () => {
     ? 'G-8SH60W18PM'
     : isGeelong
     ? 'G-E7FSLHCS2M'
+    : isBrisbane
+    ? 'G-P1BXT9TMLY'
     : isGoldCoast
     ? 'G-G23T3GJ7HV'
     : 'G-PXFQ31JSSG';
@@ -85,127 +90,131 @@ const AppContent = () => {
       <div className='App flex flex-col min-h-screen'>
         <Helmet>
           <title>
-          {isCentralCoast
-            ? 'Poker Central Coast'
-            : isNewcastle
-            ? 'Poker Newcastle'
-            : isBallarat
-            ? 'Poker Ballarat'
-            : isWollongong
-            ? 'Poker Wollongong'
-            : isTownsville
-            ? 'Poker Townsville'
-            : isSunshineCoast
-            ? 'Poker Sunshine Coast'
-            : isPerth
-            ? 'Poker Perth'
-            : isGeelong
-            ? 'Poker Geelong'
-            : isGoldCoast
-            ? 'Poker Gold Coast'
-            : 'Poker Game Information'}
-        </title>
-        <meta
-          name='description'
-          content={
-            isCentralCoast
-              ? 'Discover and join poker games on the Central Coast. A central hub for all poker enthusiasts.'
+            {isCentralCoast
+              ? 'Poker Central Coast'
               : isNewcastle
-              ? 'Discover and join poker games in Newcastle. A central hub for all poker enthusiasts.'
+              ? 'Poker Newcastle'
               : isBallarat
-              ? 'Discover and join poker games in Ballarat. A central hub for all poker enthusiasts.'
+              ? 'Poker Ballarat'
               : isWollongong
-              ? 'Discover and join poker games in Wollongong. A central hub for all poker enthusiasts.'
+              ? 'Poker Wollongong'
               : isTownsville
-              ? 'Discover and join poker games in Townsville. A central hub for all poker enthusiasts.'
+              ? 'Poker Townsville'
               : isSunshineCoast
-              ? 'Discover and join poker games in Sunshine Coast. A central hub for all poker enthusiasts.'
+              ? 'Poker Sunshine Coast'
               : isPerth
-              ? 'Discover and join poker games in Perth. A central hub for all poker enthusiasts.'
+              ? 'Poker Perth'
               : isGeelong
-              ? 'Discover and join poker games in Geelong. A central hub for all poker enthusiasts.'
+              ? 'Poker Geelong'
+                ? isBrisbane
+                : 'Poker Brisbane'
               : isGoldCoast
-              ? 'Discover and join poker games in Gold Coast. A central hub for all poker enthusiasts.'
-              : 'Poker game information'
-          }
+              ? 'Poker Gold Coast'
+              : 'Poker Game Information'}
+          </title>
+          <meta
+            name='description'
+            content={
+              isCentralCoast
+                ? 'Discover and join poker games on the Central Coast. A central hub for all poker enthusiasts.'
+                : isNewcastle
+                ? 'Discover and join poker games in Newcastle. A central hub for all poker enthusiasts.'
+                : isBallarat
+                ? 'Discover and join poker games in Ballarat. A central hub for all poker enthusiasts.'
+                : isWollongong
+                ? 'Discover and join poker games in Wollongong. A central hub for all poker enthusiasts.'
+                : isTownsville
+                ? 'Discover and join poker games in Townsville. A central hub for all poker enthusiasts.'
+                : isSunshineCoast
+                ? 'Discover and join poker games in Sunshine Coast. A central hub for all poker enthusiasts.'
+                : isPerth
+                ? 'Discover and join poker games in Perth. A central hub for all poker enthusiasts.'
+                : isGeelong
+                ? 'Discover and join poker games in Geelong. A central hub for all poker enthusiasts.'
+                : isBrisbane
+                ? 'Discover and join poker games in Brisbane. A central hub for all poker enthusiasts.'
+                : isGoldCoast
+                ? 'Discover and join poker games in Gold Coast. A central hub for all poker enthusiasts.'
+                : 'Poker game information'
+            }
+          />
+        </Helmet>
+        <Router>
+          <Header />
+          <main className='flex-grow bg-gray-900'>
+            <Routes>
+              <Route path='/' element={<RegionFilteredGamesPage />} />
+              <Route path='/contact' element={<ContactPage />} />
+              <Route path='/terms' element={<TermsPage />} />
+              <Route path='/privacy' element={<PrivacyPage />} />
+              <Route
+                path='/dashboard'
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/profile'
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/pokerdex'
+                element={
+                  <ProtectedRoute>
+                    <Pokerdex />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/admin/suggestions'
+                element={
+                  <AdminRoute>
+                    <SuggestionsView />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path='/admin/operators'
+                element={
+                  <AdminRoute>
+                    <OperatorClaimsView />
+                  </AdminRoute>
+                }
+              />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+        <Toaster
+          position='top-right'
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#374151',
+              color: '#ffffff',
+              border: '1px solid #4B5563',
+            },
+            success: {
+              iconTheme: {
+                primary: '#10B981',
+                secondary: '#ffffff',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#EF4444',
+                secondary: '#ffffff',
+              },
+            },
+          }}
         />
-      </Helmet>
-      <Router>
-        <Header />
-        <main className='flex-grow bg-gray-900'>
-          <Routes>
-            <Route path='/' element={<RegionFilteredGamesPage />} />
-            <Route path='/contact' element={<ContactPage />} />
-            <Route path='/terms' element={<TermsPage />} />
-            <Route path='/privacy' element={<PrivacyPage />} />
-            <Route
-              path='/dashboard'
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/profile'
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/pokerdex'
-              element={
-                <ProtectedRoute>
-                  <Pokerdex />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/admin/suggestions'
-              element={
-                <AdminRoute>
-                  <SuggestionsView />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path='/admin/operators'
-              element={
-                <AdminRoute>
-                  <OperatorClaimsView />
-                </AdminRoute>
-              }
-            />
-          </Routes>
-        </main>
-        <Footer />
-      </Router>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#374151',
-            color: '#ffffff',
-            border: '1px solid #4B5563',
-          },
-          success: {
-            iconTheme: {
-              primary: '#10B981',
-              secondary: '#ffffff',
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: '#EF4444',
-              secondary: '#ffffff',
-            },
-          },
-        }}
-      />
-    </div>
+      </div>
     </HelmetProvider>
   );
 };

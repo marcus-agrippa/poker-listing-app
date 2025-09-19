@@ -9,3 +9,4 @@ export const isSunshineCoast = hostname === 'pokersunshinecoast.com';
 export const isPerth = hostname === 'pokerperth.com';
 export const isGeelong = hostname === 'pokergeelong.com';
 export const isGoldCoast = hostname === 'pokergoldcoast.com';
+export const isBrisbane = hostname === 'pokerbrisbane.com';

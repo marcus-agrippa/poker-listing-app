@@ -19,14 +19,15 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
 
   const regionConfig = {
     'Central Coast': '/data.json',
-    'Newcastle': '/data-newcastle.json',
-    'Ballarat': '/data-ballarat.json',
-    'Wollongong': '/data-wollongong.json',
-    'Townsville': '/data-townsville.json',
+    Newcastle: '/data-newcastle.json',
+    Ballarat: '/data-ballarat.json',
+    Wollongong: '/data-wollongong.json',
+    Townsville: '/data-townsville.json',
     'Sunshine Coast': '/data-sunshine-coast.json',
-    'Perth': '/data-perth.json',
-    'Geelong': '/data-geelong.json',
-    'Gold Coast': '/data-gold-coast.json'
+    Perth: '/data-perth.json',
+    Geelong: '/data-geelong.json',
+    'Gold Coast': '/data-gold-coast.json',
+    Brisbane: '/data-brisbane.json',
   };
 
   useEffect(() => {
@@ -71,9 +72,9 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
     }
   }, [editingResult]);
 
-  const handleGameSelection = (gameId) => {
+  const handleGameSelection = gameId => {
     setSelectedGame(gameId);
-    
+
     if (gameId === 'custom') {
       setShowCustomFields(true);
       setGameName('');
@@ -94,16 +95,18 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
     const parts = gameId.split('-');
     const index = parseInt(parts[parts.length - 1]);
     const game = availableGames[index];
-    
+
     if (game) {
       setGameName(`${game.competition} - ${game.day}`);
       setVenue(game.venue);
-      setBuyIn(game.buy_in ? game.buy_in.replace('$', '').replace(',', '') : '');
+      setBuyIn(
+        game.buy_in ? game.buy_in.replace('$', '').replace(',', '') : ''
+      );
       setShowCustomFields(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
 
@@ -122,7 +125,7 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
       totalPlayers: totalPlayers ? parseInt(totalPlayers) : null,
       buyIn: Math.max(0, parseFloat(buyIn) || 0),
       winnings: Math.max(0, parseFloat(winnings) || 0),
-      comments
+      comments,
     };
 
     try {
@@ -141,188 +144,220 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="card w-full max-w-lg bg-slate-800 shadow-xl max-h-[90vh] overflow-y-auto">
-        <div className="card-body">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="card-title text-white">
+    <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+      <div className='card w-full max-w-lg bg-slate-800 shadow-xl max-h-[90vh] overflow-y-auto'>
+        <div className='card-body'>
+          <div className='flex justify-between items-center mb-4'>
+            <h3 className='card-title text-white'>
               {editingResult ? 'Edit Result' : 'Add New Result'}
             </h3>
             <button
               onClick={onClose}
-              className="btn btn-circle btn-sm bg-gray-700 text-white border-none hover:bg-gray-600"
-            >
+              className='btn btn-circle btn-sm bg-gray-700 text-white border-none hover:bg-gray-600'>
               ✕
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className='space-y-4'>
             {!editingResult && availableGames.length > 0 && (
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-white">Select Game (Optional)</span>
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text text-white'>
+                    Select Game (Optional)
+                  </span>
                 </label>
                 <select
-                  className="select select-bordered w-full"
+                  className='select select-bordered w-full'
                   value={selectedGame}
-                  onChange={(e) => handleGameSelection(e.target.value)}
-                >
-                  <option value="">Choose from your region's games...</option>
+                  onChange={e => handleGameSelection(e.target.value)}>
+                  <option value=''>Choose from your region's games...</option>
                   {availableGames.map((game, index) => {
                     const gameId = `${game.venue}-${game.competition}-${game.day}-${index}`;
                     return (
                       <option key={gameId} value={gameId}>
-                        {game.venue} - {game.competition} ({game.day}) - {game.buy_in}
+                        {game.venue} - {game.competition} ({game.day}) -{' '}
+                        {game.buy_in}
                       </option>
                     );
                   })}
-                  <option value="custom">Add custom game not listed</option>
+                  <option value='custom'>Add custom game not listed</option>
                 </select>
-                <label className="label">
-                  <span className="label-text-alt text-gray-400">
+                <label className='label'>
+                  <span className='label-text-alt text-gray-400'>
                     Or select "Add custom game" to enter your own details
                   </span>
                 </label>
               </div>
             )}
 
-            {(showCustomFields || editingResult || availableGames.length === 0) && (
+            {(showCustomFields ||
+              editingResult ||
+              availableGames.length === 0) && (
               <>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text text-white">Game/Tournament Name *</span>
+                <div className='form-control'>
+                  <label className='label'>
+                    <span className='label-text text-white'>
+                      Game/Tournament Name *
+                    </span>
                   </label>
                   <input
-                    type="text"
-                    placeholder="e.g. Friday Night Tournament"
-                    className={`input input-bordered w-full ${!gameName ? 'placeholder-gray-500' : ''}`}
+                    type='text'
+                    placeholder='e.g. Friday Night Tournament'
+                    className={`input input-bordered w-full ${
+                      !gameName ? 'placeholder-gray-500' : ''
+                    }`}
                     value={gameName}
-                    onChange={(e) => setGameName(e.target.value)}
+                    onChange={e => setGameName(e.target.value)}
                     required
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text text-white">Venue *</span>
+                <div className='form-control'>
+                  <label className='label'>
+                    <span className='label-text text-white'>Venue *</span>
                   </label>
                   <input
-                    type="text"
-                    placeholder="e.g. Club Name or Location"
-                    className={`input input-bordered w-full ${!venue ? 'placeholder-gray-500' : ''}`}
+                    type='text'
+                    placeholder='e.g. Club Name or Location'
+                    className={`input input-bordered w-full ${
+                      !venue ? 'placeholder-gray-500' : ''
+                    }`}
                     value={venue}
-                    onChange={(e) => setVenue(e.target.value)}
+                    onChange={e => setVenue(e.target.value)}
                     required
                   />
                 </div>
               </>
             )}
 
-            {!showCustomFields && !editingResult && selectedGame && selectedGame !== 'custom' && (
-              <div className="bg-slate-700 p-3 rounded-lg">
-                <h4 className="text-white font-medium mb-2">Selected Game:</h4>
-                <p className="text-gray-300 text-sm">
-                  <strong>Game:</strong> {gameName}<br/>
-                  <strong>Venue:</strong> {venue}<br/>
-                  <strong>Buy-in:</strong> ${buyIn}
-                </p>
-              </div>
-            )}
+            {!showCustomFields &&
+              !editingResult &&
+              selectedGame &&
+              selectedGame !== 'custom' && (
+                <div className='bg-slate-700 p-3 rounded-lg'>
+                  <h4 className='text-white font-medium mb-2'>
+                    Selected Game:
+                  </h4>
+                  <p className='text-gray-300 text-sm'>
+                    <strong>Game:</strong> {gameName}
+                    <br />
+                    <strong>Venue:</strong> {venue}
+                    <br />
+                    <strong>Buy-in:</strong> ${buyIn}
+                  </p>
+                </div>
+              )}
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-white">Date</span>
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text text-white'>Date</span>
               </label>
               <input
-                type="date"
-                className="input input-bordered w-full"
+                type='date'
+                className='input input-bordered w-full'
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={e => setDate(e.target.value)}
                 required
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-white">Your Position (Optional)</span>
+            <div className='grid grid-cols-2 gap-4'>
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text text-white'>
+                    Your Position (Optional)
+                  </span>
                 </label>
                 <input
-                  type="number"
-                  placeholder="1 (if known)"
-                  min="1"
-                  className={`input input-bordered w-full ${!position ? 'placeholder-gray-500' : ''}`}
+                  type='number'
+                  placeholder='1 (if known)'
+                  min='1'
+                  className={`input input-bordered w-full ${
+                    !position ? 'placeholder-gray-500' : ''
+                  }`}
                   value={position}
-                  onChange={(e) => setPosition(e.target.value)}
+                  onChange={e => setPosition(e.target.value)}
                 />
               </div>
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-white">Total Players (Optional)</span>
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text text-white'>
+                    Total Players (Optional)
+                  </span>
                 </label>
                 <input
-                  type="number"
-                  placeholder="50 (if known)"
-                  min="1"
-                  className={`input input-bordered w-full ${!totalPlayers ? 'placeholder-gray-500' : ''}`}
+                  type='number'
+                  placeholder='50 (if known)'
+                  min='1'
+                  className={`input input-bordered w-full ${
+                    !totalPlayers ? 'placeholder-gray-500' : ''
+                  }`}
                   value={totalPlayers}
-                  onChange={(e) => setTotalPlayers(e.target.value)}
+                  onChange={e => setTotalPlayers(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-white">Buy-in ($)</span>
+            <div className='grid grid-cols-2 gap-4'>
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text text-white'>Buy-in ($)</span>
                 </label>
                 <input
-                  type="number"
-                  placeholder="50.00"
-                  step="0.01"
-                  min="0"
-                  className={`input input-bordered w-full ${!buyIn && !selectedGame ? 'placeholder-gray-500' : ''}`}
+                  type='number'
+                  placeholder='50.00'
+                  step='0.01'
+                  min='0'
+                  className={`input input-bordered w-full ${
+                    !buyIn && !selectedGame ? 'placeholder-gray-500' : ''
+                  }`}
                   value={buyIn}
-                  onChange={(e) => setBuyIn(e.target.value)}
+                  onChange={e => setBuyIn(e.target.value)}
                 />
               </div>
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-white">Winnings ($)</span>
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text text-white'>Winnings ($)</span>
                 </label>
                 <input
-                  type="number"
-                  placeholder="150.00"
-                  step="0.01"
-                  min="0"
-                  className={`input input-bordered w-full ${!winnings ? 'placeholder-gray-500' : ''}`}
+                  type='number'
+                  placeholder='150.00'
+                  step='0.01'
+                  min='0'
+                  className={`input input-bordered w-full ${
+                    !winnings ? 'placeholder-gray-500' : ''
+                  }`}
                   value={winnings}
-                  onChange={(e) => setWinnings(e.target.value)}
+                  onChange={e => setWinnings(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-white">Comments</span>
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text text-white'>Comments</span>
               </label>
               <textarea
-                className={`textarea textarea-bordered h-20 ${!comments ? 'placeholder-gray-500' : ''}`}
-                placeholder="Any notes about this game..."
+                className={`textarea textarea-bordered h-20 ${
+                  !comments ? 'placeholder-gray-500' : ''
+                }`}
+                placeholder='Any notes about this game...'
                 value={comments}
-                onChange={(e) => setComments(e.target.value)}
-              ></textarea>
+                onChange={e => setComments(e.target.value)}></textarea>
             </div>
 
-            <div className="form-control mt-6">
+            <div className='form-control mt-6'>
               <button
-                type="submit"
+                type='submit'
                 disabled={loading}
-                className="btn btn-primary w-full"
-              >
-                {loading ? 'Saving...' : editingResult ? 'Update Result' : 'Add Result'}
+                className='btn btn-primary w-full'>
+                {loading
+                  ? 'Saving...'
+                  : editingResult
+                  ? 'Update Result'
+                  : 'Add Result'}
               </button>
             </div>
           </form>

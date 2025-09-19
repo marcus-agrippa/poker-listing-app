@@ -380,12 +380,9 @@ const Pokerdex = () => {
                 <button
                   onClick={() => {
                     toast(
-                      'Please use the same email as your poker account when signing up!'
+                      'Please use the same email and account name as your poker account when signing up!'
                     );
-                    window.open(
-                      'https://buymeacoffee.com/pokergamesaus/membership',
-                      '_blank'
-                    );
+                    window.open('ko-fi.com/pokergamesaus', '_blank');
                   }}
                   className='btn btn-warning px-6'>
                   🎯 Upgrade to High Roller

@@ -39,11 +39,11 @@ const Footer = () => {
           features!
         </p>
         <a
-          href='https://buymeacoffee.com/pokergamesaus'
+          href='ko-fi.com/pokergamesaus'
           target='_blank'
           rel='noopener noreferrer'>
           <button className='bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded'>
-            Buy me a coffee ☕
+            Support Development
           </button>
         </a>
       </div>

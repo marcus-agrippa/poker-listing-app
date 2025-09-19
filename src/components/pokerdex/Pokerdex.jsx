@@ -382,7 +382,7 @@ const Pokerdex = () => {
                     toast(
                       'Please use the same email and account name as your poker account when signing up!'
                     );
-                    window.open('ko-fi.com/pokergamesaus', '_blank');
+                    window.open('https://ko-fi.com/pokergamesaus', '_blank');
                   }}
                   className='btn btn-warning px-6'>
                   🎯 Upgrade to High Roller

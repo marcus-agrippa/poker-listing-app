@@ -39,7 +39,7 @@ const Footer = () => {
           features!
         </p>
         <a
-          href='ko-fi.com/pokergamesaus'
+          href='https://ko-fi.com/pokergamesaus'
           target='_blank'
           rel='noopener noreferrer'>
           <button className='bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded'>

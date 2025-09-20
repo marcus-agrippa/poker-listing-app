@@ -25,7 +25,7 @@ const AchievementBadge = ({ achievement, size = 'md', showDetails = true, earned
         ${rarityColor}
         ${earned ? 'bg-opacity-20' : 'bg-gray-700 border-gray-600'}
         border-2 rounded-full flex items-center justify-center
-        transition-all duration-200 hover:scale-110 cursor-pointer
+        transition-transform duration-200 hover:scale-110 cursor-pointer
         ${earned ? 'hover:bg-opacity-30' : ''}
       `}>
         <span className={earned ? '' : 'grayscale'}>
@@ -35,7 +35,7 @@ const AchievementBadge = ({ achievement, size = 'md', showDetails = true, earned
 
       {showDetails && (
         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-          <div className="bg-gray-900 text-white p-2 sm:p-3 rounded-lg shadow-xl border border-gray-700 whitespace-nowrap max-w-[250px] sm:max-w-xs">
+          <div className="bg-gray-900 text-white p-2 sm:p-3 rounded-lg border border-gray-700 whitespace-nowrap max-w-[250px] sm:max-w-xs">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-lg">{achievement.emoji}</span>
               <span className={`font-semibold ${textSizeClasses[size]} ${earned ? rarityColor.split(' ')[0] : 'text-gray-400'}`}>

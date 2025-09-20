@@ -8,6 +8,7 @@ import {
   FiHeart,
   FiClipboard,
   FiUsers,
+  FiShare2,
 } from 'react-icons/fi';
 import AuthModal from '../auth/AuthModal';
 
@@ -47,12 +48,20 @@ const SignupPromotionCard = () => {
     {
       icon: <FiClipboard className='text-orange-400' />,
       title: 'Pokerdex Notes',
-      description: 'Track player observations, strategies, and venue insights like a pro',
+      description:
+        'Track player observations, strategies, and venue insights like a pro',
     },
     {
       icon: <FiUsers className='text-cyan-400' />,
       title: 'Player Intelligence',
-      description: 'Build a database of player tendencies and game dynamics for every venue',
+      description:
+        'Build a database of player tendencies and game dynamics for every venue',
+    },
+    {
+      icon: <FiShare2 className='text-cyan-400' />,
+      title: 'Quick Stats & Share',
+      description:
+        'See win rate, biggest wins/losses, and average buy-ins at a glance and share with friends',
     },
   ];
 

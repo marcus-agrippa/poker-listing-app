@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import Breadcrumb from './components/ui/Breadcrumb';
 import GamesPage from './components/GamesPage';
 import RegionFilteredGamesPage from './components/RegionFilteredGamesPage';
 import ContactPage from './components/ContactPage';
@@ -141,6 +142,7 @@ const AppContent = () => {
         </Helmet>
         <Router>
           <Header />
+          <Breadcrumb />
           <main className='flex-grow bg-gray-900'>
             <Routes>
               <Route path='/' element={<RegionFilteredGamesPage />} />

@@ -22,6 +22,10 @@ import {
   FiCalendar,
   FiMapPin,
   FiEdit,
+  FiEye,
+  FiTarget,
+  FiActivity,
+  FiTrendingUp,
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import DeleteConfirmModal from '../ui/DeleteConfirmModal';
@@ -35,6 +39,7 @@ const Pokerdex = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGame, setSelectedGame] = useState('');
   const [selectedVenue, setSelectedVenue] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
   const [regionGames, setRegionGames] = useState([]);
@@ -54,10 +59,13 @@ const Pokerdex = () => {
   });
 
   const categories = [
-    { value: 'player', label: '👤 Player Notes', icon: FiUser },
+    { value: 'player', label: '👤 Player Profiles', icon: FiUser },
+    { value: 'tells', label: '👁️ Tells & Reads', icon: FiEye },
+    { value: 'playing-style', label: '🎲 Playing Styles', icon: FiActivity },
+    { value: 'tendencies', label: '📊 Player Tendencies', icon: FiTrendingUp },
+    { value: 'strategy', label: '🎯 Strategy Notes', icon: FiTarget },
     { value: 'venue', label: '🏢 Venue Notes', icon: FiMapPin },
-    { value: 'strategy', label: '🎯 Strategy Notes', icon: FiEdit3 },
-    { value: 'general', label: '📝 General Notes', icon: FiCalendar },
+    { value: 'general', label: '📝 General Notes', icon: FiEdit3 },
   ];
 
   const fetchNotes = async () => {
@@ -228,6 +236,9 @@ const Pokerdex = () => {
     .sort();
 
   const filteredNotes = notes.filter(note => {
+    // Category filter
+    if (selectedCategory && note.category !== selectedCategory) return false;
+
     // Venue filter
     if (selectedVenue && note.venue !== selectedVenue) return false;
 
@@ -254,6 +265,32 @@ const Pokerdex = () => {
   const getCategoryLabel = category => {
     const cat = categories.find(c => c.value === category);
     return cat ? cat.label : 'General Notes';
+  };
+
+  const getPlayerObservationsPlaceholder = (category) => {
+    const placeholders = {
+      'player': 'e.g., John from seat 3 - plays tight but bluffs big on rivers. Loves to slowplay sets.',
+      'tells': 'e.g., Touches nose when bluffing. Sits forward when holding strong hands. Talks more with weak holdings.',
+      'playing-style': 'e.g., Tight-aggressive player. Rarely calls, either folds or raises. Plays position well.',
+      'tendencies': 'e.g., Always raises UTG with premium hands. 3-bets light from button. Folds to 4-bets without AA/KK.',
+      'strategy': 'e.g., Focus on position against this player. Bluff sparingly. Value bet thinly.',
+      'venue': 'e.g., Dealers are fast. Good lighting. Players tend to be recreational on weekends.',
+      'general': 'e.g., Remember to track this for next session. Important observation about the game.'
+    };
+    return placeholders[category] || placeholders.general;
+  };
+
+  const getGameNotesPlaceholder = (category) => {
+    const placeholders = {
+      'player': 'e.g., This player responds well to pressure. Folds easily to 3-bets without strong hands.',
+      'tells': 'e.g., Physical tells: hand shaking with strong hands, betting patterns change when bluffing.',
+      'playing-style': 'e.g., LAG style - lots of action, needs strong hands to call big bets.',
+      'tendencies': 'e.g., Always continuation bets flop, rarely double barrels without equity.',
+      'strategy': 'e.g., Table was very tight pre-flop. Good spots for stealing blinds. Avoid bluffing station in seat 3.',
+      'venue': 'e.g., $1/$2 game plays bigger than other venues. Rake is 10% capped at $6.',
+      'general': 'e.g., General observations about the session, table dynamics, or important moments.'
+    };
+    return placeholders[category] || placeholders.general;
   };
 
   if (!currentUser?.emailVerified) {
@@ -312,6 +349,21 @@ const Pokerdex = () => {
 
         {/* Filters */}
         <div className='flex flex-col sm:flex-row gap-4'>
+          {/* Category Filter */}
+          <div className='flex-1'>
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              className='w-full p-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500'>
+              <option value=''>All Categories</option>
+              {categories.map(category => (
+                <option key={category.value} value={category.value}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Venue Filter */}
           {uniqueVenuesFromNotes.length > 0 && (
             <div className='flex-1'>
@@ -347,9 +399,10 @@ const Pokerdex = () => {
           )}
 
           {/* Clear Filters */}
-          {(selectedVenue || selectedGame) && (
+          {(selectedCategory || selectedVenue || selectedGame) && (
             <button
               onClick={() => {
+                setSelectedCategory('');
                 setSelectedVenue('');
                 setSelectedGame('');
               }}
@@ -663,7 +716,7 @@ const Pokerdex = () => {
                     })
                   }
                   className='w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500'
-                  placeholder='e.g., Guy with British accent never seems to bluff when betting big on river. Always has the goods.'></textarea>
+                  placeholder={getPlayerObservationsPlaceholder(formData.category)}></textarea>
               </div>
 
               <div>
@@ -677,7 +730,7 @@ const Pokerdex = () => {
                     setFormData({ ...formData, gameNotes: e.target.value })
                   }
                   className='w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500'
-                  placeholder='e.g., Table was very tight pre-flop. Good spots for stealing blinds. Avoid bluffing station in seat 3.'></textarea>
+                  placeholder={getGameNotesPlaceholder(formData.category)}></textarea>
               </div>
 
               <div>

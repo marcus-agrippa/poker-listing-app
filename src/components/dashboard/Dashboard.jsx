@@ -35,6 +35,7 @@ import ResultsList from './ResultsList';
 import StatsCard from './StatsCard';
 import DeleteConfirmModal from '../ui/DeleteConfirmModal';
 import ShareStats from '../ui/ShareStats';
+import AchievementsSection from '../ui/AchievementsSection';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
@@ -838,6 +839,19 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Achievements Section */}
+      {stats.totalGames > 0 && (
+        <div className='card bg-slate-800 shadow-xl mt-8'>
+          <div className='card-body'>
+            <AchievementsSection
+              userStats={stats}
+              userResults={allResults}
+              userNotes={[]} // We'll connect this to pokerdex notes later
+            />
+          </div>
+        </div>
+      )}
 
       {(isFormOpen || editingResult) && (
         <ResultForm

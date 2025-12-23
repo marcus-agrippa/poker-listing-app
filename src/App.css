@@ -40,3 +40,62 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Leaflet Map Custom Styles */
+.custom-marker {
+  background: transparent;
+  border: none;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  padding: 0;
+  min-width: 450px !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: 100% !important;
+  min-width: 450px !important;
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+
+/* Fix for Leaflet zoom controls */
+.leaflet-control-zoom {
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.leaflet-control-zoom a {
+  background-color: white;
+  color: #333;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #f4f4f4;
+}
+
+/* Override Leaflet link color for buttons in popups */
+.leaflet-popup-content .btn {
+  color: white !important;
+}
+
+.leaflet-popup-content .btn-primary {
+  color: white !important;
+}
+
+/* Responsive popup width for mobile */
+@media (max-width: 640px) {
+  .leaflet-popup-content-wrapper {
+    min-width: 280px !important;
+    max-width: 90vw !important;
+  }
+
+  .leaflet-popup-content {
+    min-width: 280px !important;
+    max-width: 90vw !important;
+  }
+}

@@ -1,0 +1,186 @@
+// Central Coast venue coordinates
+export const centralCoastVenues = {
+  'Gosford RSL Club': { lat: -33.4256, lng: 151.3428, address: 'West Gosford' },
+  'Gosord RSL Club': { lat: -33.4256, lng: 151.3428, address: 'West Gosford' }, // Typo fix
+  'Budgewoi Soccer Club': { lat: -33.2309, lng: 151.5547, address: 'Budgewoi' },
+  'Wyong Rugby League Club': { lat: -33.2817, lng: 151.4254, address: 'Wyong' },
+  'Club Wyong': { lat: -33.2842, lng: 151.4243, address: 'Wyong' },
+  'Elanora Hotel': { lat: -33.4395, lng: 151.3856, address: 'Erina' },
+  'Elenora Hotel': { lat: -33.4395, lng: 151.3856, address: 'Erina' }, // Typo fix
+  'Halekulani Bowling Club': { lat: -33.2274, lng: 151.4862, address: 'Halekulani' },
+  'Toukley Golf Club': { lat: -33.2654, lng: 151.5321, address: 'Toukley' },
+  'Gwandalan Bowling Club': { lat: -33.1486, lng: 151.5956, address: 'Gwandalan' },
+  'Ettalong Memorial Bowling Club': { lat: -33.5138, lng: 151.3342, address: 'Ettalong Beach' },
+  'Terrigal Hotel': { lat: -33.4462, lng: 151.4454, address: 'Terrigal' },
+  'Bateau Bay Bowling Club': { lat: -33.3826, lng: 151.4756, address: 'Bateau Bay' },
+  'Northlakes Tavern': { lat: -33.2158, lng: 151.5097, address: 'Charmhaven' },
+  'Everglades Country Club': { lat: -33.3756, lng: 151.3214, address: 'Jilliby' },
+  'Wallarah Bay Recreation Club': { lat: -33.2687, lng: 151.5087, address: 'Gorokan' },
+  'Club Umina': { lat: -33.5246, lng: 151.3112, address: 'Umina Beach' },
+  'Central Coast Leagues Club': { lat: -33.4287, lng: 151.3398, address: 'Gosford' },
+  'Mingara Recreation Club': { lat: -33.3456, lng: 151.4876, address: 'Tumbi Umbi' },
+  'Canton Beach Sports Club': { lat: -33.2598, lng: 151.5198, address: 'Canton Beach' },
+};
+
+// Newcastle venue coordinates
+export const newcastleVenues = {
+  'Belmore Hotel': { lat: -32.9283, lng: 151.7517, address: 'Hamilton' },
+  'The Belmore Hotel': { lat: -32.9283, lng: 151.7517, address: 'Hamilton' },
+  'Blackbutt Hotel': { lat: -32.9839, lng: 151.6658, address: 'Kotara' },
+  'Bradford Hotel Rutherford': { lat: -32.7178, lng: 151.5294, address: 'Rutherford' },
+  'Rutherford Hotel': { lat: -32.7178, lng: 151.5294, address: 'Rutherford' },
+  'Bull N Bush Medowie': { lat: -32.7681, lng: 151.8942, address: 'Medowie' },
+  'Cardiff RSL Club': { lat: -32.9372, lng: 151.6594, address: 'Cardiff' },
+  'Central Leagues Charlestown': { lat: -32.9667, lng: 151.6944, address: 'Charlestown' },
+  'Club Maitland City': { lat: -32.7311, lng: 151.5575, address: 'Maitland' },
+  'Firestation Hotel Wallsend': { lat: -32.9006, lng: 151.6711, address: 'Wallsend' },
+  'Great Northern Hotel': { lat: -32.9267, lng: 151.7806, address: 'Newcastle' },
+  'Hamilton North Bowling Club Co': { lat: -32.9200, lng: 151.7450, address: 'Hamilton North' },
+  'Hamilton Station Hotel': { lat: -32.9250, lng: 151.7500, address: 'Hamilton' },
+  'Harrigans Cameron Park': { lat: -32.9494, lng: 151.6472, address: 'Cameron Park' },
+  'Hotel Jesmond': { lat: -32.8981, lng: 151.6931, address: 'Jesmond' },
+  'Junction Inn Hotel': { lat: -32.9297, lng: 151.7731, address: 'Hamilton' },
+  'Junction Inn Raymond Tce': { lat: -32.9297, lng: 151.7731, address: 'Hamilton' },
+  'Kahiba Sports Club': { lat: -32.9556, lng: 151.7194, address: 'Adamstown' },
+  'Karuah RSL Club': { lat: -32.6522, lng: 151.9706, address: 'Karuah' },
+  'Lake Macquarie Tavern': { lat: -32.9833, lng: 151.6333, address: 'Warners Bay' },
+  'Orana Hotel': { lat: -32.9283, lng: 151.7817, address: 'Newcastle' },
+  'Redhead BC': { lat: -33.0133, lng: 151.7050, address: 'Redhead' },
+  'Shoal Bay Country Club': { lat: -32.8833, lng: 152.1833, address: 'Shoal Bay' },
+  'Souths Merewether': { lat: -32.9456, lng: 151.7500, address: 'Merewether' },
+  'Stockton Bowling Club': { lat: -32.9094, lng: 151.7842, address: 'Stockton' },
+  'The MEX Club': { lat: -32.9283, lng: 151.7817, address: 'Newcastle' },
+  'Valentine Bowling Club': { lat: -33.0089, lng: 151.6486, address: 'Valentine' },
+  'Wests Mayfield': { lat: -32.8981, lng: 151.7386, address: 'Mayfield' },
+};
+
+// Ballarat venue coordinates (add more as needed)
+export const ballaratVenues = {
+  'The Provincial Hotel': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
+  'Lake Wendouree Pavilion': { lat: -37.5500, lng: 143.8400, address: 'Lake Wendouree' },
+  'Ballarat RSL': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
+  // Add more Ballarat venues with actual coordinates
+};
+
+// Wollongong venue coordinates (add more as needed)
+export const wollongongVenues = {
+  'North Wollongong Hotel': { lat: -34.4131, lng: 150.8969, address: 'North Wollongong' },
+  'Collegians Rugby Club': { lat: -34.4278, lng: 150.8931, address: 'Wollongong' },
+  'Corrimal Bowling Club': { lat: -34.3742, lng: 150.8961, address: 'Corrimal' },
+  // Add more Wollongong venues with actual coordinates
+};
+
+// Townsville venue coordinates (add more as needed)
+export const townsvilleVenues = {
+  'The Ville Resort-Casino': { lat: -19.2590, lng: 146.8169, address: 'Townsville' },
+  'Townsville Sports Reserve': { lat: -19.2590, lng: 146.8169, address: 'Townsville' },
+  'North Shore Hotel': { lat: -19.2400, lng: 146.7900, address: 'Burdell' },
+  // Add more Townsville venues with actual coordinates
+};
+
+// Sunshine Coast venue coordinates (add more as needed)
+export const sunshineCoastVenues = {
+  'Maroochydore Surf Club': { lat: -26.6567, lng: 153.0989, address: 'Maroochydore' },
+  'Caloundra RSL': { lat: -26.7992, lng: 153.1297, address: 'Caloundra' },
+  'Nambour RSL': { lat: -26.6275, lng: 152.9597, address: 'Nambour' },
+  // Add more Sunshine Coast venues with actual coordinates
+};
+
+// Perth venue coordinates (add more as needed)
+export const perthVenues = {
+  'Adriatic Stirling Centre': { lat: -31.8833, lng: 115.8000, address: 'Stirling' },
+  'Carlisle Hotel': { lat: -31.9755, lng: 115.9181, address: 'Carlisle' },
+  'Leederville Hotel': { lat: -31.9369, lng: 115.8408, address: 'Leederville' },
+  'Hotel Northbridge': { lat: -31.9465, lng: 115.8627, address: 'Northbridge' },
+  'Bayswater Bowling Club': { lat: -31.9208, lng: 115.9189, address: 'Bayswater' },
+  'Market City Tavern': { lat: -32.0569, lng: 115.7497, address: 'Canning Vale' },
+  // Add more Perth venues with actual coordinates
+};
+
+// Geelong venue coordinates (add more as needed)
+export const geelongVenues = {
+  'Geelong RSL': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
+  'Geelong West Sporting Club': { lat: -38.1350, lng: 144.3450, address: 'Geelong West' },
+  'Geelong Bowling Club': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
+  // Add more Geelong venues with actual coordinates
+};
+
+// Brisbane venue coordinates
+export const brisbaneVenues = {
+  'Acacia Ridge Hotel': { lat: -27.5769, lng: 153.0239, address: 'Acacia Ridge' },
+  'Aspley Hornets': { lat: -27.3631, lng: 153.0239, address: 'Aspley' },
+  'Blue Fin Fishing Club Inc': { lat: -27.4698, lng: 153.0251, address: 'Brisbane' },
+  'Brighton Hotel': { lat: -27.3047, lng: 153.0644, address: 'Brighton' },
+  'Club Chermside': { lat: -27.3856, lng: 153.0328, address: 'Chermside' },
+  'Club Hotel Chinchilla': { lat: -26.7406, lng: 150.6292, address: 'Chinchilla' },
+  'Coorparoo RSL & Community Club': { lat: -27.4972, lng: 153.0597, address: 'Coorparoo' },
+  'Geebung RSL': { lat: -27.3633, lng: 153.0467, address: 'Geebung' },
+  'Greenbank Services Club': { lat: -27.7056, lng: 152.9731, address: 'Greenbank' },
+  'Hotel Australia Miles': { lat: -26.6619, lng: 150.1869, address: 'Miles' },
+  'Hotel Richlands': { lat: -27.5772, lng: 152.9436, address: 'Richlands' },
+  'Hotel West End': { lat: -27.4833, lng: 153.0167, address: 'West End' },
+  'Lucky Star Tavern': { lat: -27.4698, lng: 153.0251, address: 'Brisbane' },
+  'Royal George Hotel': { lat: -27.4753, lng: 153.0344, address: 'Brisbane City' },
+  'Runcorn Tavern': { lat: -27.5769, lng: 153.0567, address: 'Runcorn' },
+  'Souths Sports Club': { lat: -27.5000, lng: 153.0500, address: 'Brisbane South' },
+  'Sunnybank Hotel': { lat: -27.5764, lng: 153.0597, address: 'Sunnybank' },
+  'The Broncos Club': { lat: -27.4358, lng: 153.0081, address: 'Red Hill' },
+  'The Caxton Hotel': { lat: -27.4650, lng: 153.0100, address: 'Paddington' },
+  'The Commercial Hotel Chinchilla': { lat: -26.7406, lng: 150.6292, address: 'Chinchilla' },
+  'The Junction at Annerley': { lat: -27.5167, lng: 153.0333, address: 'Annerley' },
+  'The Ox (Oxley Hotel)': { lat: -27.5558, lng: 152.9778, address: 'Oxley' },
+  'The Stafford Tavern': { lat: -27.4208, lng: 153.0194, address: 'Stafford' },
+  'Waterloo Bay Hotel': { lat: -27.4698, lng: 153.0251, address: 'Brisbane' },
+};
+
+// Gold Coast venue coordinates
+export const goldCoastVenues = {
+  'Boathouse Tavern': { lat: -28.0167, lng: 153.4000, address: 'Gold Coast' },
+  'Broadbeach Bowls Club': { lat: -28.0311, lng: 153.4300, address: 'Broadbeach' },
+  'Burleigh Town Hotel': { lat: -28.0994, lng: 153.4511, address: 'Burleigh Heads' },
+  'Cavill Hotel': { lat: -28.0000, lng: 153.4292, address: 'Surfers Paradise' },
+  'Club Mermaid': { lat: -28.0528, lng: 153.4103, address: 'Mermaid Beach' },
+  'Club Musgrave': { lat: -28.1167, lng: 153.4500, address: 'Coolangatta' },
+  'Ferry Road Tavern': { lat: -28.0000, lng: 153.4000, address: 'Southport' },
+  'Helensvale Tavern': { lat: -27.9042, lng: 153.3269, address: 'Helensvale' },
+  'Pimpama Tavern': { lat: -27.8167, lng: 153.3167, address: 'Pimpama' },
+  'The Grand Hotel': { lat: -28.0167, lng: 153.4300, address: 'Broadbeach' },
+  'The Star - Gold Coast': { lat: -28.0025, lng: 153.4275, address: 'Broadbeach' },
+  'Treetops Tavern': { lat: -27.9500, lng: 153.3833, address: 'Gold Coast' },
+};
+
+// Helper function to get venue coordinates by region
+export const getVenueCoordinates = (region) => {
+  const regionMap = {
+    'Central Coast': centralCoastVenues,
+    'Newcastle': newcastleVenues,
+    'Ballarat': ballaratVenues,
+    'Wollongong': wollongongVenues,
+    'Townsville': townsvilleVenues,
+    'Sunshine Coast': sunshineCoastVenues,
+    'Perth': perthVenues,
+    'Geelong': geelongVenues,
+    'Brisbane': brisbaneVenues,
+    'Gold Coast': goldCoastVenues,
+  };
+
+  return regionMap[region] || centralCoastVenues;
+};
+
+// Helper to get region center for map initialization
+export const getRegionCenter = (region) => {
+  const centers = {
+    'Central Coast': { lat: -33.3556, lng: 151.4200, zoom: 11 },
+    'Newcastle': { lat: -32.9283, lng: 151.7817, zoom: 11 },
+    'Ballarat': { lat: -37.5622, lng: 143.8503, zoom: 12 },
+    'Wollongong': { lat: -34.4278, lng: 150.8931, zoom: 12 },
+    'Townsville': { lat: -19.2590, lng: 146.8169, zoom: 11 },
+    'Sunshine Coast': { lat: -26.6500, lng: 153.0667, zoom: 11 },
+    'Perth': { lat: -31.9505, lng: 115.8605, zoom: 11 },
+    'Geelong': { lat: -38.1499, lng: 144.3617, zoom: 12 },
+    'Brisbane': { lat: -27.4698, lng: 153.0251, zoom: 11 },
+    'Gold Coast': { lat: -28.0167, lng: 153.4000, zoom: 11 },
+  };
+
+  return centers[region] || centers['Central Coast'];
+};

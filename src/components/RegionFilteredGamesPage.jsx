@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TabList from './TabList';
 import GameList from './GameList';
+import MapView from './MapView';
 import RegionSelector from './auth/RegionSelector';
 import SignupPromotionCard from './ui/SignupPromotionCard';
 import HeroSection from './ui/HeroSection';
@@ -24,6 +25,7 @@ const RegionFilteredGamesPage = () => {
   const { currentUser, userProfile } = useAuth();
   const [selectedRegion, setSelectedRegion] = useState('');
   const [showRegionSelector, setShowRegionSelector] = useState(false);
+  const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
 
   const regionConfig = {
     'Central Coast': {
@@ -187,11 +189,38 @@ const RegionFilteredGamesPage = () => {
           setActiveDay={setActiveDay}
           daysOfWeek={daysOfWeek}
         />
-        <GameList
-          activeDay={activeDay}
-          dataUrl={currentConfig.dataUrl}
-          facebookPageUrls={currentConfig.facebookPageUrls}
-        />
+
+        {/* View Toggle */}
+        <div className='flex justify-center gap-2 mb-6 mt-6'>
+          <button
+            className={`btn btn-sm ${
+              viewMode === 'list' ? 'btn-primary text-white' : 'btn-outline'
+            }`}
+            onClick={() => setViewMode('list')}>
+            📋 List View
+          </button>
+          <button
+            className={`btn btn-sm ${
+              viewMode === 'map' ? 'btn-primary text-white' : 'btn-outline'
+            }`}
+            onClick={() => setViewMode('map')}>
+            🗺️ Map View
+          </button>
+        </div>
+
+        {viewMode === 'list' ? (
+          <GameList
+            activeDay={activeDay}
+            dataUrl={currentConfig.dataUrl}
+            facebookPageUrls={currentConfig.facebookPageUrls}
+          />
+        ) : (
+          <MapView
+            activeDay={activeDay}
+            dataUrl={currentConfig.dataUrl}
+            facebookPageUrls={currentConfig.facebookPageUrls}
+          />
+        )}
 
         {/* Show promotion card to logged-out users */}
         {!currentUser && (

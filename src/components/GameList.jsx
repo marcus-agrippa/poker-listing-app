@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
 import { FiEdit3, FiHeart, FiClock, FiSearch, FiX } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
+import AdvancedFilters from './AdvancedFilters';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const { currentUser } = useAuth();
@@ -19,6 +20,14 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const [suggestionFormOpen, setSuggestionFormOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filtersExpanded, setFiltersExpanded] = useState(false);
+  const [filters, setFilters] = useState({
+    buyIn: { min: '', max: '' },
+    competitions: [],
+    timeSlot: 'all',
+    favoritesOnly: false,
+    startingSoon: false,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +44,17 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     fetchData();
   }, [dataUrl]);
 
+  // Calculate available competitions from the games data
+  const availableCompetitions = useMemo(() => {
+    const competitions = new Set();
+    games.forEach(game => {
+      if (game.competition) {
+        competitions.add(game.competition);
+      }
+    });
+    return Array.from(competitions).sort();
+  }, [games]);
+
   useEffect(() => {
     let filtered = games.filter(game => game.day === activeDay);
 
@@ -49,10 +69,64 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
       );
     }
 
+    // Apply advanced filters
+    // Buy-in filter
+    if (filters.buyIn.min !== '' || filters.buyIn.max !== '') {
+      filtered = filtered.filter(game => {
+        const buyIn = parseInt(game.buy_in, 10) || 0;
+        const min = filters.buyIn.min === '' ? 0 : filters.buyIn.min;
+        const max = filters.buyIn.max === '' ? Infinity : filters.buyIn.max;
+        return buyIn >= min && buyIn <= max;
+      });
+    }
+
+    // Competition filter
+    if (filters.competitions.length > 0) {
+      filtered = filtered.filter(game =>
+        filters.competitions.includes(game.competition)
+      );
+    }
+
+    // Time slot filter
+    if (filters.timeSlot !== 'all') {
+      filtered = filtered.filter(game => {
+        const hour = parseInt(game.game_time.split(':')[0], 10);
+        if (filters.timeSlot === 'afternoon') {
+          return hour >= 12 && hour < 18;
+        } else if (filters.timeSlot === 'evening') {
+          return hour >= 18 && hour < 21;
+        } else if (filters.timeSlot === 'late') {
+          return hour >= 21 || hour < 6;
+        }
+        return true;
+      });
+    }
+
+    // Favorites only filter
+    if (filters.favoritesOnly && currentUser) {
+      filtered = filtered.filter(game => isFavorite(game.venue));
+    }
+
+    // Starting soon filter (within 2 hours)
+    if (filters.startingSoon) {
+      const now = new Date();
+      filtered = filtered.filter(game => {
+        const gameDate = new Date(`1970/01/01 ${game.game_time}`);
+        gameDate.setFullYear(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
+        const diffMs = gameDate - now;
+        const diffHrs = diffMs / 1000 / 60 / 60;
+        return diffHrs >= 0 && diffHrs <= 2;
+      });
+    }
+
     // Sort by favorites first, then by time
     const sorted = sortGamesByFavorites(filtered);
     setFilteredGames(sorted);
-  }, [games, activeDay, searchTerm, sortGamesByFavorites]);
+  }, [games, activeDay, searchTerm, filters, currentUser, isFavorite, sortGamesByFavorites]);
 
   const formatTime = time24 => {
     const [hours, minutes] = time24.split(':');
@@ -156,10 +230,12 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     </div>
   );
 
+  const isToday = activeDay === getCurrentDay();
+
   return (
     <div>
       <h2 className='text-4xl font-bold mb-6 mt-8 text-center text-gray-100'>
-        {activeDay} Games
+        {isToday ? "Today's Games" : `${activeDay} Games`}
       </h2>
 
       {/* Search Bar */}
@@ -190,6 +266,17 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Advanced Filters */}
+      <div className='container mx-auto px-4 mb-6'>
+        <AdvancedFilters
+          filters={filters}
+          onFilterChange={setFilters}
+          isExpanded={filtersExpanded}
+          onToggleExpanded={() => setFiltersExpanded(!filtersExpanded)}
+          availableCompetitions={availableCompetitions}
+        />
       </div>
 
       <div className='container mx-auto px-4'>

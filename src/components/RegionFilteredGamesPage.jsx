@@ -7,6 +7,7 @@ import RegionSelector from './auth/RegionSelector';
 import SignupPromotionCard from './ui/SignupPromotionCard';
 import HeroSection from './ui/HeroSection';
 import SocialProofSection from './ui/SocialProofSection';
+import { FiList, FiMap } from 'react-icons/fi';
 
 const daysOfWeek = [
   'Sunday',
@@ -197,14 +198,14 @@ const RegionFilteredGamesPage = () => {
               viewMode === 'list' ? 'btn-primary text-white' : 'btn-outline'
             }`}
             onClick={() => setViewMode('list')}>
-            📋 List View
+            <FiList className='mr-1' /> List View
           </button>
           <button
             className={`btn btn-sm ${
               viewMode === 'map' ? 'btn-primary text-white' : 'btn-outline'
             }`}
             onClick={() => setViewMode('map')}>
-            🗺️ Map View
+            <FiMap className='mr-1' /> Map View
           </button>
         </div>
 

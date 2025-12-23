@@ -4,7 +4,10 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
-import { getVenueCoordinates, getRegionCenter } from '../utils/venueCoordinates';
+import {
+  getVenueCoordinates,
+  getRegionCenter,
+} from '../utils/venueCoordinates';
 import { FiHeart, FiClock, FiDollarSign, FiUsers } from 'react-icons/fi';
 
 // Fix for default marker icons in React-Leaflet
@@ -64,13 +67,13 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
           setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
         },
-        (error) => {
+        error => {
           console.log('Location access denied or unavailable:', error);
         }
       );
@@ -122,7 +125,11 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
         const now = new Date();
         const isStartingSoon = venueGamesList.some(game => {
           const gameDate = new Date(`1970/01/01 ${game.game_time}`);
-          gameDate.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+          gameDate.setFullYear(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+          );
           const diffMs = gameDate - now;
           const diffHrs = diffMs / 1000 / 60 / 60;
           return diffHrs >= 0 && diffHrs <= 2;
@@ -142,12 +149,14 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
   // Calculate distance between two coordinates using Haversine formula
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Earth's radius in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     return distance;
@@ -188,11 +197,13 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
     <div className='relative'>
       {/* Map Legend */}
       <div className='mb-4 bg-gray-800 rounded-lg p-4 border border-gray-700'>
-        <h3 className='text-sm font-semibold text-white mb-2 text-center'>Map Legend:</h3>
+        <h3 className='text-sm font-semibold text-white mb-2 text-center'>
+          Map Legend:
+        </h3>
         <div className='flex flex-wrap justify-center gap-4 text-sm text-gray-300'>
           <div className='flex items-center gap-2'>
             <div className='w-4 h-4 bg-yellow-400 rounded-full'></div>
-            <span>Favorite Venues</span>
+            <span>Favourite Venues</span>
           </div>
           <div className='flex items-center gap-2'>
             <div className='w-4 h-4 bg-green-500 rounded-full'></div>
@@ -206,42 +217,46 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
       </div>
 
       {/* Map Container */}
-      <div className='rounded-xl overflow-hidden shadow-2xl border-2 border-gray-700' style={{ height: '600px' }}>
+      <div
+        className='rounded-xl overflow-hidden shadow-2xl border-2 border-gray-700'
+        style={{ height: '600px' }}>
         <MapContainer
           center={[regionCenter.lat, regionCenter.lng]}
           zoom={regionCenter.zoom}
           style={{ height: '100%', width: '100%' }}
-          scrollWheelZoom={true}
-        >
+          scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
 
           {venuesWithCoordinates.map((venue, index) => (
             <Marker
               key={index}
               position={[venue.coordinates.lat, venue.coordinates.lng]}
-              icon={createCustomIcon(venue.isFavorite, venue.isStartingSoon)}
-            >
+              icon={createCustomIcon(venue.isFavorite, venue.isStartingSoon)}>
               <Popup maxWidth={600} minWidth={450} className='custom-popup'>
                 <div className='p-4'>
                   {/* Venue Header */}
                   <div className='mb-3'>
                     <h3 className='text-lg font-bold text-gray-900 mb-1 flex items-center gap-2'>
-                      {venue.isFavorite && <span className='text-yellow-500'>⭐</span>}
+                      {venue.isFavorite && (
+                        <span className='text-yellow-500'>⭐</span>
+                      )}
                       {venue.name}
                     </h3>
                     <p className='text-xs text-gray-600'>
                       {venue.coordinates.address}
                       {userLocation && (
                         <span className='ml-2 text-blue-600 font-semibold'>
-                          • {calculateDistance(
+                          •{' '}
+                          {calculateDistance(
                             userLocation.lat,
                             userLocation.lng,
                             venue.coordinates.lat,
                             venue.coordinates.lng
-                          ).toFixed(1)} km away
+                          ).toFixed(1)}{' '}
+                          km away
                         </span>
                       )}
                     </p>
@@ -250,16 +265,19 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
                   {/* Favorite Button */}
                   {currentUser && (
                     <button
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         toggleFavorite(venue.name);
                       }}
                       className={`btn btn-xs mb-3 w-full ${
                         venue.isFavorite ? 'btn-warning' : 'btn-outline'
-                      }`}
-                    >
-                      <FiHeart className={venue.isFavorite ? 'fill-current' : ''} />
-                      {venue.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                      }`}>
+                      <FiHeart
+                        className={venue.isFavorite ? 'fill-current' : ''}
+                      />
+                      {venue.isFavorite
+                        ? 'Remove from Favorites'
+                        : 'Add to Favorites'}
                     </button>
                   )}
 
@@ -267,14 +285,14 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
                   <div className='space-y-3'>
                     <h4 className='text-sm font-semibold text-gray-700 flex items-center gap-1'>
                       <FiUsers className='text-blue-500' />
-                      {venue.games.length} Game{venue.games.length !== 1 ? 's' : ''} Today
+                      {venue.games.length} Game
+                      {venue.games.length !== 1 ? 's' : ''} Today
                     </h4>
 
                     {venue.games.map((game, gameIndex) => (
                       <div
                         key={gameIndex}
-                        className='bg-gray-50 rounded-lg p-3 border border-gray-200'
-                      >
+                        className='bg-gray-50 rounded-lg p-3 border border-gray-200'>
                         <div className='font-medium text-gray-900 mb-2'>
                           {game.competition}
                         </div>
@@ -296,7 +314,9 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           <div className='flex items-center gap-2'>
                             <FiDollarSign className='text-green-500 flex-shrink-0' />
                             <span className='font-semibold'>Buy-in:</span>
-                            <span className='text-green-700 font-medium'>${game.buy_in}</span>
+                            <span className='text-green-700 font-medium'>
+                              ${game.buy_in}
+                            </span>
                           </div>
 
                           {game.starting_stack && (
@@ -313,8 +333,7 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
                             href={facebookPageUrls[game.competition]}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='mt-2 inline-block text-xs text-blue-600 hover:text-blue-800 hover:underline'
-                          >
+                            className='mt-2 inline-block text-xs text-blue-600 hover:text-blue-800 hover:underline'>
                             View Competition Page →
                           </a>
                         )}
@@ -329,8 +348,7 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
                     )}`}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='btn btn-primary btn-sm w-full mt-3 text-white'
-                  >
+                    className='btn btn-primary btn-sm w-full mt-3 text-white'>
                     🧭 Get Directions
                   </a>
                 </div>
@@ -342,7 +360,9 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
 
       {/* Venue Count */}
       <div className='mt-4 text-center text-sm text-gray-400'>
-        Showing {venuesWithCoordinates.length} venue{venuesWithCoordinates.length !== 1 ? 's' : ''} with games on {activeDay}
+        Showing {venuesWithCoordinates.length} venue
+        {venuesWithCoordinates.length !== 1 ? 's' : ''} with games on{' '}
+        {activeDay}
       </div>
     </div>
   );

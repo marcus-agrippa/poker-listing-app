@@ -51,15 +51,14 @@ const createCustomIcon = (isFavorite, isStartingSoon) => {
   });
 };
 
-const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
-  const { currentUser, userProfile } = useAuth();
+const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
+  const { currentUser } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [games, setGames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
 
-  // Determine region
-  const region = userProfile?.region || 'Central Coast';
+  // Get coordinates for the current region
   const venueCoordinates = getVenueCoordinates(region);
   const regionCenter = getRegionCenter(region);
 
@@ -144,7 +143,7 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls }) => {
         };
       })
       .filter(Boolean);
-  }, [venueGames, venueCoordinates, currentUser, isFavorite]);
+  }, [venueGames, venueCoordinates, currentUser, isFavorite, region]);
 
   // Calculate distance between two coordinates using Haversine formula
   const calculateDistance = (lat1, lon1, lat2, lon2) => {

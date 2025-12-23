@@ -33,20 +33,6 @@ const Footer = () => {
 
   return (
     <footer className='bg-slate-800 text-center p-6 bottom-0 w-full'>
-      <div className='mb-4'>
-        <p className='text-white text-sm mb-5'>
-          Like the app? Help me keep games up-to-date and add more cool
-          features!
-        </p>
-        <a
-          href='https://ko-fi.com/pokergamesaus'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <button className='bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded'>
-            Support Development
-          </button>
-        </a>
-      </div>
       <p className='text-white text-sm'>
         {currentUser
           ? 'Track your results in your dashboard! Game info needs updating? Register a new game? Something else?'

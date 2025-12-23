@@ -2,24 +2,24 @@
 export const centralCoastVenues = {
   'Gosford RSL Club': { lat: -33.4256, lng: 151.3428, address: 'West Gosford' },
   'Gosord RSL Club': { lat: -33.4256, lng: 151.3428, address: 'West Gosford' }, // Typo fix
-  'Budgewoi Soccer Club': { lat: -33.2309, lng: 151.5547, address: 'Budgewoi' },
+  'Budgewoi Soccer Club': { lat: -33.2258, lng: 151.5348, address: 'Budgewoi' },
   'Wyong Rugby League Club': { lat: -33.2817, lng: 151.4254, address: 'Wyong' },
   'Club Wyong': { lat: -33.2842, lng: 151.4243, address: 'Wyong' },
   'Elanora Hotel': { lat: -33.4395, lng: 151.3856, address: 'Erina' },
   'Elenora Hotel': { lat: -33.4395, lng: 151.3856, address: 'Erina' }, // Typo fix
-  'Halekulani Bowling Club': { lat: -33.2274, lng: 151.4862, address: 'Halekulani' },
-  'Toukley Golf Club': { lat: -33.2654, lng: 151.5321, address: 'Toukley' },
+  'Halekulani Bowling Club': { lat: -33.2318, lng: 151.5570, address: 'Halekulani' },
+  'Toukley Golf Club': { lat: -33.2537, lng: 151.5501, address: 'Toukley' },
   'Gwandalan Bowling Club': { lat: -33.1486, lng: 151.5956, address: 'Gwandalan' },
   'Ettalong Memorial Bowling Club': { lat: -33.5138, lng: 151.3342, address: 'Ettalong Beach' },
   'Terrigal Hotel': { lat: -33.4462, lng: 151.4454, address: 'Terrigal' },
   'Bateau Bay Bowling Club': { lat: -33.3826, lng: 151.4756, address: 'Bateau Bay' },
   'Northlakes Tavern': { lat: -33.2158, lng: 151.5097, address: 'Charmhaven' },
-  'Everglades Country Club': { lat: -33.3756, lng: 151.3214, address: 'Jilliby' },
-  'Wallarah Bay Recreation Club': { lat: -33.2687, lng: 151.5087, address: 'Gorokan' },
+  'Everglades Country Club': { lat: -33.4894, lng: 151.3157, address: 'Jilliby' },
+  'Wallarah Bay Recreation Club': { lat: -33.2600, lng: 151.5143, address: 'Gorokan' },
   'Club Umina': { lat: -33.5246, lng: 151.3112, address: 'Umina Beach' },
   'Central Coast Leagues Club': { lat: -33.4287, lng: 151.3398, address: 'Gosford' },
   'Mingara Recreation Club': { lat: -33.3456, lng: 151.4876, address: 'Tumbi Umbi' },
-  'Canton Beach Sports Club': { lat: -33.2598, lng: 151.5198, address: 'Canton Beach' },
+  'Canton Beach Sports Club': { lat: -33.2701, lng: 151.5463, address: 'Canton Beach' },
 };
 
 // Newcastle venue coordinates
@@ -154,10 +154,10 @@ export const geelongVenues = {
   'Geelong Bowling Club': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
   'Norlane Hotel': { lat: -38.0833, lng: 144.3333, address: 'Norlane' },
   'Shell Club': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
-  'Sphinx Hotel': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
+  'Sphinx Hotel': { lat: -38.1256, lng: 144.3415, address: 'Geelong' },
   'The Valley Inn': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
   'Valley Inn': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
-  'Waurn Ponds Hotel': { lat: -38.2000, lng: 144.2833, address: 'Waurn Ponds' },
+  'Waurn Ponds Hotel': { lat: -38.2022, lng: 144.3091, address: 'Waurn Ponds' },
   'White Eagle House': { lat: -38.1499, lng: 144.3617, address: 'Geelong' },
 };
 

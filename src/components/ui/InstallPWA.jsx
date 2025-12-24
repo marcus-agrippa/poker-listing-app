@@ -9,16 +9,23 @@ const InstallPWA = () => {
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
+    console.log('[PWA] InstallPWA component mounted');
+
     // Check if already installed (running in standalone mode)
     const standalone = window.matchMedia('(display-mode: standalone)').matches;
     setIsStandalone(standalone);
+    console.log('[PWA] Standalone mode:', standalone);
 
     // Check if iOS
     const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(iOS);
+    console.log('[PWA] iOS detected:', iOS);
 
     // Don't show banner if already installed
-    if (standalone) return;
+    if (standalone) {
+      console.log('[PWA] App already installed, not showing banner');
+      return;
+    }
 
     // Check if user has previously dismissed the banner
     const dismissed = localStorage.getItem('pwa-install-dismissed');
@@ -26,13 +33,18 @@ const InstallPWA = () => {
       const dismissedDate = new Date(dismissed);
       const now = new Date();
       const daysSinceDismissed = (now - dismissedDate) / (1000 * 60 * 60 * 24);
+      console.log('[PWA] Banner dismissed', daysSinceDismissed, 'days ago');
 
       // Show again after 7 days
-      if (daysSinceDismissed < 7) return;
+      if (daysSinceDismissed < 7) {
+        console.log('[PWA] Not showing banner (dismissed less than 7 days ago)');
+        return;
+      }
     }
 
     // For Chrome/Edge - listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
+      console.log('[PWA] beforeinstallprompt event fired');
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallBanner(true);
@@ -42,9 +54,24 @@ const InstallPWA = () => {
 
     // For iOS - show instructions after a delay
     if (iOS && !standalone) {
+      console.log('[PWA] Setting timeout to show iOS banner');
       setTimeout(() => {
+        console.log('[PWA] Showing iOS banner');
         setShowInstallBanner(true);
       }, 3000); // Show after 3 seconds
+    }
+
+    // For Android/mobile devices - show banner even without beforeinstallprompt
+    // This helps with testing and ensures mobile users see the option
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    console.log('[PWA] Mobile detected:', isMobile);
+
+    if (isMobile && !iOS && !standalone) {
+      console.log('[PWA] Setting timeout to show Android banner');
+      setTimeout(() => {
+        console.log('[PWA] Showing Android banner');
+        setShowInstallBanner(true);
+      }, 3000);
     }
 
     return () => {

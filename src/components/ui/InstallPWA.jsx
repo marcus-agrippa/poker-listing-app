@@ -8,22 +8,31 @@ const InstallPWA = () => {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
 
-  useEffect(() => {
-    console.log('[PWA] InstallPWA component mounted');
+  // Debug mode - set to true to test install flow
+  const DEBUG_MODE = false;
 
+  useEffect(() => {
     // Check if already installed (running in standalone mode)
     const standalone = window.matchMedia('(display-mode: standalone)').matches;
-    setIsStandalone(standalone);
-    console.log('[PWA] Standalone mode:', standalone);
+    const standaloneNavigation = window.navigator.standalone === true;
+    setIsStandalone(standalone || standaloneNavigation);
 
     // Check if iOS
     const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(iOS);
-    console.log('[PWA] iOS detected:', iOS);
 
     // Don't show banner if already installed
-    if (standalone) {
-      console.log('[PWA] App already installed, not showing banner');
+    if (standalone || standaloneNavigation) {
+      return;
+    }
+
+    // Track visit count
+    const visitCount = parseInt(localStorage.getItem('pwa-visit-count') || '0');
+    const newVisitCount = visitCount + 1;
+    localStorage.setItem('pwa-visit-count', newVisitCount.toString());
+
+    // Only show banner on 2nd visit or later (unless in debug mode)
+    if (newVisitCount < 2 && !DEBUG_MODE) {
       return;
     }
 
@@ -33,18 +42,15 @@ const InstallPWA = () => {
       const dismissedDate = new Date(dismissed);
       const now = new Date();
       const daysSinceDismissed = (now - dismissedDate) / (1000 * 60 * 60 * 24);
-      console.log('[PWA] Banner dismissed', daysSinceDismissed, 'days ago');
 
-      // Show again after 7 days
-      if (daysSinceDismissed < 7) {
-        console.log('[PWA] Not showing banner (dismissed less than 7 days ago)');
+      // Show again after 7 days (or in debug mode, show anyway)
+      if (daysSinceDismissed < 7 && !DEBUG_MODE) {
         return;
       }
     }
 
     // For Chrome/Edge - listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
-      console.log('[PWA] beforeinstallprompt event fired');
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallBanner(true);
@@ -53,23 +59,17 @@ const InstallPWA = () => {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     // For iOS - show instructions after a delay
-    if (iOS && !standalone) {
-      console.log('[PWA] Setting timeout to show iOS banner');
+    if (iOS && !standalone && !standaloneNavigation) {
       setTimeout(() => {
-        console.log('[PWA] Showing iOS banner');
         setShowInstallBanner(true);
-      }, 3000); // Show after 3 seconds
+      }, 3000);
     }
 
     // For Android/mobile devices - show banner even without beforeinstallprompt
-    // This helps with testing and ensures mobile users see the option
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    console.log('[PWA] Mobile detected:', isMobile);
 
-    if (isMobile && !iOS && !standalone) {
-      console.log('[PWA] Setting timeout to show Android banner');
+    if (isMobile && !iOS && !standalone && !standaloneNavigation) {
       setTimeout(() => {
-        console.log('[PWA] Showing Android banner');
         setShowInstallBanner(true);
       }, 3000);
     }
@@ -77,40 +77,26 @@ const InstallPWA = () => {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
-  }, []);
+  }, [DEBUG_MODE, deferredPrompt]);
 
   const handleInstallClick = async () => {
-    console.log('[PWA] Install button clicked');
-    console.log('[PWA] isIOS:', isIOS);
-    console.log('[PWA] deferredPrompt:', deferredPrompt);
-
     if (isIOS) {
       // Show iOS instructions modal
-      console.log('[PWA] Showing iOS instructions modal');
       setShowIOSInstructions(true);
       return;
     }
 
     if (!deferredPrompt) {
-      console.log('[PWA] No deferred prompt available - showing instructions');
       // No native prompt available, show manual instructions for Android
       setShowIOSInstructions(true);
       return;
     }
 
     // Show the native install prompt
-    console.log('[PWA] Showing native install prompt');
     deferredPrompt.prompt();
 
     // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('[PWA] User choice:', outcome);
-
-    if (outcome === 'accepted') {
-      console.log('[PWA] User accepted the install prompt');
-    } else {
-      console.log('[PWA] User dismissed the install prompt');
-    }
+    await deferredPrompt.userChoice;
 
     // Clear the deferred prompt
     setDeferredPrompt(null);

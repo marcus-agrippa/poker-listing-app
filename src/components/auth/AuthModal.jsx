@@ -2,8 +2,15 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
-const AuthModal = ({ isOpen, onClose }) => {
-  const [isLogin, setIsLogin] = useState(true);
+const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
+  const [isLogin, setIsLogin] = useState(initialMode === 'login');
+
+  // Reset to initial mode when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setIsLogin(initialMode === 'login');
+    }
+  }, [isOpen, initialMode]);
 
   useEffect(() => {
     const handleToggle = () => {

@@ -7,6 +7,9 @@ import RegionSelector from './auth/RegionSelector';
 import SignupPromotionCard from './ui/SignupPromotionCard';
 import HeroSection from './ui/HeroSection';
 import SocialProofSection from './ui/SocialProofSection';
+import ScrollToTop from './ui/ScrollToTop';
+import QuickStatsCard from './ui/QuickStatsCard';
+import EmptyState from './ui/EmptyState';
 import { FiList, FiMap } from 'react-icons/fi';
 
 const daysOfWeek = [
@@ -27,6 +30,8 @@ const RegionFilteredGamesPage = () => {
   const [selectedRegion, setSelectedRegion] = useState('');
   const [showRegionSelector, setShowRegionSelector] = useState(false);
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
+  const [allGames, setAllGames] = useState([]);
+  const [gameCounts, setGameCounts] = useState({});
 
   const regionConfig = {
     'Central Coast': {
@@ -140,6 +145,31 @@ const RegionFilteredGamesPage = () => {
   const currentConfig =
     regionConfig[selectedRegion] || regionConfig[getDomainBasedRegion()];
 
+  // Fetch games data to calculate counts
+  useEffect(() => {
+    const fetchGamesData = async () => {
+      try {
+        const response = await fetch(currentConfig.dataUrl);
+        const data = await response.json();
+        setAllGames(data);
+
+        // Calculate game counts per day
+        const counts = {};
+        daysOfWeek.forEach(day => {
+          counts[day] = data.filter(game => game.day === day).length;
+        });
+        setGameCounts(counts);
+      } catch (error) {
+        console.error('Error fetching games data:', error);
+      }
+    };
+
+    fetchGamesData();
+  }, [currentConfig.dataUrl]);
+
+  // Check if active day has games
+  const activeDayGames = allGames.filter(game => game.day === activeDay);
+
   if (currentUser && showRegionSelector) {
     return (
       <div className='mx-auto p-4 mt-8 max-w-screen-md mb-8'>
@@ -189,7 +219,11 @@ const RegionFilteredGamesPage = () => {
           activeDay={activeDay}
           setActiveDay={setActiveDay}
           daysOfWeek={daysOfWeek}
+          gameCounts={gameCounts}
         />
+
+        {/* Quick Stats Card */}
+        {allGames.length > 0 && <QuickStatsCard games={allGames} daysOfWeek={daysOfWeek} />}
 
         {/* View Toggle */}
         <div className='flex justify-center gap-2 mb-6 mt-6'>
@@ -210,11 +244,20 @@ const RegionFilteredGamesPage = () => {
         </div>
 
         {viewMode === 'list' ? (
-          <GameList
-            activeDay={activeDay}
-            dataUrl={currentConfig.dataUrl}
-            facebookPageUrls={currentConfig.facebookPageUrls}
-          />
+          activeDayGames.length === 0 ? (
+            <EmptyState
+              activeDay={activeDay}
+              daysOfWeek={daysOfWeek}
+              setActiveDay={setActiveDay}
+              gamesData={allGames}
+            />
+          ) : (
+            <GameList
+              activeDay={activeDay}
+              dataUrl={currentConfig.dataUrl}
+              facebookPageUrls={currentConfig.facebookPageUrls}
+            />
+          )
         ) : (
           <MapView
             activeDay={activeDay}
@@ -250,6 +293,9 @@ const RegionFilteredGamesPage = () => {
 
       {/* Social Proof Section - only show for logged-out users */}
       {!currentUser && <SocialProofSection />}
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 };

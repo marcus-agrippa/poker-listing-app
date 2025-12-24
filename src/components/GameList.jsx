@@ -5,6 +5,7 @@ import { useFavorites } from '../contexts/FavoritesContext';
 import { FiEdit3, FiHeart, FiClock, FiSearch, FiX } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 import AdvancedFilters from './AdvancedFilters';
+import BuyInQuickFilters from './ui/BuyInQuickFilters';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const { currentUser } = useAuth();
@@ -266,6 +267,11 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Buy-in Quick Filters */}
+      <div className='container mx-auto px-4 mb-6'>
+        <BuyInQuickFilters filters={filters} onFilterChange={setFilters} />
       </div>
 
       {/* Advanced Filters */}

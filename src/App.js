@@ -22,6 +22,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { Toaster } from 'react-hot-toast';
 import ReactGA from 'react-ga4';
+import InstallPWA from './components/ui/InstallPWA';
 
 const AppContent = () => {
   const hostname = window.location.hostname;
@@ -216,6 +217,7 @@ const AppContent = () => {
             },
           }}
         />
+        <InstallPWA />
       </div>
     </HelmetProvider>
   );

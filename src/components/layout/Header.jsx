@@ -18,6 +18,7 @@ import { FiSettings } from 'react-icons/fi';
 
 const Header = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState('login');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
@@ -73,13 +74,6 @@ const Header = () => {
       <div className='navbar bg-slate-800 text-center justify-between px-4 relative'>
         <Link to='/' className='text-lg sm:text-xl text-white font-bold py-4'>
           <GiPokerHand className='text-2xl sm:text-3xl mr-2 sm:mr-3' />
-          <span className='hidden xs:inline'>{title}</span>
-          <span className='xs:hidden'>
-            {title
-              .split(' ')
-              .map(word => word.charAt(0))
-              .join('')}
-          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -136,13 +130,21 @@ const Header = () => {
           ) : (
             <div className='flex items-center space-x-2'>
               <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className='btn btn-primary btn-sm hover:btn-primary-focus transition-all duration-200'>
-                Join Free
+                onClick={() => {
+                  setAuthModalMode('login');
+                  setIsAuthModalOpen(true);
+                }}
+                className='btn btn-ghost btn-sm text-white hover:text-gray-300'>
+                Login
               </button>
-              <div className='text-xs text-green-400 font-semibold'>
-                Free to join!
-              </div>
+              <button
+                onClick={() => {
+                  setAuthModalMode('signup');
+                  setIsAuthModalOpen(true);
+                }}
+                className='btn btn-primary btn-sm hover:btn-primary-focus transition-all duration-200'>
+                Sign Up
+              </button>
             </div>
           )}
         </div>
@@ -157,11 +159,24 @@ const Header = () => {
               <FiMenu className='text-2xl' />
             </button>
           ) : (
-            <button
-              onClick={() => setIsAuthModalOpen(true)}
-              className='btn btn-primary btn-sm'>
-              Join Free
-            </button>
+            <div className='flex items-center gap-2'>
+              <button
+                onClick={() => {
+                  setAuthModalMode('login');
+                  setIsAuthModalOpen(true);
+                }}
+                className='btn btn-ghost btn-sm text-white hover:text-gray-300'>
+                Login
+              </button>
+              <button
+                onClick={() => {
+                  setAuthModalMode('signup');
+                  setIsAuthModalOpen(true);
+                }}
+                className='btn btn-primary btn-sm'>
+                Sign Up
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -267,6 +282,7 @@ const Header = () => {
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authModalMode}
       />
     </>
   );

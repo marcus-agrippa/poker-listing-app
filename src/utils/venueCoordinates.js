@@ -205,6 +205,54 @@ export const goldCoastVenues = {
   'Treetops Tavern': { lat: -27.9500, lng: 153.3833, address: 'Gold Coast' },
 };
 
+// Sydney venue coordinates
+export const sydneyVenues = {
+  'Cheers Bar': { lat: -33.8688, lng: 151.2093, address: 'Sydney CBD' },
+  'Hotel Lewisham': { lat: -33.8959, lng: 151.1422, address: 'Lewisham' },
+  'Dee Why Rsl Club Ltd': { lat: -33.7542, lng: 151.2889, address: 'Dee Why' },
+  'Chatswood RSL Club Ltd': { lat: -33.7969, lng: 151.1832, address: 'Chatswood' },
+  'Canterbury Hurlstone Park RSL': { lat: -33.9075, lng: 151.1289, address: 'Canterbury' },
+  'Ranch Hotel': { lat: -33.8969, lng: 151.0772, address: 'North Parramatta' },
+  'Lidcombe Bowling Club': { lat: -33.8656, lng: 151.0444, address: 'Lidcombe' },
+  'Castle Hill RSL Club': { lat: -33.7311, lng: 150.9969, address: 'Castle Hill' },
+  'Cabramatta Bowling Club': { lat: -33.8961, lng: 150.9353, address: 'Cabramatta' },
+  'The Woodstock Hotel': { lat: -33.8689, lng: 151.2092, address: 'Sydney' },
+  'Camden Lakeside Country Club': { lat: -34.0542, lng: 150.6969, address: 'Camden' },
+  'Padstow Bowling Club': { lat: -33.9508, lng: 151.0389, address: 'Padstow' },
+  'Norths Cammeray': { lat: -33.8189, lng: 151.2094, address: 'Cammeray' },
+  'Greengate Hotel': { lat: -33.7808, lng: 151.2042, address: 'Killara' },
+  'World Square Bar': { lat: -33.8776, lng: 151.2064, address: 'Sydney CBD' },
+  'North Bondi RSL Club': { lat: -33.8858, lng: 151.2778, address: 'North Bondi' },
+  'Manly Club': { lat: -33.7969, lng: 151.2878, address: 'Manly' },
+  'Briars Sports': { lat: -33.9797, lng: 151.1553, address: 'Burwood' },
+  'The Concord': { lat: -33.8547, lng: 151.0911, address: 'Concord' },
+  'The Epping Club': { lat: -33.7722, lng: 151.0819, address: 'Epping' },
+  'Carlingford Bowling Club': { lat: -33.7792, lng: 151.0436, address: 'Carlingford' },
+  'Hornsby Railway Hotel': { lat: -33.7042, lng: 151.0989, address: 'Hornsby' },
+  'Hotel Rockdale': { lat: -33.9528, lng: 151.1372, address: 'Rockdale' },
+  'Players Lounge @ West HQ': { lat: -33.8003, lng: 150.9878, address: 'West Pennant Hills' },
+  'Three Swallows Hotel': { lat: -33.8731, lng: 151.2061, address: 'Sydney' },
+  'Canada Bay Club': { lat: -33.8547, lng: 151.1111, address: 'Canada Bay' },
+  'The Builders Club Dee Why': { lat: -33.7542, lng: 151.2889, address: 'Dee Why' },
+  'Hornsby RSL Club': { lat: -33.7042, lng: 151.0989, address: 'Hornsby' },
+  'Concourse Bar': { lat: -33.8003, lng: 151.0989, address: 'Chatswood' },
+  'The Sherwood': { lat: -33.8689, lng: 151.2092, address: 'Sydney' },
+  'Crown Hotel - Camden': { lat: -34.0542, lng: 150.6969, address: 'Camden' },
+  'The Alcott': { lat: -33.8831, lng: 151.2042, address: 'Sydney' },
+  'West Pymble Bicentennial Club': { lat: -33.7653, lng: 151.1361, address: 'West Pymble' },
+  'The Oxford Hotel Drummoyne': { lat: -33.8508, lng: 151.1531, address: 'Drummoyne' },
+  'Campsie South Bowling & Recreation Club': { lat: -33.9142, lng: 151.1003, address: 'Campsie' },
+  'Mounties Club': { lat: -33.8961, lng: 150.9353, address: 'Mount Pritchard' },
+  'Ashfield RSL Club Ltd': { lat: -33.8892, lng: 151.1256, address: 'Ashfield' },
+  'Dural Country Club': { lat: -33.6886, lng: 151.0342, address: 'Dural' },
+  'Collingwood Hotel': { lat: -33.8676, lng: 151.1848, address: 'Darlinghurst' },
+  'Padstow RSL': { lat: -33.9508, lng: 151.0389, address: 'Padstow' },
+  'Club Turramurra': { lat: -33.7369, lng: 151.1289, address: 'Turramurra' },
+  'North Ryde RSL Community Club': { lat: -33.7969, lng: 151.1211, address: 'North Ryde' },
+  'The Governor Hotel': { lat: -33.8689, lng: 151.2092, address: 'Sydney' },
+  'Carnarvon Golf Club': { lat: -33.9886, lng: 151.1419, address: 'Bardwell Park' },
+};
+
 // Helper function to get venue coordinates by region
 export const getVenueCoordinates = (region) => {
   const regionMap = {
@@ -218,6 +266,7 @@ export const getVenueCoordinates = (region) => {
     'Geelong': geelongVenues,
     'Brisbane': brisbaneVenues,
     'Gold Coast': goldCoastVenues,
+    'Sydney': sydneyVenues,
   };
 
   return regionMap[region] || centralCoastVenues;
@@ -236,6 +285,7 @@ export const getRegionCenter = (region) => {
     'Geelong': { lat: -38.1499, lng: 144.3617, zoom: 12 },
     'Brisbane': { lat: -27.4698, lng: 153.0251, zoom: 11 },
     'Gold Coast': { lat: -28.0167, lng: 153.4000, zoom: 11 },
+    'Sydney': { lat: -33.8688, lng: 151.2093, zoom: 10 },
   };
 
   return centers[region] || centers['Central Coast'];

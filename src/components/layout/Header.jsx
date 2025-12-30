@@ -51,6 +51,8 @@ const Header = () => {
       ? 'POKER GOLD COAST'
       : hostname === 'pokerbrisbane.com'
       ? 'POKER BRISBANE'
+      : hostname === 'pokersydney.com'
+      ? 'POKER SYDNEY'
       : 'POKER';
 
   const handleLogout = async () => {

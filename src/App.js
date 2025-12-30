@@ -36,6 +36,7 @@ const AppContent = () => {
   const isGeelong = hostname === 'pokergeelong.com';
   const isBrisbane = hostname === 'pokerbrisbane.com';
   const isGoldCoast = hostname === 'pokergoldcoast.com';
+  const isSydney = hostname === 'pokersydney.com';
 
   const dataUrl =
     hostname === 'pokercentralcoast.com'
@@ -56,6 +57,8 @@ const AppContent = () => {
       ? '/data-geelong.json'
       : hostname === 'pokerbrisbane.com'
       ? '/data-brisbane.json'
+      : hostname === 'pokersydney.com'
+      ? '/data-sydney.json'
       : hostname === 'pokergoldcoast.com'
       ? '/data-gold-coast.json'
       : '/data.json';
@@ -78,6 +81,8 @@ const AppContent = () => {
     ? 'G-E7FSLHCS2M'
     : isBrisbane
     ? 'G-P1BXT9TMLY'
+    : isSydney
+    ? 'G-FL19FJJ82K'
     : isGoldCoast
     ? 'G-G23T3GJ7HV'
     : 'G-PXFQ31JSSG';
@@ -108,8 +113,10 @@ const AppContent = () => {
               ? 'Poker Perth'
               : isGeelong
               ? 'Poker Geelong'
-                ? isBrisbane
-                : 'Poker Brisbane'
+              : isBrisbane
+              ? 'Poker Brisbane'
+              : isSydney
+              ? 'Poker Sydney'
               : isGoldCoast
               ? 'Poker Gold Coast'
               : 'Poker Game Information'}
@@ -135,6 +142,8 @@ const AppContent = () => {
                 ? 'Discover and join poker games in Geelong. A central hub for all poker enthusiasts.'
                 : isBrisbane
                 ? 'Discover and join poker games in Brisbane. A central hub for all poker enthusiasts.'
+                : isSydney
+                ? 'Discover and join poker games in Sydney. A central hub for all poker enthusiasts.'
                 : isGoldCoast
                 ? 'Discover and join poker games in Gold Coast. A central hub for all poker enthusiasts.'
                 : 'Poker game information'

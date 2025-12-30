@@ -27,6 +27,7 @@ const SignupForm = ({ onClose }) => {
     'Geelong',
     'Gold Coast',
     'Brisbane',
+    'Sydney',
   ];
 
   const handleSubmit = async e => {

@@ -114,6 +114,7 @@ const Pokerdex = () => {
         Geelong: '/data-geelong.json',
         'Gold Coast': '/data-gold-coast.json',
         Brisbane: '/data-brisbane.json',
+        Sydney: '/data-sydney.json',
       };
 
       const dataUrl = regionDataMap[userProfile.region] || '/data.json';
@@ -267,28 +268,42 @@ const Pokerdex = () => {
     return cat ? cat.label : 'General Notes';
   };
 
-  const getPlayerObservationsPlaceholder = (category) => {
+  const getPlayerObservationsPlaceholder = category => {
     const placeholders = {
-      'player': 'e.g., John from seat 3 - plays tight but bluffs big on rivers. Loves to slowplay sets.',
-      'tells': 'e.g., Touches nose when bluffing. Sits forward when holding strong hands. Talks more with weak holdings.',
-      'playing-style': 'e.g., Tight-aggressive player. Rarely calls, either folds or raises. Plays position well.',
-      'tendencies': 'e.g., Always raises UTG with premium hands. 3-bets light from button. Folds to 4-bets without AA/KK.',
-      'strategy': 'e.g., Focus on position against this player. Bluff sparingly. Value bet thinly.',
-      'venue': 'e.g., Dealers are fast. Good lighting. Players tend to be recreational on weekends.',
-      'general': 'e.g., Remember to track this for next session. Important observation about the game.'
+      player:
+        'e.g., John from seat 3 - plays tight but bluffs big on rivers. Loves to slowplay sets.',
+      tells:
+        'e.g., Touches nose when bluffing. Sits forward when holding strong hands. Talks more with weak holdings.',
+      'playing-style':
+        'e.g., Tight-aggressive player. Rarely calls, either folds or raises. Plays position well.',
+      tendencies:
+        'e.g., Always raises UTG with premium hands. 3-bets light from button. Folds to 4-bets without AA/KK.',
+      strategy:
+        'e.g., Focus on position against this player. Bluff sparingly. Value bet thinly.',
+      venue:
+        'e.g., Dealers are fast. Good lighting. Players tend to be recreational on weekends.',
+      general:
+        'e.g., Remember to track this for next session. Important observation about the game.',
     };
     return placeholders[category] || placeholders.general;
   };
 
-  const getGameNotesPlaceholder = (category) => {
+  const getGameNotesPlaceholder = category => {
     const placeholders = {
-      'player': 'e.g., This player responds well to pressure. Folds easily to 3-bets without strong hands.',
-      'tells': 'e.g., Physical tells: hand shaking with strong hands, betting patterns change when bluffing.',
-      'playing-style': 'e.g., LAG style - lots of action, needs strong hands to call big bets.',
-      'tendencies': 'e.g., Always continuation bets flop, rarely double barrels without equity.',
-      'strategy': 'e.g., Table was very tight pre-flop. Good spots for stealing blinds. Avoid bluffing station in seat 3.',
-      'venue': 'e.g., $1/$2 game plays bigger than other venues. Rake is 10% capped at $6.',
-      'general': 'e.g., General observations about the session, table dynamics, or important moments.'
+      player:
+        'e.g., This player responds well to pressure. Folds easily to 3-bets without strong hands.',
+      tells:
+        'e.g., Physical tells: hand shaking with strong hands, betting patterns change when bluffing.',
+      'playing-style':
+        'e.g., LAG style - lots of action, needs strong hands to call big bets.',
+      tendencies:
+        'e.g., Always continuation bets flop, rarely double barrels without equity.',
+      strategy:
+        'e.g., Table was very tight pre-flop. Good spots for stealing blinds. Avoid bluffing station in seat 3.',
+      venue:
+        'e.g., $1/$2 game plays bigger than other venues. Rake is 10% capped at $6.',
+      general:
+        'e.g., General observations about the session, table dynamics, or important moments.',
     };
     return placeholders[category] || placeholders.general;
   };
@@ -716,7 +731,9 @@ const Pokerdex = () => {
                     })
                   }
                   className='w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500'
-                  placeholder={getPlayerObservationsPlaceholder(formData.category)}></textarea>
+                  placeholder={getPlayerObservationsPlaceholder(
+                    formData.category
+                  )}></textarea>
               </div>
 
               <div>
@@ -730,7 +747,9 @@ const Pokerdex = () => {
                     setFormData({ ...formData, gameNotes: e.target.value })
                   }
                   className='w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500'
-                  placeholder={getGameNotesPlaceholder(formData.category)}></textarea>
+                  placeholder={getGameNotesPlaceholder(
+                    formData.category
+                  )}></textarea>
               </div>
 
               <div>

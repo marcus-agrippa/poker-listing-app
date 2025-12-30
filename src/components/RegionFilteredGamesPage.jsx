@@ -104,6 +104,15 @@ const RegionFilteredGamesPage = () => {
           'https://www.facebook.com/people/NPL-Brisbane-South-Gold-Coast/100066979489839/',
       },
     },
+    Sydney: {
+      dataUrl: '/data-sydney.json',
+      facebookPageUrls: {
+        'APL Poker': 'https://www.facebook.com/playAPL/',
+        'WPT League': 'https://au.wptleague.com/',
+        'National Poker League':
+          'https://www.facebook.com/groups/667312633317780/',
+      },
+    },
     'Gold Coast': {
       dataUrl: '/data-gold-coast.json',
       facebookPageUrls: {
@@ -139,6 +148,7 @@ const RegionFilteredGamesPage = () => {
     if (hostname === 'pokergeelong.com') return 'Geelong';
     if (hostname === 'pokergoldcoast.com') return 'Gold Coast';
     if (hostname === 'pokerbrisbane.com') return 'Brisbane';
+    if (hostname === 'pokersydney.com') return 'Sydney';
     return 'Central Coast'; // default
   };
 
@@ -223,7 +233,9 @@ const RegionFilteredGamesPage = () => {
         />
 
         {/* Quick Stats Card */}
-        {allGames.length > 0 && <QuickStatsCard games={allGames} daysOfWeek={daysOfWeek} />}
+        {allGames.length > 0 && (
+          <QuickStatsCard games={allGames} daysOfWeek={daysOfWeek} />
+        )}
 
         {/* View Toggle */}
         <div className='flex justify-center gap-2 mb-6 mt-6'>

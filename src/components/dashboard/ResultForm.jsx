@@ -29,6 +29,7 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
     'Gold Coast': '/data-gold-coast.json',
     Brisbane: '/data-brisbane.json',
     Sydney: '/data-sydney.json',
+    Melbourne: '/data-melbourne.json',
   };
 
   useEffect(() => {

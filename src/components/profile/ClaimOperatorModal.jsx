@@ -31,6 +31,7 @@ const ClaimOperatorModal = ({ isOpen, onClose, existingOperators = [] }) => {
         'Gold Coast': '/data-gold-coast.json',
         Brisbane: '/data-brisbane.json',
         Sydney: '/data-sydney.json',
+        Melbourne: '/data-melbourne.json',
       };
 
       if (regionDataMap[userProfile.region]) {
@@ -52,6 +53,7 @@ const ClaimOperatorModal = ({ isOpen, onClose, existingOperators = [] }) => {
       'pokergoldcoast.com': '/data-gold-coast.json',
       'pokerbrisbane.com': '/data-brisbane.json',
       'pokersydney.com': '/data-sydney.json',
+      'pokermelbourne.com': '/data-melbourne.json',
     };
 
     return dataUrlMap[currentHostname] || '/data.json';

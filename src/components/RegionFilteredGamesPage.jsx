@@ -113,6 +113,14 @@ const RegionFilteredGamesPage = () => {
           'https://www.facebook.com/groups/667312633317780/',
       },
     },
+    Melbourne: {
+      dataUrl: '/data-melbourne.json',
+      facebookPageUrls: {
+        'APL Poker': 'https://www.facebook.com/groups/aplmetroinner/',
+        'WPT League': 'https://au.wptleague.com/',
+        'National Poker League': 'https://www.npl.com.au/Events/List',
+      },
+    },
     'Gold Coast': {
       dataUrl: '/data-gold-coast.json',
       facebookPageUrls: {
@@ -149,6 +157,7 @@ const RegionFilteredGamesPage = () => {
     if (hostname === 'pokergoldcoast.com') return 'Gold Coast';
     if (hostname === 'pokerbrisbane.com') return 'Brisbane';
     if (hostname === 'pokersydney.com') return 'Sydney';
+    if (hostname === 'pokermelbourne.com') return 'Melbourne';
     return 'Central Coast'; // default
   };
 

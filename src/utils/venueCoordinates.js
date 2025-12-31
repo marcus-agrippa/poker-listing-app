@@ -253,6 +253,37 @@ export const sydneyVenues = {
   'Carnarvon Golf Club': { lat: -33.9886, lng: 151.1419, address: 'Bardwell Park' },
 };
 
+// Melbourne venue coordinates
+export const melbourneVenues = {
+  'Highways': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Freccia Azzurra Club': { lat: -37.8735, lng: 145.0472, address: 'Bulleen' },
+  'Club Italia Sporting Club': { lat: -37.8735, lng: 145.0472, address: 'Bulleen' },
+  'Sanctuary Lakes Hotel': { lat: -37.8833, lng: 144.7500, address: 'Point Cook' },
+  'Hotel 520': { lat: -37.8136, lng: 144.9631, address: 'Melbourne CBD' },
+  'Pink Hill Hotel': { lat: -37.9667, lng: 145.2833, address: 'Croydon' },
+  'Dorset Gardens Hotel': { lat: -37.9667, lng: 145.2833, address: 'Croydon' },
+  'Amstel Club': { lat: -37.7667, lng: 145.0167, address: 'Heidelberg West' },
+  'Vegas At Waverley Gardens': { lat: -37.9167, lng: 145.1667, address: 'Mulgrave' },
+  'Hawthorn Hotel': { lat: -37.8217, lng: 145.0333, address: 'Hawthorn' },
+  '388 Sports Bar': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Roxburgh Park Hotel': { lat: -37.6333, lng: 144.9333, address: 'Roxburgh Park' },
+  'Yarraville Footscray Bowling Club': { lat: -37.8167, lng: 144.8833, address: 'Yarraville' },
+  'Hoppers Crossing Sports Club': { lat: -37.8833, lng: 144.7000, address: 'Hoppers Crossing' },
+  'Melton Entertainment Park': { lat: -37.6833, lng: 144.5833, address: 'Melton' },
+  'Wantirna Club': { lat: -37.8500, lng: 145.2333, address: 'Wantirna' },
+  'Club Noble': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Zagame\'s Caulfield Club Hotel': { lat: -37.8833, lng: 145.0333, address: 'Caulfield' },
+  'The King Hotel': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Highlands Hotel': { lat: -37.7833, lng: 144.9667, address: 'Craigieburn' },
+  'Skyways Taverner': { lat: -37.7167, lng: 144.8833, address: 'Tullamarine' },
+  'Cramers Hotel': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Sandown Park Hotel': { lat: -37.9500, lng: 145.1333, address: 'Springvale' },
+  'Tigers Clubhouse': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Waltzing Matilda Hotel': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'The Phoenix Hotel': { lat: -37.8136, lng: 144.9631, address: 'Melbourne' },
+  'Veneto Club': { lat: -37.7333, lng: 145.0167, address: 'Bulleen' },
+};
+
 // Helper function to get venue coordinates by region
 export const getVenueCoordinates = (region) => {
   const regionMap = {
@@ -267,6 +298,7 @@ export const getVenueCoordinates = (region) => {
     'Brisbane': brisbaneVenues,
     'Gold Coast': goldCoastVenues,
     'Sydney': sydneyVenues,
+    'Melbourne': melbourneVenues,
   };
 
   return regionMap[region] || centralCoastVenues;
@@ -286,6 +318,7 @@ export const getRegionCenter = (region) => {
     'Brisbane': { lat: -27.4698, lng: 153.0251, zoom: 11 },
     'Gold Coast': { lat: -28.0167, lng: 153.4000, zoom: 11 },
     'Sydney': { lat: -33.8688, lng: 151.2093, zoom: 10 },
+    'Melbourne': { lat: -37.8136, lng: 144.9631, zoom: 10 },
   };
 
   return centers[region] || centers['Central Coast'];

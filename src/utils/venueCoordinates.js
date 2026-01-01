@@ -248,108 +248,184 @@ export const newcastleVenues = {
 
 // Ballarat venue coordinates
 export const ballaratVenues = {
-  'The Provincial Hotel': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
+  'The Provincial Hotel': {
+    lat: -37.558129103369176,
+    lng: 143.85785643851534,
+    address: '121 Lydiard St N, Ballarat Central VIC 3350',
+  },
   'Lake Wendouree Pavilion': {
-    lat: -37.55,
-    lng: 143.84,
-    address: 'Lake Wendouree',
+    lat: -37.553352242645786,
+    lng: 143.84274042623332,
+    address: '22 Wendouree Parade, Lake Wendouree VIC 3350',
   },
-  'Ballarat RSL': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
+  'Ballarat RSL': {
+    lat: -37.52779303474966,
+    lng: 143.8575104385138,
+    address: '330 Heinz Ln, Invermay Park VIC 3350',
+  },
   'North Ballarat Sports Club': {
-    lat: -37.5394,
-    lng: 143.8247,
-    address: 'North Ballarat',
+    lat: -37.53822982427488,
+    lng: 143.84822772502125,
+    address: '725 Creswick Rd, Wendouree VIC 3350',
   },
-  'Ballarat Bowls Club': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
+  'Ballarat Bowls Club': {
+    lat: -37.55622574397697,
+    lng: 143.86317439931344,
+    address: '6 Havelock St, Soldiers Hill VIC 3350',
+  },
   'Cattleyards Inn Hotel': {
-    lat: -37.5622,
-    lng: 143.8503,
-    address: 'Ballarat',
+    lat: -37.57097240993606,
+    lng: 143.81886091152992,
+    address: '1015 La Trobe St, Delacombe VIC 3356',
   },
-  'Freight Bar': { lat: -37.5622, lng: 143.8503, address: 'Ballarat' },
-  'Robin Hood Hotel': { lat: -37.5594, lng: 143.8511, address: 'Ballarat' },
+  'Freight Bar': {
+    lat: -37.56011917911043,
+    lng: 143.8641352115294,
+    address: '49 Mair St E, Ballarat Central VIC 3350',
+  },
+  'Robin Hood Hotel': {
+    lat: -37.560967813362154,
+    lng: 143.86408199300513,
+    address: '33 Peel St N, Ballarat Central VIC 3350',
+  },
 };
 
 // Wollongong venue coordinates
 export const wollongongVenues = {
   'North Wollongong Hotel': {
-    lat: -34.4131,
-    lng: 150.8969,
-    address: 'North Wollongong',
+    lat: -34.41273785070364,
+    lng: 150.89302442670387,
+    address: '3 Flinders St, North Wollongong NSW 2500',
   },
   'Collegians Rugby Club': {
-    lat: -34.4278,
-    lng: 150.8931,
-    address: 'Wollongong',
+    lat: -34.420220816901065,
+    lng: 150.89239744019744,
+    address: '3A Charlotte St, Wollongong NSW 2500',
   },
   'Corrimal Bowling Club': {
-    lat: -34.3742,
-    lng: 150.8961,
-    address: 'Corrimal',
+    lat: -34.36155941465456,
+    lng: 150.89278127826586,
+    address: '43-47 Francis St, Corrimal NSW 2518',
   },
-  'Albion Park RSL': { lat: -34.5694, lng: 150.7794, address: 'Albion Park' },
+  'Albion Park RSL': {
+    lat: -34.56994031440585,
+    lng: 150.77074920952,
+    address: '160 Tongarra Rd, Albion Park NSW 2527',
+  },
   'Albione Park Hotel': {
-    lat: -34.5694,
-    lng: 150.7794,
-    address: 'Albion Park',
+    lat: -34.57085451343,
+    lng: 150.77481069602695,
+    address: 'Cnr Tongarra &, Terry St, Albion Park NSW 2527',
   },
-  'Berkeley Sports Club': { lat: -34.4756, lng: 150.8522, address: 'Berkeley' },
+  'Berkeley Sports Club': {
+    lat: -34.482283265994596,
+    lng: 150.84745501136496,
+    address: '5 Wilkinson St, Berkeley NSW 2506',
+  },
   'Cabbage Tree Hotel': {
-    lat: -34.9167,
-    lng: 150.5833,
-    address: 'Fairy Meadow',
+    lat: -34.389010082635245,
+    lng: 150.89389335508577,
+    address: 'Corner Princes Highway &, Anama St, Fairy Meadow NSW 2519',
   },
-  'Club Windang': { lat: -34.55, lng: 150.8667, address: 'Windang' },
+  'Club Windang': {
+    lat: -34.53290582789175,
+    lng: 150.8671996248607,
+    address: '2-6 Judbooley Parade, Windang NSW 2528',
+  },
   "Dicey Riley's Hotel": {
-    lat: -34.4278,
-    lng: 150.8931,
-    address: 'Wollongong',
+    lat: -34.425392208517984,
+    lng: 150.8890618267047,
+    address: '329-333 Crown St, Wollongong NSW 2500',
   },
   'Gerringong Bowling Club': {
-    lat: -34.7458,
-    lng: 150.8269,
-    address: 'Gerringong',
+    lat: -34.7422375340907,
+    lng: 150.83168604761192,
+    address: 'Pacific Ave, Werri Beach NSW 2534',
   },
-  'Illawara Yacht Club': { lat: -34.4278, lng: 150.9, address: 'Wollongong' },
+  'Illawara Yacht Club': {
+    lat: -34.48433237241701,
+    lng: 150.87579392925244,
+    address: '1 Northcliffe Dr, Warrawong NSW 2502',
+  },
   'Oak Flats Bowling Club': {
-    lat: -34.5597,
-    lng: 150.8186,
-    address: 'Oak Flats',
+    lat: -34.563842640632274,
+    lng: 150.824408867191,
+    address: 'David Ave, Oak Flats NSW 2529',
   },
   'Shoalhaven Heads Hotel': {
-    lat: -34.85,
-    lng: 150.75,
-    address: 'Shoalhaven Heads',
+    lat: -34.85417276302713,
+    lng: 150.73951668926264,
+    address: '51 River Rd, Shoalhaven Heads NSW 2535',
   },
-  'The Builders Club': { lat: -34.4278, lng: 150.8931, address: 'Wollongong' },
-  'Warilla Bowls': { lat: -34.55, lng: 150.8667, address: 'Warilla' },
+  'The Builders Club': {
+    lat: -34.42024841216095,
+    lng: 150.89699111136167,
+    address: '61 Church St, Wollongong NSW 2500',
+  },
+  'Warilla Bowls': {
+    lat: -34.55526065324944,
+    lng: 150.86545564679702,
+    address: '63 Jason Ave, Barrack Heights NSW 2528',
+  },
 };
 
 // Townsville venue coordinates
 export const townsvilleVenues = {
   'The Ville Resort-Casino': {
-    lat: -19.259,
-    lng: 146.8169,
-    address: 'Townsville',
+    lat: -19.074704776147513,
+    lng: 146.78717580789157,
+    address: 'Sir Leslie Thiess Dr, Townsville City QLD 4810',
   },
   'Townsville Sports Reserve': {
-    lat: -19.259,
-    lng: 146.8169,
-    address: 'Townsville',
+    lat: -19.25069674560385,
+    lng: 146.80708575305297,
+    address: 'Redpath St, North Ward QLD 4810',
   },
-  'North Shore Hotel': { lat: -19.24, lng: 146.79, address: 'Burdell' },
-  'North Shore Tavern': { lat: -19.24, lng: 146.79, address: 'Burdell' },
-  'Ayr Anzac Memorial Club': { lat: -19.5733, lng: 147.4056, address: 'Ayr' },
+  'North Shore Hotel': {
+    lat: -19.252325347814566,
+    lng: 146.70015020702527,
+    address: '37 Main St, Burdell QLD 4818',
+  },
+  'North Shore Tavern': {
+    lat: -19.252325347814566,
+    lng: 146.70015020702527,
+    address: '37 Main St, Burdell QLD 4818',
+  },
+  'Ayr Anzac Memorial Club': {
+    lat: -19.571959167352418,
+    lng: 147.4000336800494,
+    address: '101 Burke St, Ayr QLD 4807',
+  },
   'Brothers Leagues Club Townsville': {
-    lat: -19.2564,
-    lng: 146.8031,
-    address: 'Townsville',
+    lat: -19.318082386735902,
+    lng: 146.71168846839765,
+    address: '14 Golf Links Dr, Kirwan QLD 4817',
   },
-  'Kirwan Tavern': { lat: -19.3, lng: 146.7333, address: 'Kirwan' },
-  'The Avenues Tavern': { lat: -19.259, lng: 146.8169, address: 'Townsville' },
-  'The Vale Hotel': { lat: -19.2833, lng: 146.7833, address: 'Aitkenvale' },
-  'Townsville RSL': { lat: -19.259, lng: 146.8169, address: 'Townsville' },
-  'Waverley Hotel': { lat: -19.2833, lng: 146.7833, address: 'Townsville' },
+  'Kirwan Tavern': {
+    lat: -19.29718913902884,
+    lng: 146.73640772925495,
+    address: '154 Thuringowa Dr, Kirwan QLD 4817',
+  },
+  'The Avenues Tavern': {
+    lat: -19.29401948320414,
+    lng: 146.72241948188992,
+    address: '270 Kern Brothers Dr, Kirwan QLD 4817',
+  },
+  'The Vale Hotel': {
+    lat: -19.29645450778878,
+    lng: 146.77231639538317,
+    address: '222 Ross River Rd, Aitkenvale QLD 4814',
+  },
+  'Townsville RSL': {
+    lat: -19.278728265247288,
+    lng: 146.7991841088756,
+    address: '139 Charters Towers Rd, Hyde Park QLD 4812',
+  },
+  'Waverley Hotel': {
+    lat: -20.072150306392324,
+    lng: 146.2584986935589,
+    address: '19 Mosman St, Charters Towers City QLD 4820',
+  },
 };
 
 // Sunshine Coast venue coordinates

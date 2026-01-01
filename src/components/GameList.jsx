@@ -2,12 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
-import { FiEdit3, FiHeart, FiClock, FiSearch, FiX } from 'react-icons/fi';
+import { FiEdit3, FiHeart, FiClock, FiSearch, FiX, FiMapPin } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 import AdvancedFilters from './AdvancedFilters';
 import BuyInQuickFilters from './ui/BuyInQuickFilters';
+import { getVenueCoordinates } from '../utils/venueCoordinates';
 
-const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
+const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   const { currentUser } = useAuth();
   const {
     isFavorite,
@@ -22,6 +23,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
   const [selectedGame, setSelectedGame] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filtersExpanded, setFiltersExpanded] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
   const [filters, setFilters] = useState({
     buyIn: { min: '', max: '' },
     competitions: [],
@@ -29,6 +31,23 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     favoritesOnly: false,
     startingSoon: false,
   });
+
+  // Get user's location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        error => {
+          console.log('Location access denied or unavailable:', error);
+        }
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,6 +195,21 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
     return days[now.getDay()];
   }
 
+  // Calculate distance between two coordinates using Haversine formula
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
   const competitionLogos = {
     'APL Poker': '/apl-poker-logo.png',
     'Australian Poker Experience': '/aus-poker-experience.png',
@@ -302,6 +336,18 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                   : false;
                 const lastPlayedText = currentUser
                   ? getLastPlayedText(game.venue)
+                  : null;
+
+                // Get venue coordinates and calculate distance
+                const venueCoordinates = getVenueCoordinates(region);
+                const venueCoords = venueCoordinates[game.venue];
+                const distance = userLocation && venueCoords
+                  ? calculateDistance(
+                      userLocation.lat,
+                      userLocation.lng,
+                      venueCoords.lat,
+                      venueCoords.lng
+                    )
                   : null;
 
                 return (
@@ -445,6 +491,16 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls }) => {
                           </>
                         )}
                       </div>
+
+                      {/* Distance indicator at the bottom */}
+                      {distance !== null && (
+                        <div className='mt-4 pt-3 border-t border-gray-700'>
+                          <div className='flex items-center justify-center gap-1 text-xs text-gray-400'>
+                            <FiMapPin className='text-blue-400' />
+                            <span>approx. {distance.toFixed(1)} km away*</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </a>
                 );

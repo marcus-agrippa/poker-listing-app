@@ -25,12 +25,14 @@ const QuickStatsCard = ({ games, daysOfWeek }) => {
   }, [games]);
 
   return (
-    <div className='bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6'>
+    <div className='bg-gray-800 border border-gray-700 rounded-lg p-4 mt-6 mb-6'>
       <div className='flex flex-wrap items-center justify-center gap-6 text-sm'>
         <div className='flex items-center gap-2'>
           <FiCalendar className='text-blue-400 w-4 h-4' />
           <span className='text-gray-400'>This Week:</span>
-          <span className='text-white font-semibold'>{stats.gamesThisWeek} games</span>
+          <span className='text-white font-semibold'>
+            {stats.gamesThisWeek} games
+          </span>
         </div>
 
         <div className='flex items-center gap-2'>
@@ -44,7 +46,9 @@ const QuickStatsCard = ({ games, daysOfWeek }) => {
           <span className='text-gray-400'>Buy-ins:</span>
           <span className='text-white font-semibold'>
             ${stats.minBuyIn}
-            {stats.minBuyIn !== stats.maxBuyIn && <span> - ${stats.maxBuyIn}</span>}
+            {stats.minBuyIn !== stats.maxBuyIn && (
+              <span> - ${stats.maxBuyIn}</span>
+            )}
           </span>
         </div>
       </div>

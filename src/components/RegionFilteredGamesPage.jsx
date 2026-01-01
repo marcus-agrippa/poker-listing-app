@@ -279,6 +279,7 @@ const RegionFilteredGamesPage = () => {
               activeDay={activeDay}
               dataUrl={currentConfig.dataUrl}
               facebookPageUrls={currentConfig.facebookPageUrls}
+              region={selectedRegion}
             />
           )
         ) : (

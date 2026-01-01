@@ -4,19 +4,12 @@
 const CACHE_NAME = 'poker-app-v2';
 
 // Install event - cache basic assets
-self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Install event');
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Caching app shell');
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/favicon.ico'
-      ]).catch((error) => {
-        console.log('[Service Worker] Cache addAll error:', error);
-      });
+    caches.open(CACHE_NAME).then(cache => {
+      return cache
+        .addAll(['/', '/index.html', '/manifest.json', '/favicon.ico'])
+        .catch(error => {});
     })
   );
   // Force the waiting service worker to become the active service worker
@@ -24,14 +17,12 @@ self.addEventListener('install', (event) => {
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activate event');
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
+        cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('[Service Worker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -43,7 +34,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch event - network first, then cache fallback
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   // Only handle GET requests for caching
   // POST, PUT, DELETE, etc. cannot be cached
   if (event.request.method !== 'GET') {
@@ -53,17 +44,19 @@ self.addEventListener('fetch', (event) => {
 
   // Don't cache Firebase or external API requests
   const url = new URL(event.request.url);
-  if (url.hostname.includes('firebaseio.com') ||
-      url.hostname.includes('googleapis.com') ||
-      url.hostname.includes('firebase.com') ||
-      url.hostname.includes('firestore.googleapis.com')) {
+  if (
+    url.hostname.includes('firebaseio.com') ||
+    url.hostname.includes('googleapis.com') ||
+    url.hostname.includes('firebase.com') ||
+    url.hostname.includes('firestore.googleapis.com')
+  ) {
     event.respondWith(fetch(event.request));
     return;
   }
 
   event.respondWith(
     fetch(event.request)
-      .then((response) => {
+      .then(response => {
         // Only cache successful responses
         if (!response || response.status !== 200 || response.type === 'error') {
           return response;
@@ -72,7 +65,7 @@ self.addEventListener('fetch', (event) => {
         // Clone the response before caching
         const responseToCache = response.clone();
 
-        caches.open(CACHE_NAME).then((cache) => {
+        caches.open(CACHE_NAME).then(cache => {
           cache.put(event.request, responseToCache);
         });
 

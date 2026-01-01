@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../contexts/AuthContext';
@@ -234,6 +234,25 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
               key={index}
               position={[venue.coordinates.lat, venue.coordinates.lng]}
               icon={createCustomIcon(venue.isFavorite, venue.isStartingSoon)}>
+              <Tooltip direction="top" offset={[0, -20]} opacity={0.95}>
+                <div className="text-sm">
+                  <div className="font-bold text-gray-900 mb-1">{venue.name}</div>
+                  {venue.games.slice(0, 2).map((game, idx) => (
+                    <div key={idx} className="text-xs text-gray-700 mb-1">
+                      <div className="font-semibold">{game.competition}</div>
+                      <div className="flex gap-2 text-gray-600">
+                        <span>🕐 {formatTime(game.game_time)}</span>
+                        <span>💵 ${game.buy_in}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {venue.games.length > 2 && (
+                    <div className="text-xs text-gray-500 italic">
+                      +{venue.games.length - 2} more game{venue.games.length - 2 !== 1 ? 's' : ''}
+                    </div>
+                  )}
+                </div>
+              </Tooltip>
               <Popup maxWidth={600} minWidth={450} className='custom-popup'>
                 <div className='p-4'>
                   {/* Venue Header */}
@@ -269,10 +288,12 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                         toggleFavorite(venue.name);
                       }}
                       className={`btn btn-xs mb-3 w-full ${
-                        venue.isFavorite ? 'btn-warning' : 'btn-outline'
+                        venue.isFavorite
+                          ? 'bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-500'
+                          : 'bg-gray-700 hover:bg-gray-600 text-white border-gray-700'
                       }`}>
                       <FiHeart
-                        className={venue.isFavorite ? 'fill-current' : ''}
+                        className={venue.isFavorite ? 'fill-current text-red-500' : 'text-white'}
                       />
                       {venue.isFavorite
                         ? 'Remove from Favorites'

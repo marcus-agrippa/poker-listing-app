@@ -1,7 +1,7 @@
 // Basic service worker for PWA install prompt
 // This enables the beforeinstallprompt event to fire
 
-const CACHE_NAME = 'poker-app-v1';
+const CACHE_NAME = 'poker-app-v2';
 
 // Install event - cache basic assets
 self.addEventListener('install', (event) => {
@@ -44,9 +44,31 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - network first, then cache fallback
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests for caching
+  // POST, PUT, DELETE, etc. cannot be cached
+  if (event.request.method !== 'GET') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Don't cache Firebase or external API requests
+  const url = new URL(event.request.url);
+  if (url.hostname.includes('firebaseio.com') ||
+      url.hostname.includes('googleapis.com') ||
+      url.hostname.includes('firebase.com') ||
+      url.hostname.includes('firestore.googleapis.com')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
+        // Only cache successful responses
+        if (!response || response.status !== 200 || response.type === 'error') {
+          return response;
+        }
+
         // Clone the response before caching
         const responseToCache = response.clone();
 

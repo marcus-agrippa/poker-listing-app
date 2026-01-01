@@ -134,7 +134,9 @@ const RegionFilteredGamesPage = () => {
   useEffect(() => {
     if (userProfile && userProfile.region) {
       setSelectedRegion(userProfile.region);
-    } else if (currentUser && !userProfile?.region) {
+      setShowRegionSelector(false);
+    } else if (currentUser && userProfile && !userProfile.region) {
+      // Only show region selector if we have loaded the user profile and it's empty
       setShowRegionSelector(true);
     }
   }, [currentUser, userProfile]);

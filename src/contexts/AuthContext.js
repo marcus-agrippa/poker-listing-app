@@ -25,15 +25,21 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password, displayName, region, receiveNotifications = true) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    
+
     await updateProfile(user, { displayName });
-    
+
     // Send email verification with homepage redirect
-    await sendEmailVerification(user, {
-      url: window.location.origin,
-      handleCodeInApp: false
-    });
-    
+    try {
+      await sendEmailVerification(user, {
+        url: `${window.location.origin}/`,
+        handleCodeInApp: false
+      });
+    } catch (verificationError) {
+      console.error('Error sending verification email:', verificationError);
+      // Don't fail signup if verification email fails
+      // User can resend from dashboard
+    }
+
     await setDoc(doc(db, 'users', user.uid), {
       displayName,
       email,
@@ -59,12 +65,18 @@ export const AuthProvider = ({ children }) => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  const resendVerification = () => {
+  const resendVerification = async () => {
     if (currentUser && !currentUser.emailVerified) {
-      return sendEmailVerification(currentUser, {
-        url: window.location.origin,
-        handleCodeInApp: false
-      });
+      try {
+        await sendEmailVerification(currentUser, {
+          url: `${window.location.origin}/`,
+          handleCodeInApp: false
+        });
+        return { success: true };
+      } catch (error) {
+        console.error('Error resending verification email:', error);
+        throw error;
+      }
     }
   };
 

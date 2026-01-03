@@ -2,7 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
-import { FiEdit3, FiHeart, FiClock, FiSearch, FiX, FiMapPin } from 'react-icons/fi';
+import {
+  FiEdit3,
+  FiHeart,
+  FiClock,
+  FiSearch,
+  FiX,
+  FiMapPin,
+} from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 import AdvancedFilters from './AdvancedFilters';
 import BuyInQuickFilters from './ui/BuyInQuickFilters';
@@ -132,11 +139,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
       const now = new Date();
       filtered = filtered.filter(game => {
         const gameDate = new Date(`1970/01/01 ${game.game_time}`);
-        gameDate.setFullYear(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
+        gameDate.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
         const diffMs = gameDate - now;
         const diffHrs = diffMs / 1000 / 60 / 60;
         return diffHrs >= 0 && diffHrs <= 2;
@@ -146,7 +149,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     // Sort by favorites first, then by time
     const sorted = sortGamesByFavorites(filtered);
     setFilteredGames(sorted);
-  }, [games, activeDay, searchTerm, filters, currentUser, isFavorite, sortGamesByFavorites]);
+  }, [
+    games,
+    activeDay,
+    searchTerm,
+    filters,
+    currentUser,
+    isFavorite,
+    sortGamesByFavorites,
+  ]);
 
   const formatTime = time24 => {
     const [hours, minutes] = time24.split(':');
@@ -222,6 +233,8 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     'Shark Poker': '/shark-poker-logo.png',
     'Star Poker': '/star-poker-logo.png',
     'APS Newcastle': '/aps-newcastle-logo.png',
+    'Bullets Poker League': '/bullets-poker-league-logo.png',
+    'Stacked Poker': '/stacked-poker-logo.png',
   };
 
   const SkeletonCard = () => (
@@ -341,14 +354,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                 // Get venue coordinates and calculate distance
                 const venueCoordinates = getVenueCoordinates(region);
                 const venueCoords = venueCoordinates[game.venue];
-                const distance = userLocation && venueCoords
-                  ? calculateDistance(
-                      userLocation.lat,
-                      userLocation.lng,
-                      venueCoords.lat,
-                      venueCoords.lng
-                    )
-                  : null;
+                const distance =
+                  userLocation && venueCoords
+                    ? calculateDistance(
+                        userLocation.lat,
+                        userLocation.lng,
+                        venueCoords.lat,
+                        venueCoords.lng
+                      )
+                    : null;
 
                 return (
                   <a

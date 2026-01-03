@@ -116,6 +116,7 @@ const Pokerdex = () => {
         Brisbane: '/data-brisbane.json',
         Sydney: '/data-sydney.json',
         Melbourne: '/data-melbourne.json',
+        Adelaide: '/data-adelaide.json',
       };
 
       const dataUrl = regionDataMap[userProfile.region] || '/data.json';

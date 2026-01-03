@@ -121,6 +121,15 @@ const RegionFilteredGamesPage = () => {
         'National Poker League': 'https://www.npl.com.au/Events/List',
       },
     },
+    Adelaide: {
+      dataUrl: '/data-adelaide.json',
+      facebookPageUrls: {
+        'APL Poker': 'https://www.facebook.com/APLAdelaide/',
+        'Stacked Poker': 'https://www.facebook.com/stackedpoker/',
+        'Bullet Poker League':
+          'https://www.facebook.com/people/Bullets-Poker-League-SA/100078475230349/',
+      },
+    },
     'Gold Coast': {
       dataUrl: '/data-gold-coast.json',
       facebookPageUrls: {
@@ -160,6 +169,7 @@ const RegionFilteredGamesPage = () => {
     if (hostname === 'pokerbrisbane.com') return 'Brisbane';
     if (hostname === 'pokersydney.com') return 'Sydney';
     if (hostname === 'pokermelbourne.com') return 'Melbourne';
+    if (hostname === 'pokeradelaide.com') return 'Adelaide';
     return 'Central Coast'; // default
   };
 

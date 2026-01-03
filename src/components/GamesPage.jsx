@@ -26,6 +26,7 @@ const isGoldCoast = hostname === 'pokergoldcoast.com';
 const isBrisbane = hostname === 'pokerbrisbane.com';
 const isSydney = hostname === 'pokersydney.com';
 const isMelbourne = hostname === 'pokermelbourne.com';
+const isAdelaide = hostname === 'pokeradelaide.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -96,6 +97,13 @@ const melbourneFacebookPageUrls = {
   'National Poker League': 'https://www.npl.com.au/Events/List',
 };
 
+const adelaideFacebookPageUrls = {
+  'APL Poker': 'https://www.facebook.com/APLAdelaide/',
+  'Stacked Poker': 'https://www.facebook.com/stackedpoker/',
+  'Bullet Poker League':
+    'https://www.facebook.com/people/Bullets-Poker-League-SA/100078475230349/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
@@ -120,6 +128,8 @@ const facebookPageUrls = isCentralCoast
   ? sydneyFacebookPageUrls
   : isMelbourne
   ? melbourneFacebookPageUrls
+  : isAdelaide
+  ? adelaideFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

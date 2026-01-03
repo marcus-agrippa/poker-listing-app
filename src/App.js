@@ -38,6 +38,7 @@ const AppContent = () => {
   const isGoldCoast = hostname === 'pokergoldcoast.com';
   const isSydney = hostname === 'pokersydney.com';
   const isMelbourne = hostname === 'pokermelbourne.com';
+  const isAdelaide = hostname === 'pokeradelaide.com';
 
   const dataUrl =
     hostname === 'pokercentralcoast.com'
@@ -62,6 +63,8 @@ const AppContent = () => {
       ? '/data-sydney.json'
       : hostname === 'pokermelbourne.com'
       ? '/data-melbourne.json'
+      : hostname === 'pokeradelaide.com'
+      ? '/data-adelaide.json'
       : hostname === 'pokergoldcoast.com'
       ? '/data-gold-coast.json'
       : '/data.json';
@@ -88,6 +91,8 @@ const AppContent = () => {
     ? 'G-FL19FJJ82K'
     : isMelbourne
     ? 'G-6E2NZC5BE4'
+    : isAdelaide
+    ? 'G-7V9BGLRK8T'
     : isGoldCoast
     ? 'G-G23T3GJ7HV'
     : 'G-PXFQ31JSSG';
@@ -124,6 +129,8 @@ const AppContent = () => {
               ? 'Poker Sydney'
               : isMelbourne
               ? 'Poker Melbourne'
+              : isAdelaide
+              ? 'Poker Adelaide'
               : isGoldCoast
               ? 'Poker Gold Coast'
               : 'Poker Game Information'}
@@ -153,6 +160,8 @@ const AppContent = () => {
                 ? 'Discover and join poker games in Sydney. A central hub for all poker enthusiasts.'
                 : isMelbourne
                 ? 'Discover and join poker games in Melbourne. A central hub for all poker enthusiasts.'
+                : isAdelaide
+                ? 'Discover and join poker games in Adelaide. A central hub for all poker enthusiasts.'
                 : isGoldCoast
                 ? 'Discover and join poker games in Gold Coast. A central hub for all poker enthusiasts.'
                 : 'Poker game information'

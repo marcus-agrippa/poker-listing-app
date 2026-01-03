@@ -19,8 +19,9 @@ L.Icon.Default.mergeOptions({
 });
 
 // Custom marker icons
-const createCustomIcon = (isFavorite, isStartingSoon) => {
-  const color = isFavorite ? '#FBBF24' : isStartingSoon ? '#10B981' : '#3B82F6';
+const createCustomIcon = (isFavorite, isStartingSoon, isOneOff) => {
+  const color = isFavorite ? '#FBBF24' : isOneOff ? '#9333EA' : isStartingSoon ? '#10B981' : '#3B82F6';
+  const icon = isFavorite ? '⭐' : isOneOff ? '🏆' : '🃏';
 
   return L.divIcon({
     className: 'custom-marker',
@@ -42,7 +43,7 @@ const createCustomIcon = (isFavorite, isStartingSoon) => {
           color: white;
           font-size: 16px;
           font-weight: bold;
-        ">${isFavorite ? '⭐' : '🃏'}</div>
+        ">${icon}</div>
       </div>
     `,
     iconSize: [32, 32],
@@ -94,7 +95,7 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     fetchData();
   }, [dataUrl]);
 
-  // Group games by venue for the selected day
+  // Group games by venue for the selected day (including one-off events)
   const venueGames = useMemo(() => {
     const filtered = games.filter(game => game.day === activeDay);
     const grouped = {};
@@ -134,12 +135,16 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
           return diffHrs >= 0 && diffHrs <= 2;
         });
 
+        // Check if any game is a one-off event
+        const isOneOff = venueGamesList.some(game => game.one_off);
+
         return {
           name: venueName,
           coordinates: coords,
           games: venueGamesList,
           isFavorite: currentUser ? isFavorite(venueName) : false,
           isStartingSoon,
+          isOneOff,
         };
       })
       .filter(Boolean);
@@ -205,6 +210,10 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
             <span>Favourite Venues</span>
           </div>
           <div className='flex items-center gap-2'>
+            <div className='w-4 h-4 bg-purple-600 rounded-full'></div>
+            <span>Special Events</span>
+          </div>
+          <div className='flex items-center gap-2'>
             <div className='w-4 h-4 bg-green-500 rounded-full'></div>
             <span>Starting Soon (within 2hrs)</span>
           </div>
@@ -233,7 +242,7 @@ const MapView = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
             <Marker
               key={index}
               position={[venue.coordinates.lat, venue.coordinates.lng]}
-              icon={createCustomIcon(venue.isFavorite, venue.isStartingSoon)}>
+              icon={createCustomIcon(venue.isFavorite, venue.isStartingSoon, venue.isOneOff)}>
               <Tooltip direction="top" offset={[0, -20]} opacity={0.95}>
                 <div className="text-sm">
                   <div className="font-bold text-gray-900 mb-1">{venue.name}</div>

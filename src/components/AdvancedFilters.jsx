@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiFilter, FiX, FiChevronDown, FiChevronUp, FiSun, FiSunset, FiMoon, FiHeart, FiClock } from 'react-icons/fi';
+import { FiFilter, FiX, FiChevronDown, FiChevronUp, FiSun, FiSunset, FiMoon, FiHeart, FiClock, FiMapPin } from 'react-icons/fi';
 
 const AdvancedFilters = ({
   filters,
@@ -37,6 +37,10 @@ const AdvancedFilters = ({
     onFilterChange({ ...filters, startingSoon: !filters.startingSoon });
   };
 
+  const handleSortByDistanceChange = () => {
+    onFilterChange({ ...filters, sortByDistance: !filters.sortByDistance });
+  };
+
   const clearAllFilters = () => {
     onFilterChange({
       buyIn: { min: '', max: '' },
@@ -44,6 +48,7 @@ const AdvancedFilters = ({
       timeSlot: 'all',
       favoritesOnly: false,
       startingSoon: false,
+      sortByDistance: false,
     });
   };
 
@@ -54,7 +59,8 @@ const AdvancedFilters = ({
       filters.competitions.length > 0 ||
       filters.timeSlot !== 'all' ||
       filters.favoritesOnly ||
-      filters.startingSoon
+      filters.startingSoon ||
+      filters.sortByDistance
     );
   };
 
@@ -109,6 +115,13 @@ const AdvancedFilters = ({
                 filters.startingSoon ? 'btn-success' : 'btn-outline'
               }`}>
               <FiClock className='mr-1' /> Starting Soon (2hrs)
+            </button>
+            <button
+              onClick={handleSortByDistanceChange}
+              className={`btn btn-sm ${
+                filters.sortByDistance ? 'btn-info' : 'btn-outline'
+              }`}>
+              <FiMapPin className='mr-1' /> Sort by Distance
             </button>
           </div>
 

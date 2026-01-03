@@ -184,11 +184,12 @@ const RegionFilteredGamesPage = () => {
         const data = await response.json();
         setAllGames(data);
 
-        // Calculate game counts per day
+        // Calculate game counts per day (including one-off events)
         const counts = {};
         daysOfWeek.forEach(day => {
           counts[day] = data.filter(game => game.day === day).length;
         });
+
         setGameCounts(counts);
       } catch (error) {
         console.error('Error fetching games data:', error);

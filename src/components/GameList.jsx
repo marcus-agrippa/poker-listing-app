@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import BeatLoader from 'react-spinners/BeatLoader';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
 import {
@@ -37,6 +36,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     timeSlot: 'all',
     favoritesOnly: false,
     startingSoon: false,
+    sortByDistance: false,
   });
 
   // Get user's location
@@ -83,6 +83,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   }, [games]);
 
   useEffect(() => {
+    // Filter by day (including one-off events on their scheduled day)
     let filtered = games.filter(game => game.day === activeDay);
 
     // Apply search filter
@@ -146,8 +147,38 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
       });
     }
 
-    // Sort by favorites first, then by time
-    const sorted = sortGamesByFavorites(filtered);
+    // Sort by distance if enabled
+    let sorted = filtered;
+    if (filters.sortByDistance && userLocation) {
+      const venueCoordinates = getVenueCoordinates(region);
+      sorted = [...filtered].sort((a, b) => {
+        const coordsA = venueCoordinates[a.venue];
+        const coordsB = venueCoordinates[b.venue];
+
+        if (!coordsA && !coordsB) return 0;
+        if (!coordsA) return 1;
+        if (!coordsB) return -1;
+
+        const distanceA = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          coordsA.lat,
+          coordsA.lng
+        );
+        const distanceB = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          coordsB.lat,
+          coordsB.lng
+        );
+
+        return distanceA - distanceB;
+      });
+    } else {
+      // Sort by favorites first, then by time
+      sorted = sortGamesByFavorites(filtered);
+    }
+
     setFilteredGames(sorted);
   }, [
     games,
@@ -157,6 +188,8 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     currentUser,
     isFavorite,
     sortGamesByFavorites,
+    userLocation,
+    region,
   ]);
 
   const formatTime = time24 => {
@@ -378,6 +411,10 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                         isVenueFavorite
                           ? 'ring-2 ring-yellow-400 ring-opacity-50'
                           : ''
+                      } ${
+                        game.one_off
+                          ? 'ring-2 ring-purple-500 ring-opacity-60'
+                          : ''
                       }`}>
                       {competitionLogos[game.competition] && (
                         <img
@@ -385,6 +422,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                           alt={`${game.competition} logo`}
                           className='mb-3 w-20 h-20 mx-auto hover:scale-105 transition-transform'
                         />
+                      )}
+
+                      {/* One-off event badge */}
+                      {game.one_off && (
+                        <div className='mb-3 flex justify-center'>
+                          <span className='inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold rounded-full shadow-lg'>
+                            🏆 SPECIAL EVENT
+                          </span>
+                        </div>
                       )}
 
                       {/* Action buttons */}
@@ -440,6 +486,31 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                         </div>
                       </div>
                       <div className='grid grid-cols-[auto,1fr] gap-4'>
+                        {game.one_off && game.event_name && (
+                          <>
+                            <div className='font-medium text-white text-left p-1'>
+                              Event Name:
+                            </div>
+                            <div className='text-center border border-purple-500 bg-purple-900 bg-opacity-30 p-1 font-semibold'>
+                              {game.event_name}
+                            </div>
+                          </>
+                        )}
+                        {game.one_off && game.event_date && (
+                          <>
+                            <div className='font-medium text-white text-left p-1'>
+                              Event Date:
+                            </div>
+                            <div className='text-center border border-purple-500 bg-purple-900 bg-opacity-30 p-1 font-semibold'>
+                              {new Date(game.event_date).toLocaleDateString('en-AU', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </div>
+                          </>
+                        )}
                         <div className='font-medium text-white text-left p-1'>
                           Competition:
                         </div>

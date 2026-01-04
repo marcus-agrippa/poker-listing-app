@@ -27,8 +27,6 @@ const GameConfirmButton = ({ game, region }) => {
   useEffect(() => {
     const fetchConfirmations = async () => {
       try {
-        console.log('Fetching confirmations for:', { gameId, weekOf });
-
         const q = query(
           collection(db, 'gameConfirmations'),
           where('gameId', '==', gameId),
@@ -41,24 +39,17 @@ const GameConfirmButton = ({ game, region }) => {
           const data = snapshot.docs[0].data();
           const docId = snapshot.docs[0].id;
 
-          console.log('Found confirmation data:', data);
-
           // Check if expired
           if (isConfirmationExpired(data.expiresAt)) {
-            console.log('Confirmation expired');
             setConfirmationData(null);
             setUserHasConfirmed(false);
           } else {
-            console.log('Setting confirmation data, count:', data.confirmCount);
-            console.log('Full confirmation data:', { ...data, docId });
             setConfirmationData({ ...data, docId });
-            const hasConfirmed = currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false;
-            console.log('User has confirmed:', hasConfirmed);
-            console.log('Current user ID:', currentUser?.uid);
-            setUserHasConfirmed(hasConfirmed);
+            setUserHasConfirmed(
+              currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false
+            );
           }
         } else {
-          console.log('No confirmation data found');
           setConfirmationData(null);
           setUserHasConfirmed(false);
         }
@@ -96,16 +87,8 @@ const GameConfirmButton = ({ game, region }) => {
 
       const docRef = doc(db, 'gameConfirmations', `${gameId}-${weekOf}`);
 
-      console.log('Attempting to save confirmation:', {
-        gameId,
-        weekOf,
-        docId: `${gameId}-${weekOf}`,
-        confirmation,
-      });
-
       if (confirmationData) {
         // Update existing document
-        console.log('Updating existing document');
         await updateDoc(docRef, {
           confirmations: arrayUnion(confirmation),
           confirmCount: (confirmationData.confirmCount || 0) + 1,
@@ -113,7 +96,6 @@ const GameConfirmButton = ({ game, region }) => {
         });
       } else {
         // Create new document
-        console.log('Creating new document');
         const newConfirmation = {
           gameId,
           venue: game.venue,
@@ -132,11 +114,8 @@ const GameConfirmButton = ({ game, region }) => {
         await setDoc(docRef, newConfirmation);
       }
 
-      console.log('Confirmation saved successfully, waiting before refetch...');
-
       // Wait a moment for Firestore to process, then trigger refetch
       setTimeout(() => {
-        console.log('Triggering refetch...');
         setRefetchTrigger(prev => prev + 1);
       }, 500);
 

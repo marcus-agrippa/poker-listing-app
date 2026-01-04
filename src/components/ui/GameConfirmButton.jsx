@@ -50,9 +50,11 @@ const GameConfirmButton = ({ game, region }) => {
             setUserHasConfirmed(false);
           } else {
             console.log('Setting confirmation data, count:', data.confirmCount);
+            console.log('Full confirmation data:', { ...data, docId });
             setConfirmationData({ ...data, docId });
             const hasConfirmed = currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false;
             console.log('User has confirmed:', hasConfirmed);
+            console.log('Current user ID:', currentUser?.uid);
             setUserHasConfirmed(hasConfirmed);
           }
         } else {
@@ -130,10 +132,13 @@ const GameConfirmButton = ({ game, region }) => {
         await setDoc(docRef, newConfirmation);
       }
 
-      console.log('Confirmation saved successfully, refetching data...');
+      console.log('Confirmation saved successfully, waiting before refetch...');
 
-      // Trigger refetch by incrementing the trigger
-      setRefetchTrigger(prev => prev + 1);
+      // Wait a moment for Firestore to process, then trigger refetch
+      setTimeout(() => {
+        console.log('Triggering refetch...');
+        setRefetchTrigger(prev => prev + 1);
+      }, 500);
 
       toast.success('Thanks for confirming this game is running!');
     } catch (error) {

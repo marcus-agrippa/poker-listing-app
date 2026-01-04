@@ -20,6 +20,8 @@ export const getWeekOf = (dayName, gameTime = null) => {
   const now = new Date();
   const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
+  console.log('getWeekOf called with:', { dayName, gameTime, currentDay, todayIs: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][currentDay] });
+
   const daysMap = {
     Sunday: 0,
     Monday: 1,
@@ -35,6 +37,8 @@ export const getWeekOf = (dayName, gameTime = null) => {
   // Calculate days until target day
   let daysUntil = targetDay - currentDay;
 
+  console.log('Initial daysUntil:', daysUntil);
+
   // If it's the same day, check if the game time has passed
   if (daysUntil === 0 && gameTime) {
     const [hours, minutes] = gameTime.split(':').map(Number);
@@ -45,17 +49,22 @@ export const getWeekOf = (dayName, gameTime = null) => {
     const sixHoursAfterGame = new Date(gameDateTime.getTime() + 6 * 60 * 60 * 1000);
     if (now > sixHoursAfterGame) {
       daysUntil = 7;
+      console.log('Game expired, moving to next week');
     }
   } else if (daysUntil < 0) {
     // If target day is in the past this week, move to next week
     daysUntil += 7;
+    console.log('Day in past, adjusted daysUntil:', daysUntil);
   }
 
   const weekDate = new Date(now);
   weekDate.setDate(now.getDate() + daysUntil);
   weekDate.setHours(0, 0, 0, 0);
 
-  return weekDate.toISOString().split('T')[0];
+  const result = weekDate.toISOString().split('T')[0];
+  console.log('getWeekOf result:', result);
+
+  return result;
 };
 
 /**

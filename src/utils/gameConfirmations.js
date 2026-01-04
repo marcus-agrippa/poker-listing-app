@@ -59,10 +59,14 @@ export const getWeekOf = (dayName, gameTime = null) => {
 
   const weekDate = new Date(now);
   weekDate.setDate(now.getDate() + daysUntil);
-  weekDate.setHours(0, 0, 0, 0);
 
-  const result = weekDate.toISOString().split('T')[0];
-  console.log('getWeekOf result:', result);
+  // Use local date parts instead of UTC to avoid timezone issues
+  const year = weekDate.getFullYear();
+  const month = String(weekDate.getMonth() + 1).padStart(2, '0');
+  const day = String(weekDate.getDate()).padStart(2, '0');
+  const result = `${year}-${month}-${day}`;
+
+  console.log('getWeekOf result:', result, 'weekDate:', weekDate);
 
   return result;
 };

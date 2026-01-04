@@ -13,6 +13,9 @@ import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 import AdvancedFilters from './AdvancedFilters';
 import BuyInQuickFilters from './ui/BuyInQuickFilters';
 import { getVenueCoordinates } from '../utils/venueCoordinates';
+import QuickLogModal from './dashboard/QuickLogModal';
+import GameConfirmButton from './ui/GameConfirmButton';
+import AddToCalendarButton from './ui/AddToCalendarButton';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   const { currentUser } = useAuth();
@@ -30,6 +33,8 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filtersExpanded, setFiltersExpanded] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [quickLogModalOpen, setQuickLogModalOpen] = useState(false);
+  const [quickLogGame, setQuickLogGame] = useState(null);
   const [filters, setFilters] = useState({
     buyIn: { min: '', max: '' },
     competitions: [],
@@ -55,6 +60,77 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
       );
     }
   }, []);
+
+  // Auto-prompt for quick log when viewing recently ended games
+  useEffect(() => {
+    if (!currentUser || filteredGames.length === 0) return;
+
+    const now = new Date();
+    const currentDay = getCurrentDay();
+
+    // Only check if viewing today's games
+    if (activeDay !== currentDay) return;
+
+    // Check when we last prompted or dismissed
+    const quickLogData = localStorage.getItem('quickLogPromptData');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (quickLogData) {
+      const data = JSON.parse(quickLogData);
+
+      // If dismissed today, don't prompt again today
+      if (data.dismissedDate === today) return;
+
+      // If dismissed yesterday or before, check cooldown
+      if (data.dismissedDate) {
+        const dismissedDate = new Date(data.dismissedDate);
+        const daysSinceDismissal = Math.floor((now - dismissedDate) / (1000 * 60 * 60 * 24));
+
+        // Gradually increase cooldown: 1 day, then 3 days, then 7 days
+        const dismissCount = data.dismissCount || 0;
+        let cooldownDays = 1;
+        if (dismissCount >= 3) cooldownDays = 7;
+        else if (dismissCount >= 1) cooldownDays = 3;
+
+        if (daysSinceDismissal < cooldownDays) return;
+      }
+
+      // If prompted today already (and not dismissed), don't prompt again
+      if (data.promptedDate === today) return;
+    }
+
+    // Find games that ended in the last 30 minutes to 3 hours
+    const recentlyEndedGames = filteredGames.filter(game => {
+      const gameDate = new Date(`1970/01/01 ${game.game_time}`);
+      gameDate.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+
+      // Add estimated game duration (4 hours for tournaments)
+      const gameEndTime = new Date(gameDate.getTime() + 4 * 60 * 60 * 1000);
+      const timeSinceEnd = now - gameEndTime;
+      const hoursSinceEnd = timeSinceEnd / (1000 * 60 * 60);
+
+      // Game ended between 0.5 and 3 hours ago
+      return hoursSinceEnd >= 0.5 && hoursSinceEnd <= 3;
+    });
+
+    // If there's a recently ended game and cooldown has passed
+    if (recentlyEndedGames.length > 0) {
+      // Wait 2 seconds after page load to show the prompt
+      const timer = setTimeout(() => {
+        setQuickLogGame(recentlyEndedGames[0]);
+        setQuickLogModalOpen(true);
+
+        // Update prompt data
+        const existingData = quickLogData ? JSON.parse(quickLogData) : {};
+        localStorage.setItem('quickLogPromptData', JSON.stringify({
+          ...existingData,
+          promptedDate: today,
+        }));
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [filteredGames, currentUser, activeDay]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -448,26 +524,31 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                             title='Suggest edit to this game'>
                             <FiEdit3 />
                           </button>
-                          <button
-                            onClick={e => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              toggleFavorite(game.venue);
-                            }}
-                            className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
-                              isVenueFavorite
-                                ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
-                                : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
-                            }`}
-                            title={
-                              isVenueFavorite
-                                ? 'Remove from favorites'
-                                : 'Add to favorites'
-                            }>
-                            <FiHeart
-                              className={isVenueFavorite ? 'fill-current' : ''}
-                            />
-                          </button>
+                          <div className='absolute top-2 right-2 flex gap-1'>
+                            <div className='w-10 h-10 flex items-center justify-center'>
+                              <AddToCalendarButton game={game} />
+                            </div>
+                            <button
+                              onClick={e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleFavorite(game.venue);
+                              }}
+                              className={`w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
+                                isVenueFavorite
+                                  ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
+                                  : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
+                              }`}
+                              title={
+                                isVenueFavorite
+                                  ? 'Remove from favorites'
+                                  : 'Add to favorites'
+                              }>
+                              <FiHeart
+                                className={isVenueFavorite ? 'fill-current' : ''}
+                              />
+                            </button>
+                          </div>
                         </>
                       )}
                       <div className='mb-6'>
@@ -477,6 +558,13 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                           )}
                           {game.venue}
                         </h3>
+                        {/* Distance indicator */}
+                        {distance !== null && (
+                          <div className='flex items-center justify-center gap-1 text-xs text-gray-400 mb-1'>
+                            <FiMapPin className='text-blue-400' />
+                            <span>approx. {distance.toFixed(1)} km away</span>
+                          </div>
+                        )}
                         <div className='flex justify-center items-center text-xs text-gray-400 min-h-[1.5rem]'>
                           {lastPlayedText && (
                             <>
@@ -581,15 +669,22 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                         )}
                       </div>
 
-                      {/* Distance indicator at the bottom */}
-                      {distance !== null && (
-                        <div className='mt-4 pt-3 border-t border-gray-700'>
-                          <div className='flex items-center justify-center gap-1 text-xs text-gray-400'>
-                            <FiMapPin className='text-blue-400' />
-                            <span>approx. {distance.toFixed(1)} km away*</span>
+                      {/* Game Confirmation */}
+                      {(() => {
+                        // Check if confirmation button should be shown
+                        const now = new Date();
+                        const gameDate = new Date(`1970/01/01 ${game.game_time}`);
+                        gameDate.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+                        const diffMs = gameDate - now;
+                        const diffHrs = Math.floor(diffMs / 1000 / 60 / 60);
+                        const shouldShowConfirmButton = diffHrs >= -5;
+
+                        return shouldShowConfirmButton ? (
+                          <div className='mt-4 pt-3 border-t border-gray-700'>
+                            <GameConfirmButton game={game} region={region} />
                           </div>
-                        </div>
-                      )}
+                        ) : null;
+                      })()}
                     </div>
                   </a>
                 );
@@ -623,6 +718,37 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
           setSelectedGame(null);
         }}
         game={selectedGame}
+      />
+
+      <QuickLogModal
+        isOpen={quickLogModalOpen}
+        onClose={() => {
+          setQuickLogModalOpen(false);
+          setQuickLogGame(null);
+
+          // Track dismissal in localStorage
+          const quickLogData = localStorage.getItem('quickLogPromptData');
+          const today = new Date().toISOString().split('T')[0];
+
+          if (quickLogData) {
+            const data = JSON.parse(quickLogData);
+            const dismissCount = (data.dismissCount || 0) + 1;
+
+            localStorage.setItem('quickLogPromptData', JSON.stringify({
+              ...data,
+              dismissedDate: today,
+              dismissCount: dismissCount,
+            }));
+          } else {
+            localStorage.setItem('quickLogPromptData', JSON.stringify({
+              dismissedDate: today,
+              dismissCount: 1,
+            }));
+          }
+        }}
+        game={quickLogGame}
+        autoTriggered={true}
+        region={region}
       />
     </div>
   );

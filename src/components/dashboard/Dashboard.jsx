@@ -29,6 +29,7 @@ import {
   FiArrowUpRight,
   FiArrowDownLeft,
   FiShare2,
+  FiLock,
 } from 'react-icons/fi';
 import ResultForm from './ResultForm';
 import ResultsList from './ResultsList';
@@ -620,6 +621,16 @@ const Dashboard = () => {
         {userProfile && (
           <p className='text-gray-300'>Region: {userProfile.region}</p>
         )}
+
+        {/* Privacy Notice */}
+        <div className='mt-4 max-w-md mx-auto'>
+          <div className='bg-green-900 bg-opacity-20 border border-green-600 rounded-lg p-3'>
+            <div className='flex items-center justify-center gap-2 text-green-400 text-sm'>
+              <FiLock className='flex-shrink-0' />
+              <span className='font-semibold'>100% Private - Only you can see your results</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Filter Controls */}

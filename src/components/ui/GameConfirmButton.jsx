@@ -20,40 +20,44 @@ const GameConfirmButton = ({ game, region }) => {
   const [userHasConfirmed, setUserHasConfirmed] = useState(false);
 
   const gameId = generateGameId(game);
-  const weekOf = getWeekOf(game.day);
+  const weekOf = getWeekOf(game.day, game.game_time);
 
   // Fetch confirmation data for this game
-  useEffect(() => {
-    const fetchConfirmations = async () => {
-      try {
-        const q = query(
-          collection(db, 'gameConfirmations'),
-          where('gameId', '==', gameId),
-          where('weekOf', '==', weekOf)
-        );
+  const fetchConfirmations = async () => {
+    try {
+      const q = query(
+        collection(db, 'gameConfirmations'),
+        where('gameId', '==', gameId),
+        where('weekOf', '==', weekOf)
+      );
 
-        const snapshot = await getDocs(q);
+      const snapshot = await getDocs(q);
 
-        if (!snapshot.empty) {
-          const data = snapshot.docs[0].data();
-          const docId = snapshot.docs[0].id;
+      if (!snapshot.empty) {
+        const data = snapshot.docs[0].data();
+        const docId = snapshot.docs[0].id;
 
-          // Check if expired
-          if (isConfirmationExpired(data.expiresAt)) {
-            setConfirmationData(null);
-            setUserHasConfirmed(false);
-          } else {
-            setConfirmationData({ ...data, docId });
-            setUserHasConfirmed(
-              currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false
-            );
-          }
+        // Check if expired
+        if (isConfirmationExpired(data.expiresAt)) {
+          setConfirmationData(null);
+          setUserHasConfirmed(false);
+        } else {
+          setConfirmationData({ ...data, docId });
+          setUserHasConfirmed(
+            currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false
+          );
         }
-      } catch (error) {
-        console.error('Error fetching confirmations:', error);
+      } else {
+        setConfirmationData(null);
+        setUserHasConfirmed(false);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching confirmations:', error);
+      toast.error('Failed to load confirmation data');
+    }
+  };
 
+  useEffect(() => {
     fetchConfirmations();
   }, [gameId, weekOf, currentUser]);
 
@@ -82,22 +86,24 @@ const GameConfirmButton = ({ game, region }) => {
 
       const docRef = doc(db, 'gameConfirmations', `${gameId}-${weekOf}`);
 
+      console.log('Attempting to save confirmation:', {
+        gameId,
+        weekOf,
+        docId: `${gameId}-${weekOf}`,
+        confirmation,
+      });
+
       if (confirmationData) {
         // Update existing document
+        console.log('Updating existing document');
         await updateDoc(docRef, {
           confirmations: arrayUnion(confirmation),
           confirmCount: (confirmationData.confirmCount || 0) + 1,
           lastConfirmedAt: confirmation.confirmedAt,
         });
-
-        setConfirmationData({
-          ...confirmationData,
-          confirmations: [...(confirmationData.confirmations || []), confirmation],
-          confirmCount: (confirmationData.confirmCount || 0) + 1,
-          lastConfirmedAt: confirmation.confirmedAt,
-        });
       } else {
         // Create new document
+        console.log('Creating new document');
         const newConfirmation = {
           gameId,
           venue: game.venue,
@@ -114,14 +120,18 @@ const GameConfirmButton = ({ game, region }) => {
         };
 
         await setDoc(docRef, newConfirmation);
-        setConfirmationData({ ...newConfirmation, docId: docRef.id });
       }
 
-      setUserHasConfirmed(true);
+      console.log('Confirmation saved successfully, refetching data...');
+
+      // Refetch to get the latest data from Firestore
+      await fetchConfirmations();
+
       toast.success('Thanks for confirming this game is running!');
     } catch (error) {
       console.error('Error confirming game:', error);
-      toast.error('Failed to confirm game. Please try again.');
+      console.error('Error details:', error.message, error.code);
+      toast.error(`Failed to confirm game: ${error.message || 'Please try again.'}`);
     } finally {
       setLoading(false);
     }

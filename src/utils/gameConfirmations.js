@@ -13,10 +13,10 @@ export const generateGameId = (game) => {
 };
 
 /**
- * Get the week-of date for a given day name
- * Returns the date of the most recent occurrence of that day (Monday of this week, etc.)
+ * Get the week-of date for a given day name and game time
+ * Returns the date of the current or upcoming occurrence of that day/time
  */
-export const getWeekOf = (dayName) => {
+export const getWeekOf = (dayName, gameTime = null) => {
   const now = new Date();
   const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
@@ -35,9 +35,20 @@ export const getWeekOf = (dayName) => {
   // Calculate days until target day
   let daysUntil = targetDay - currentDay;
 
-  // If target day is in the future this week, go back to last week's occurrence
-  if (daysUntil > 0) {
-    daysUntil -= 7;
+  // If it's the same day, check if the game time has passed
+  if (daysUntil === 0 && gameTime) {
+    const [hours, minutes] = gameTime.split(':').map(Number);
+    const gameDateTime = new Date(now);
+    gameDateTime.setHours(hours, minutes, 0, 0);
+
+    // If game time + 6 hours has passed (expired), use next week
+    const sixHoursAfterGame = new Date(gameDateTime.getTime() + 6 * 60 * 60 * 1000);
+    if (now > sixHoursAfterGame) {
+      daysUntil = 7;
+    }
+  } else if (daysUntil < 0) {
+    // If target day is in the past this week, move to next week
+    daysUntil += 7;
   }
 
   const weekDate = new Date(now);

@@ -18,48 +18,56 @@ const GameConfirmButton = ({ game, region }) => {
   const [confirmationData, setConfirmationData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userHasConfirmed, setUserHasConfirmed] = useState(false);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   const gameId = generateGameId(game);
   const weekOf = getWeekOf(game.day, game.game_time);
 
   // Fetch confirmation data for this game
-  const fetchConfirmations = async () => {
-    try {
-      const q = query(
-        collection(db, 'gameConfirmations'),
-        where('gameId', '==', gameId),
-        where('weekOf', '==', weekOf)
-      );
+  useEffect(() => {
+    const fetchConfirmations = async () => {
+      try {
+        console.log('Fetching confirmations for:', { gameId, weekOf });
 
-      const snapshot = await getDocs(q);
+        const q = query(
+          collection(db, 'gameConfirmations'),
+          where('gameId', '==', gameId),
+          where('weekOf', '==', weekOf)
+        );
 
-      if (!snapshot.empty) {
-        const data = snapshot.docs[0].data();
-        const docId = snapshot.docs[0].id;
+        const snapshot = await getDocs(q);
 
-        // Check if expired
-        if (isConfirmationExpired(data.expiresAt)) {
+        if (!snapshot.empty) {
+          const data = snapshot.docs[0].data();
+          const docId = snapshot.docs[0].id;
+
+          console.log('Found confirmation data:', data);
+
+          // Check if expired
+          if (isConfirmationExpired(data.expiresAt)) {
+            console.log('Confirmation expired');
+            setConfirmationData(null);
+            setUserHasConfirmed(false);
+          } else {
+            console.log('Setting confirmation data, count:', data.confirmCount);
+            setConfirmationData({ ...data, docId });
+            const hasConfirmed = currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false;
+            console.log('User has confirmed:', hasConfirmed);
+            setUserHasConfirmed(hasConfirmed);
+          }
+        } else {
+          console.log('No confirmation data found');
           setConfirmationData(null);
           setUserHasConfirmed(false);
-        } else {
-          setConfirmationData({ ...data, docId });
-          setUserHasConfirmed(
-            currentUser ? hasUserConfirmed(data.confirmations, currentUser.uid) : false
-          );
         }
-      } else {
-        setConfirmationData(null);
-        setUserHasConfirmed(false);
+      } catch (error) {
+        console.error('Error fetching confirmations:', error);
+        toast.error('Failed to load confirmation data');
       }
-    } catch (error) {
-      console.error('Error fetching confirmations:', error);
-      toast.error('Failed to load confirmation data');
-    }
-  };
+    };
 
-  useEffect(() => {
     fetchConfirmations();
-  }, [gameId, weekOf, currentUser]);
+  }, [gameId, weekOf, currentUser, refetchTrigger]);
 
   const handleConfirm = async (e) => {
     e.preventDefault();
@@ -124,8 +132,8 @@ const GameConfirmButton = ({ game, region }) => {
 
       console.log('Confirmation saved successfully, refetching data...');
 
-      // Refetch to get the latest data from Firestore
-      await fetchConfirmations();
+      // Trigger refetch by incrementing the trigger
+      setRefetchTrigger(prev => prev + 1);
 
       toast.success('Thanks for confirming this game is running!');
     } catch (error) {

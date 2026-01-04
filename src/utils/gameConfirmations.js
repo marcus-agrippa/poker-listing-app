@@ -63,8 +63,7 @@ export const getWeekOf = (dayName, gameTime = null) => {
  * Game expires 6 hours after game start time
  */
 export const getExpirationTime = (day, gameTime) => {
-  const now = new Date();
-  const weekOf = getWeekOf(day);
+  const weekOf = getWeekOf(day, gameTime);
 
   // Parse game time
   const [hours, minutes] = gameTime.split(':').map(Number);

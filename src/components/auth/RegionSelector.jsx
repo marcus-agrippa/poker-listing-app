@@ -40,6 +40,7 @@ const RegionSelector = ({ onRegionChange, currentRegion }) => {
     { value: 'sydney', label: 'Sydney', hostname: 'pokersydney.com' },
     { value: 'melbourne', label: 'Melbourne', hostname: 'pokermelbourne.com' },
     { value: 'adelaide', label: 'Adelaide', hostname: 'pokeradelaide.com' },
+    { value: 'canberra', label: 'Canberra', hostname: 'pokercanberra.com' },
   ];
 
   const handleRegionUpdate = async region => {

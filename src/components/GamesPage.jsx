@@ -27,6 +27,7 @@ const isBrisbane = hostname === 'pokerbrisbane.com';
 const isSydney = hostname === 'pokersydney.com';
 const isMelbourne = hostname === 'pokermelbourne.com';
 const isAdelaide = hostname === 'pokeradelaide.com';
+const isCanberra = hostname === 'pokercanberra.com';
 
 const centralCoastFacebookPageUrls = {
   'APL Poker':
@@ -104,6 +105,11 @@ const adelaideFacebookPageUrls = {
     'https://www.facebook.com/people/Bullets-Poker-League-SA/100078475230349/',
 };
 
+const canberraFacebookPageUrls = {
+  'National Poker League': 'https://www.facebook.com/groups/98473237533/',
+  'Casino Canberra Poker': 'https://casinocanberra.com.au/poker-pit/',
+};
+
 const facebookPageUrls = isCentralCoast
   ? centralCoastFacebookPageUrls
   : isNewcastle
@@ -130,6 +136,8 @@ const facebookPageUrls = isCentralCoast
   ? melbourneFacebookPageUrls
   : isAdelaide
   ? adelaideFacebookPageUrls
+  : isCanberra
+  ? canberraFacebookPageUrls
   : {};
 
 const GamesPage = ({ dataUrl }) => {

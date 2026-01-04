@@ -31,6 +31,7 @@ const ResultForm = ({ isOpen, onClose, onSubmit, editingResult }) => {
     Sydney: '/data-sydney.json',
     Melbourne: '/data-melbourne.json',
     Adelaide: '/data-adelaide.json',
+    Canberra: '/data-canberra.json',
   };
 
   useEffect(() => {

@@ -817,6 +817,13 @@ export const adelaideVenues = {
   'Grand Junction Tavern': { lat: -34.953056, lng: 138.541944, address: 'Glandore' },
 };
 
+// Canberra venue coordinates
+export const canberraVenues = {
+  'Queanbeyan Kangaroo Leagues Club': { lat: -35.353889, lng: 149.232222, address: 'Queanbeyan' },
+  'Eagle Hawk Hotel': { lat: -35.385556, lng: 149.066944, address: 'Richardson' },
+  'Casino Canberra': { lat: -35.279444, lng: 149.130556, address: 'Canberra City' },
+};
+
 // Melbourne venue coordinates
 export const melbourneVenues = {
   Highways: { lat: -37.9476086, lng: 145.1716671, address: 'Springvale' },

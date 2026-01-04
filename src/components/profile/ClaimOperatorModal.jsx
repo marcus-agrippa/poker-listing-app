@@ -33,6 +33,7 @@ const ClaimOperatorModal = ({ isOpen, onClose, existingOperators = [] }) => {
         Sydney: '/data-sydney.json',
         Melbourne: '/data-melbourne.json',
         Adelaide: '/data-adelaide.json',
+        Canberra: '/data-canberra.json',
       };
 
       if (regionDataMap[userProfile.region]) {
@@ -56,6 +57,7 @@ const ClaimOperatorModal = ({ isOpen, onClose, existingOperators = [] }) => {
       'pokersydney.com': '/data-sydney.json',
       'pokermelbourne.com': '/data-melbourne.json',
       'pokeradelaide.com': '/data-adelaide.json',
+      'pokercanberra.com': '/data-canberra.json',
     };
 
     return dataUrlMap[currentHostname] || '/data.json';

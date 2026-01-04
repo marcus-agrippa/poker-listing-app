@@ -268,6 +268,7 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
     'APS Newcastle': '/aps-newcastle-logo.png',
     'Bullets Poker League': '/bullets-poker-league-logo.png',
     'Stacked Poker': '/stacked-poker-logo.png',
+    'Casino Canberra Poker': '/casino-canberra-logo.png',
   };
 
   const SkeletonCard = () => (
@@ -502,12 +503,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                               Event Date:
                             </div>
                             <div className='text-center border border-purple-500 bg-purple-900 bg-opacity-30 p-1 font-semibold'>
-                              {new Date(game.event_date).toLocaleDateString('en-AU', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                              })}
+                              {new Date(game.event_date).toLocaleDateString(
+                                'en-AU',
+                                {
+                                  weekday: 'long',
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                }
+                              )}
                             </div>
                           </>
                         )}

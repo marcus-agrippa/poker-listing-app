@@ -36,6 +36,8 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek, gameCounts = {} }) => {
       ? 'Melbourne, VIC, AUS'
       : hostname === 'pokeradelaide.com'
       ? 'Adelaide, SA, AUS'
+      : hostname === 'pokercanberra.com'
+      ? 'Canberra, ACT, AUS'
       : 'NSW, AUS';
 
   return (

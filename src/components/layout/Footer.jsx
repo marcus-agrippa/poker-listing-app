@@ -35,6 +35,8 @@ const Footer = () => {
       ? 'PokerMelbourne'
       : hostname === 'pokeradelaide.com'
       ? 'PokerAdelaide'
+      : hostname === 'pokercanberra.com'
+      ? 'PokerCanberra'
       : 'Poker';
 
   return (

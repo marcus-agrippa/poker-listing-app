@@ -13,3 +13,4 @@ export const isBrisbane = hostname === 'pokerbrisbane.com';
 export const isSydney = hostname === 'pokersydney.com';
 export const isMelbourne = hostname === 'pokermelbourne.com';
 export const isAdelaide = hostname === 'pokeradelaide.com';
+export const isCanberra = hostname === 'pokercanberra.com';

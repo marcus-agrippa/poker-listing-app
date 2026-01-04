@@ -57,6 +57,8 @@ const Header = () => {
       ? 'POKER MELBOURNE'
       : hostname === 'pokeradelaide.com'
       ? 'POKER ADELAIDE'
+      : hostname === 'pokercanberra.com'
+      ? 'POKER CANBERRA'
       : 'POKER';
 
   const handleLogout = async () => {

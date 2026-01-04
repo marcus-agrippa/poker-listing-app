@@ -130,6 +130,13 @@ const RegionFilteredGamesPage = () => {
           'https://www.facebook.com/people/Bullets-Poker-League-SA/100078475230349/',
       },
     },
+    Canberra: {
+      dataUrl: '/data-canberra.json',
+      facebookPageUrls: {
+        'National Poker League': 'https://www.facebook.com/groups/98473237533/',
+        'Casino Canberra Poker': 'https://casinocanberra.com.au/poker-pit/',
+      },
+    },
     'Gold Coast': {
       dataUrl: '/data-gold-coast.json',
       facebookPageUrls: {
@@ -170,6 +177,7 @@ const RegionFilteredGamesPage = () => {
     if (hostname === 'pokersydney.com') return 'Sydney';
     if (hostname === 'pokermelbourne.com') return 'Melbourne';
     if (hostname === 'pokeradelaide.com') return 'Adelaide';
+    if (hostname === 'pokercanberra.com') return 'Canberra';
     return 'Central Coast'; // default
   };
 

@@ -14,8 +14,10 @@ import PrivacyPage from './components/PrivacyPage';
 import Dashboard from './components/dashboard/Dashboard';
 import Profile from './components/profile/Profile';
 import Pokerdex from './components/pokerdex/Pokerdex';
+import OperatorDashboard from './components/operator/OperatorDashboard';
 import SuggestionsView from './components/admin/SuggestionsView';
 import OperatorClaimsView from './components/admin/OperatorClaimsView';
+import GameSubmissionsView from './components/admin/GameSubmissionsView';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -211,6 +213,14 @@ const AppContent = () => {
                 }
               />
               <Route
+                path='/operator'
+                element={
+                  <ProtectedRoute>
+                    <OperatorDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path='/admin/suggestions'
                 element={
                   <AdminRoute>
@@ -223,6 +233,14 @@ const AppContent = () => {
                 element={
                   <AdminRoute>
                     <OperatorClaimsView />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path='/admin/game-submissions'
+                element={
+                  <AdminRoute>
+                    <GameSubmissionsView />
                   </AdminRoute>
                 }
               />

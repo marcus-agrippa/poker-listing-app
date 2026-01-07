@@ -9,6 +9,7 @@ import {
   FiMenu,
   FiX,
   FiBook,
+  FiBriefcase,
 } from 'react-icons/fi';
 import { hostname } from '../../hostname';
 import { useAuth } from '../../contexts/AuthContext';
@@ -20,7 +21,7 @@ const Header = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState('login');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
+  const { currentUser, userProfile, logout } = useAuth();
   const navigate = useNavigate();
 
   // Get admin emails from environment variables
@@ -102,6 +103,15 @@ const Header = () => {
                 <FiBook className='text-xl' />
                 <span>Pokerdex</span>
               </Link>
+              {userProfile?.verifiedOperator && (
+                <Link
+                  to='/operator'
+                  className='text-green-400 hover:text-green-300 p-2 flex items-center space-x-2'
+                  title='Operator Dashboard'>
+                  <FiBriefcase className='text-xl' />
+                  <span>Operator</span>
+                </Link>
+              )}
               <Link
                 to='/profile'
                 className='text-white hover:text-gray-300 p-2 flex items-center space-x-2'
@@ -124,6 +134,13 @@ const Header = () => {
                     title='Operator Claims'>
                     <FiShield className='text-xl' />
                     <span>Operators</span>
+                  </Link>
+                  <Link
+                    to='/admin/game-submissions'
+                    className='text-purple-400 hover:text-purple-300 p-2 flex items-center space-x-2'
+                    title='Game Submissions'>
+                    <FiBriefcase className='text-xl' />
+                    <span>Games</span>
                   </Link>
                 </>
               )}
@@ -240,6 +257,15 @@ const Header = () => {
                 <FiBook className='text-3xl mr-4' />
                 Pokerdex
               </Link>
+              {userProfile?.verifiedOperator && (
+                <Link
+                  to='/operator'
+                  onClick={closeMobileMenu}
+                  className='flex items-center text-green-400 hover:text-green-300 text-2xl font-semibold transition-colors transform hover:translate-x-2 duration-200'>
+                  <FiBriefcase className='text-3xl mr-4' />
+                  Operator Dashboard
+                </Link>
+              )}
               <Link
                 to='/profile'
                 onClick={closeMobileMenu}
@@ -262,6 +288,13 @@ const Header = () => {
                     className='flex items-center text-blue-400 hover:text-blue-300 text-2xl font-semibold transition-colors transform hover:translate-x-2 duration-200'>
                     <FiShield className='text-3xl mr-4' />
                     Operator Claims
+                  </Link>
+                  <Link
+                    to='/admin/game-submissions'
+                    onClick={closeMobileMenu}
+                    className='flex items-center text-purple-400 hover:text-purple-300 text-2xl font-semibold transition-colors transform hover:translate-x-2 duration-200'>
+                    <FiBriefcase className='text-3xl mr-4' />
+                    Game Submissions
                   </Link>
                 </>
               )}

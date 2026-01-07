@@ -30,6 +30,9 @@ import {
   FiArrowDownLeft,
   FiShare2,
   FiLock,
+  FiBriefcase,
+  FiArrowRight,
+  FiX,
 } from 'react-icons/fi';
 import ResultForm from './ResultForm';
 import ResultsList from './ResultsList';
@@ -57,6 +60,9 @@ const Dashboard = () => {
 
   const [timeFilter, setTimeFilter] = useState('all'); // all, week, month
   const [outcomeFilter, setOutcomeFilter] = useState('all'); // all, wins, losses
+  const [operatorBannerDismissed, setOperatorBannerDismissed] = useState(
+    () => localStorage.getItem('operatorBannerDismissed') === 'true'
+  );
 
   const fetchResults = async (page = 1, reset = false) => {
     if (!currentUser) return;
@@ -632,6 +638,42 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Operator CTA Banner */}
+      {!userProfile?.verifiedOperator && !operatorBannerDismissed && (
+        <div className='mb-6 max-w-4xl mx-auto'>
+          <div className='bg-gradient-to-r from-green-900/30 to-blue-900/30 border border-green-600/50 rounded-lg p-6 relative'>
+            <button
+              onClick={() => {
+                setOperatorBannerDismissed(true);
+                localStorage.setItem('operatorBannerDismissed', 'true');
+              }}
+              className='absolute top-3 right-3 text-gray-400 hover:text-white transition-colors'
+              title='Dismiss'
+            >
+              <FiX className='text-xl' />
+            </button>
+            <div className='flex flex-col md:flex-row items-center justify-between gap-4 pr-8'>
+              <div className='flex items-start gap-4 text-left'>
+                <FiBriefcase className='text-green-400 text-3xl flex-shrink-0 mt-1' />
+                <div>
+                  <h3 className='text-xl font-bold text-white mb-2'>Are you a game operator?</h3>
+                  <p className='text-gray-300 text-sm'>
+                    Get verified to manage your poker games, promote events, and post real-time announcements to players.
+                  </p>
+                </div>
+              </div>
+              <a
+                href='/profile'
+                className='btn btn-primary flex items-center gap-2 whitespace-nowrap'
+              >
+                Apply for Verification
+                <FiArrowRight />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Controls */}
       <div className='flex flex-wrap gap-4 mb-6'>

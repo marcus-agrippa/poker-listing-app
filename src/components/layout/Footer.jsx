@@ -60,11 +60,19 @@ const Footer = () => {
         </div>
       )}
 
-      <Link to='/contact'>
-        <p className='font-bold text-blue-500 hover:text-blue-400 mt-4'>
+      <div className='flex flex-wrap items-center justify-center gap-4 mt-4'>
+        <Link to='/contact' className='font-bold text-blue-500 hover:text-blue-400'>
           Contact Us
-        </p>
-      </Link>
+        </Link>
+        <span className='text-gray-600'>•</span>
+        <Link to='/privacy' className='font-bold text-blue-500 hover:text-blue-400'>
+          Privacy Policy
+        </Link>
+        <span className='text-gray-600'>•</span>
+        <Link to='/terms' className='font-bold text-blue-500 hover:text-blue-400'>
+          Terms of Service
+        </Link>
+      </div>
       <p className='text-xs mt-4 text-neutral-400'>
         Disclaimer: The information provided herein is for general guidance
         only. We do not guarantee its completeness or accuracy.<br></br> For the

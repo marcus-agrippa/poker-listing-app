@@ -9,6 +9,9 @@ import {
   FiClipboard,
   FiUsers,
   FiShare2,
+  FiBriefcase,
+  FiLock,
+  FiCheckCircle,
 } from 'react-icons/fi';
 import AuthModal from '../auth/AuthModal';
 
@@ -27,6 +30,12 @@ const SignupPromotionCard = () => {
       title: 'View Statistics',
       description:
         'Get insights on your winnings, average position, and best results',
+    },
+    {
+      icon: <FiCheckCircle className='text-teal-400' />,
+      title: 'Confirm Games',
+      description:
+        'Help verify game listings are running and contribute to community accuracy',
     },
     {
       icon: <FiSettings className='text-purple-400' />,
@@ -58,10 +67,16 @@ const SignupPromotionCard = () => {
         'Build a database of player tendencies and game dynamics for every venue',
     },
     {
-      icon: <FiShare2 className='text-cyan-400' />,
+      icon: <FiShare2 className='text-indigo-400' />,
       title: 'Quick Stats & Share',
       description:
         'See win rate, biggest wins/losses, and average buy-ins at a glance and share with friends',
+    },
+    {
+      icon: <FiBriefcase className='text-green-400' />,
+      title: 'Game Operators',
+      description:
+        'Manage your poker games, promote events, and reach more players',
     },
   ];
 
@@ -73,19 +88,20 @@ const SignupPromotionCard = () => {
             <div className='w-16 h-16 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4'>
               <FiBarChart2 className='text-3xl text-blue-400' />
             </div>
-            <div className='bg-red-500 bg-opacity-20 text-red-400 text-sm font-semibold px-3 py-1 rounded-full border border-red-500 mb-3 inline-block'>
-              🔥 10+ players already joined this week!
-            </div>
             <h2 className='card-title text-2xl text-white justify-center mb-2'>
               Level Up Your Poker Journey
             </h2>
-            <p className='text-gray-300 text-lg mb-6'>
+            <p className='text-gray-300 text-lg mb-4'>
               Join our growing community of{' '}
               <span className='text-green-400 font-semibold'>
                 active players
               </span>{' '}
               to track your results and enhance your poker experience
             </p>
+            <div className='flex items-center justify-center gap-2 text-green-400 text-sm mb-6'>
+              <FiLock className='flex-shrink-0' />
+              <span className='font-semibold'>🔒 100% private - your results are only visible to you</span>
+            </div>
           </div>
 
           <div className='grid md:grid-cols-2 gap-4 mb-8'>

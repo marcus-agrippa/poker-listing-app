@@ -8,6 +8,7 @@ import DeactivateAccountModal from './DeactivateAccountModal';
 import ClaimOperatorModal from './ClaimOperatorModal';
 import SuggestOperatorModal from './SuggestOperatorModal';
 import toast from 'react-hot-toast';
+import { sanitizeDisplayName } from '../../utils/sanitize';
 
 const Profile = () => {
   const { currentUser, deactivateAccount, userProfile } = useAuth();
@@ -35,14 +36,22 @@ const Profile = () => {
     e.preventDefault();
     if (!currentUser) return;
 
+    // Sanitize display name to prevent XSS attacks
+    const cleanDisplayName = sanitizeDisplayName(formData.displayName);
+
+    if (cleanDisplayName.length < 2 || cleanDisplayName.length > 50) {
+      toast.error('Display name must be between 2 and 50 characters');
+      return;
+    }
+
     setLoading(true);
     try {
       const promises = [];
 
       // Update display name if changed
-      if (formData.displayName !== currentUser.displayName) {
+      if (cleanDisplayName !== currentUser.displayName) {
         promises.push(updateProfile(currentUser, {
-          displayName: formData.displayName
+          displayName: cleanDisplayName
         }));
       }
 

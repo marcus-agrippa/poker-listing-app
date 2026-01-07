@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { gamesService } from '../../services/gamesService';
 import { FiAlertCircle, FiInfo, FiX, FiClock } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { sanitizeText } from '../../utils/sanitize';
 
 const ANNOUNCEMENT_TYPES = [
   { id: 'info', label: 'Information', icon: FiInfo, color: 'blue' },
@@ -28,13 +29,21 @@ const AnnouncementModal = ({ isOpen, onClose, game }) => {
       return;
     }
 
+    // Sanitize message to prevent XSS attacks
+    const sanitizedMessage = sanitizeText(formData.message);
+
+    if (!sanitizedMessage.trim()) {
+      toast.error('Message contains invalid content');
+      return;
+    }
+
     setLoading(true);
 
     try {
       await gamesService.createAnnouncement(
         game.id,
         currentUser.uid,
-        formData.message,
+        sanitizedMessage,
         formData.type,
         parseInt(formData.expiresInHours)
       );

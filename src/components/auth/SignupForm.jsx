@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { sanitizeDisplayName } from '../../utils/sanitize';
 
 const SignupForm = ({ onClose }) => {
   const [email, setEmail] = useState('');
@@ -48,10 +49,17 @@ const SignupForm = ({ onClose }) => {
       return setError('Please accept the Terms and Conditions to continue');
     }
 
+    // Sanitize display name to prevent XSS attacks
+    const cleanDisplayName = sanitizeDisplayName(displayName);
+
+    if (cleanDisplayName.length < 2 || cleanDisplayName.length > 50) {
+      return setError('Display name must be between 2 and 50 characters');
+    }
+
     try {
       setError('');
       setLoading(true);
-      await signup(email, password, displayName, region, receiveNotifications);
+      await signup(email, password, cleanDisplayName, region, receiveNotifications);
       toast.success(
         `🎉 Account created! Check your email (including spam/promotion folders) for a verification link. You can start using the app right away!`,
         {

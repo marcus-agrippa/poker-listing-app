@@ -29,6 +29,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import DeleteConfirmModal from '../ui/DeleteConfirmModal';
+import { sanitizeText } from '../../utils/sanitize';
 
 const MAX_FREE_NOTES = 5;
 
@@ -143,11 +144,17 @@ const Pokerdex = () => {
       return;
     }
 
+    // Sanitize all user inputs to prevent XSS attacks
     const noteData = {
-      ...formData,
+      title: sanitizeText(formData.title),
+      venue: sanitizeText(formData.venue),
+      date: formData.date,
+      playerObservations: sanitizeText(formData.playerObservations),
+      gameNotes: sanitizeText(formData.gameNotes),
+      category: formData.category,
       tags: formData.tags
         .split(',')
-        .map(tag => tag.trim())
+        .map(tag => sanitizeText(tag.trim()))
         .filter(tag => tag),
       userId: currentUser.uid,
       createdAt: new Date().toISOString(),

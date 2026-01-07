@@ -313,8 +313,26 @@ const Pokerdex = () => {
 
   if (!currentUser?.emailVerified) {
     return (
-      <div className='text-center text-white p-8'>
-        <p>Please verify your email to access your pokerdex.</p>
+      <div className='text-center text-white p-8 max-w-2xl mx-auto mt-8'>
+        <div className='card bg-slate-800 shadow-xl border border-slate-700'>
+          <div className='card-body'>
+            <div className='text-6xl mb-4'>🔒</div>
+            <h2 className='card-title justify-center text-2xl mb-4'>
+              Email Verification Required
+            </h2>
+            <p className='text-gray-300 mb-6'>
+              Please verify your email address to access your Pokerdex and start tracking player insights.
+            </p>
+            <div className='bg-blue-900/30 border border-blue-600/50 rounded-lg p-4 mb-4'>
+              <p className='text-sm text-gray-300'>
+                Check your inbox for a verification email from us. Click the link to verify and unlock this feature!
+              </p>
+            </div>
+            <a href='/dashboard' className='btn btn-primary'>
+              Go to Dashboard
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

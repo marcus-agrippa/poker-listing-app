@@ -151,8 +151,9 @@ const RegionFilteredGamesPage = () => {
     if (userProfile && userProfile.region) {
       setSelectedRegion(userProfile.region);
       setShowRegionSelector(false);
-    } else if (currentUser && userProfile && !userProfile.region) {
+    } else if (currentUser && userProfile && !userProfile.region && !userProfile.verifiedOperator) {
       // Only show region selector if we have loaded the user profile and it's empty
+      // Don't show for operators who might have region set elsewhere
       setShowRegionSelector(true);
     }
   }, [currentUser, userProfile]);

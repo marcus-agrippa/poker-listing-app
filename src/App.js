@@ -18,6 +18,7 @@ import OperatorDashboard from './components/operator/OperatorDashboard';
 import SuggestionsView from './components/admin/SuggestionsView';
 import OperatorClaimsView from './components/admin/OperatorClaimsView';
 import GameSubmissionsView from './components/admin/GameSubmissionsView';
+import VerifyEmail from './components/auth/VerifyEmail';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -188,6 +189,7 @@ const AppContent = () => {
               <Route path='/contact' element={<ContactPage />} />
               <Route path='/terms' element={<TermsPage />} />
               <Route path='/privacy' element={<PrivacyPage />} />
+              <Route path='/verify-email' element={<VerifyEmail />} />
               <Route
                 path='/dashboard'
                 element={

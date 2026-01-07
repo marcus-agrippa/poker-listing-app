@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut, 
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
-  sendEmailVerification
+  sendEmailVerification,
+  signInWithPopup,
+  GoogleAuthProvider
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
@@ -28,10 +30,12 @@ export const AuthProvider = ({ children }) => {
 
     await updateProfile(user, { displayName });
 
-    // Send email verification with homepage redirect
+    // Send email verification
+    // Note: Firebase hosts the verification handler at firebaseapp.com/__/auth/action
+    // After clicking the link, Firebase will redirect back to the continueUrl
     try {
       await sendEmailVerification(user, {
-        url: `${window.location.origin}/`,
+        url: `${window.location.origin}/dashboard`, // Where to go after verification
         handleCodeInApp: false
       });
     } catch (verificationError) {
@@ -40,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       // User can resend from dashboard
     }
 
-    await setDoc(doc(db, 'users', user.uid), {
+    const profileData = {
       displayName,
       email,
       region,
@@ -48,7 +52,21 @@ export const AuthProvider = ({ children }) => {
       isPremium: false,
       createdAt: new Date().toISOString(),
       emailVerified: false
-    });
+    };
+
+    await setDoc(doc(db, 'users', user.uid), profileData);
+
+    // Immediately set the user profile in state to avoid race condition
+    setUserProfile(profileData);
+
+    // Cache the profile
+    try {
+      const cacheKey = `userProfile_${user.uid}`;
+      localStorage.setItem(cacheKey, JSON.stringify(profileData));
+      localStorage.setItem(`${cacheKey}_expiry`, (new Date().getTime() + 24 * 60 * 60 * 1000).toString());
+    } catch (e) {
+      console.warn('Failed to cache new profile:', e);
+    }
 
     return userCredential;
   };
@@ -69,7 +87,7 @@ export const AuthProvider = ({ children }) => {
     if (currentUser && !currentUser.emailVerified) {
       try {
         await sendEmailVerification(currentUser, {
-          url: `${window.location.origin}/`,
+          url: `${window.location.origin}/dashboard`, // Where to go after verification
           handleCodeInApp: false
         });
         return { success: true };
@@ -78,6 +96,47 @@ export const AuthProvider = ({ children }) => {
         throw error;
       }
     }
+  };
+
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // Check if user profile already exists
+    const docRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      // New Google user - create profile
+      // Note: Google users are already email verified
+      const profileData = {
+        displayName: user.displayName,
+        email: user.email,
+        region: '', // Will be prompted to select region
+        receiveNotifications: true,
+        isPremium: false,
+        createdAt: new Date().toISOString(),
+        emailVerified: true, // Google users are pre-verified
+        authProvider: 'google'
+      };
+
+      await setDoc(docRef, profileData);
+
+      // Immediately set the user profile in state
+      setUserProfile(profileData);
+
+      // Cache the profile
+      try {
+        const cacheKey = `userProfile_${user.uid}`;
+        localStorage.setItem(cacheKey, JSON.stringify(profileData));
+        localStorage.setItem(`${cacheKey}_expiry`, (new Date().getTime() + 24 * 60 * 60 * 1000).toString());
+      } catch (e) {
+        console.warn('Failed to cache new profile:', e);
+      }
+    }
+
+    return result;
   };
 
   const loadUserProfile = async (user) => {
@@ -307,6 +366,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     resetPassword,
     resendVerification,
+    signInWithGoogle,
     updateUserProfile,
     deactivateAccount,
     reactivateAccount

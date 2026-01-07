@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 const SignupForm = ({ onClose }) => {
@@ -13,7 +14,10 @@ const SignupForm = ({ onClose }) => {
   const [receiveNotifications, setReceiveNotifications] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signup } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { signup, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const regions = [
@@ -95,6 +99,42 @@ const SignupForm = ({ onClose }) => {
     setLoading(false);
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      setError('');
+      setGoogleLoading(true);
+      await signInWithGoogle();
+      toast.success('Welcome! Your account has been created with Google.');
+      onClose();
+      navigate('/dashboard');
+    } catch (error) {
+      let errorMessage = 'Failed to sign up with Google';
+
+      switch (error.code) {
+        case 'auth/popup-closed-by-user':
+          errorMessage = 'Sign-up cancelled. Please try again.';
+          break;
+        case 'auth/popup-blocked':
+          errorMessage = 'Pop-up blocked. Please allow pop-ups for this site.';
+          break;
+        case 'auth/account-exists-with-different-credential':
+          errorMessage = 'An account already exists with this email using a different sign-in method.';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error. Please check your connection and try again.';
+          break;
+        default:
+          errorMessage = 'Failed to sign up with Google. Please try again.';
+          break;
+      }
+
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+
+    setGoogleLoading(false);
+  };
+
   return (
     <div className='card w-full max-w-4xl bg-slate-800 shadow-xl max-h-[80vh] overflow-y-auto'>
       <form onSubmit={handleSubmit} className='card-body'>
@@ -106,10 +146,10 @@ const SignupForm = ({ onClose }) => {
           </div>
         )}
 
-        {/* Dual column layout */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-          {/* Left column */}
-          <div className='space-y-4'>
+        {/* Form fields */}
+        <div className='space-y-4'>
+          {/* Display Name and Email row */}
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <div className='form-control'>
               <label className='label'>
                 <span className='label-text text-white'>Display Name</span>
@@ -137,58 +177,76 @@ const SignupForm = ({ onClose }) => {
                 required
               />
             </div>
-
-            <div className='form-control'>
-              <label className='label'>
-                <span className='label-text text-white'>Region</span>
-              </label>
-              <select
-                className='select select-bordered w-full'
-                value={region}
-                onChange={e => setRegion(e.target.value)}
-                required>
-                <option value=''>Select your region</option>
-                {regions.map(r => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
 
-          {/* Right column */}
-          <div className='space-y-4'>
+          {/* Password and Confirm Password row */}
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <div className='form-control'>
               <label className='label'>
                 <span className='label-text text-white'>Password</span>
               </label>
-              <input
-                type='password'
-                placeholder='password'
-                className='input input-bordered w-full'
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
+              <div className='relative'>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='password'
+                  className='input input-bordered w-full pr-10'
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type='button'
+                  onClick={() => setShowPassword(!showPassword)}
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
+                  tabIndex={-1}
+                >
+                  {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                </button>
+              </div>
             </div>
 
             <div className='form-control'>
               <label className='label'>
                 <span className='label-text text-white'>Confirm Password</span>
               </label>
-              <input
-                type='password'
-                placeholder='confirm password'
-                className='input input-bordered w-full'
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className='relative'>
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  placeholder='confirm password'
+                  className='input input-bordered w-full pr-10'
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type='button'
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                </button>
+              </div>
             </div>
+          </div>
 
-            {/* Placeholder div to balance columns on desktop */}
-            <div className='hidden md:block'></div>
+          {/* Region field (full width) */}
+          <div className='form-control'>
+            <label className='label'>
+              <span className='label-text text-white'>Region</span>
+            </label>
+            <select
+              className='select select-bordered w-full'
+              value={region}
+              onChange={e => setRegion(e.target.value)}
+              required>
+              <option value=''>Select your region</option>
+              {regions.map(r => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -242,10 +300,45 @@ const SignupForm = ({ onClose }) => {
 
         <div className='form-control mt-8'>
           <button
-            disabled={loading}
+            disabled={loading || googleLoading}
             className='btn btn-primary w-full'
             type='submit'>
             {loading ? 'Creating Account...' : 'Sign Up'}
+          </button>
+
+          <div className='divider text-gray-400 text-sm my-4'>OR</div>
+
+          <button
+            type='button'
+            onClick={handleGoogleSignIn}
+            disabled={loading || googleLoading}
+            className='btn btn-outline w-full text-white hover:bg-white hover:text-gray-900 border-gray-500'>
+            {googleLoading ? (
+              'Signing up...'
+            ) : (
+              <div className='flex items-center justify-center gap-2'>
+                <svg className='w-5 h-5' viewBox='0 0 48 48'>
+                  <path
+                    fill='#EA4335'
+                    d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'
+                  />
+                  <path
+                    fill='#4285F4'
+                    d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'
+                  />
+                  <path
+                    fill='#FBBC05'
+                    d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z'
+                  />
+                  <path
+                    fill='#34A853'
+                    d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'
+                  />
+                  <path fill='none' d='M0 0h48v48H0z' />
+                </svg>
+                Continue with Google
+              </div>
+            )}
           </button>
 
           <div className='text-center mt-4'>

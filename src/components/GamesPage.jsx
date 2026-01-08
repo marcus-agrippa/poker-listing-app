@@ -1,5 +1,6 @@
 // GamesPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useDrag } from '@use-gesture/react';
 import TabList from './TabList';
 import GameList from './GameList';
 
@@ -144,9 +145,128 @@ const GamesPage = ({ dataUrl }) => {
   const [activeDay, setActiveDay] = useState(
     new Date().toLocaleDateString('en-US', { weekday: 'long' })
   );
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [swipeIndicator, setSwipeIndicator] = useState(null); // 'left' or 'right'
+  const containerRef = useRef(null);
+
+  // Handle day navigation
+  const navigateDay = (direction) => {
+    const currentIndex = daysOfWeek.indexOf(activeDay);
+    let newIndex;
+
+    if (direction === 'next') {
+      newIndex = (currentIndex + 1) % daysOfWeek.length;
+    } else {
+      newIndex = (currentIndex - 1 + daysOfWeek.length) % daysOfWeek.length;
+    }
+
+    setActiveDay(daysOfWeek[newIndex]);
+  };
+
+  // Handle refresh
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    // Trigger page reload
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
+  // Gesture handler for swipe navigation
+  const bind = useDrag(
+    ({ movement: [mx, my], direction: [xDir], distance, cancel, last }) => {
+      // Only handle horizontal swipes on touch devices
+      if (!('ontouchstart' in window)) return;
+
+      const threshold = 100; // Minimum swipe distance
+      const verticalThreshold = 50; // Max vertical movement to still count as horizontal swipe
+
+      // Pull to refresh (swipe down from top)
+      if (window.scrollY === 0 && my > 0 && Math.abs(mx) < verticalThreshold) {
+        if (my > 80 && !isRefreshing) {
+          setSwipeIndicator('down');
+        }
+        if (last && my > 80) {
+          handleRefresh();
+          setSwipeIndicator(null);
+        } else if (last) {
+          setSwipeIndicator(null);
+        }
+        return;
+      }
+
+      // Horizontal swipe for day navigation
+      if (Math.abs(my) < verticalThreshold && distance > 20) {
+        if (mx > 0) {
+          setSwipeIndicator('right');
+        } else if (mx < 0) {
+          setSwipeIndicator('left');
+        }
+      }
+
+      // Complete the swipe
+      if (last) {
+        if (Math.abs(mx) > threshold && Math.abs(my) < verticalThreshold) {
+          if (xDir > 0) {
+            // Swipe right = previous day
+            navigateDay('prev');
+          } else {
+            // Swipe left = next day
+            navigateDay('next');
+          }
+        }
+        setSwipeIndicator(null);
+      }
+    },
+    {
+      filterTaps: true,
+      axis: undefined, // Allow both axes
+    }
+  );
 
   return (
-    <div className='mx-auto p-4 mt-8 max-w-screen-xl mb-8'>
+    <div
+      ref={containerRef}
+      {...bind()}
+      className='mx-auto p-4 mt-8 max-w-screen-xl mb-8 relative touch-pan-y'
+      style={{ touchAction: 'pan-y' }}
+    >
+      {/* Refresh Indicator */}
+      {isRefreshing && (
+        <div className='fixed top-20 left-0 right-0 flex justify-center z-50'>
+          <div className='bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2'>
+            <div className='animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent'></div>
+            <span>Refreshing...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Swipe Indicator */}
+      {swipeIndicator && !isRefreshing && (
+        <div className='fixed top-1/2 left-0 right-0 flex justify-center pointer-events-none z-40'>
+          <div className='bg-gray-800 bg-opacity-90 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2'>
+            {swipeIndicator === 'left' && (
+              <>
+                <span>Next Day</span>
+                <span className='text-2xl'>→</span>
+              </>
+            )}
+            {swipeIndicator === 'right' && (
+              <>
+                <span className='text-2xl'>←</span>
+                <span>Previous Day</span>
+              </>
+            )}
+            {swipeIndicator === 'down' && (
+              <>
+                <span className='text-2xl'>↓</span>
+                <span>Release to Refresh</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <TabList
         activeDay={activeDay}
         setActiveDay={setActiveDay}

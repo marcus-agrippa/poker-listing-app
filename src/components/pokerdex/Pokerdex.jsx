@@ -30,6 +30,7 @@ import {
 import toast from 'react-hot-toast';
 import DeleteConfirmModal from '../ui/DeleteConfirmModal';
 import { sanitizeText } from '../../utils/sanitize';
+import NoteTemplates from './NoteTemplates';
 
 const MAX_FREE_NOTES = 5;
 
@@ -47,6 +48,7 @@ const Pokerdex = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [templateSelectorOpen, setTemplateSelectorOpen] = useState(false);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -219,6 +221,25 @@ const Pokerdex = () => {
     }
   };
 
+  const handleTemplateSelect = (template) => {
+    setTemplateSelectorOpen(false);
+
+    if (template) {
+      // Apply template data to form
+      setFormData({
+        title: template.title || '',
+        venue: '',
+        date: new Date().toISOString().split('T')[0],
+        playerObservations: template.playerObservations || '',
+        gameNotes: template.gameNotes || '',
+        tags: template.tags ? template.tags.join(', ') : '',
+        category: template.category || 'player',
+      });
+    }
+
+    setIsFormOpen(true);
+  };
+
   const resetForm = () => {
     setFormData({
       title: '',
@@ -377,7 +398,7 @@ const Pokerdex = () => {
 
           {/* Add Note Button */}
           <button
-            onClick={() => (canAddNote ? setIsFormOpen(true) : null)}
+            onClick={() => (canAddNote ? setTemplateSelectorOpen(true) : null)}
             className={`btn flex items-center ${
               canAddNote
                 ? 'btn-primary'
@@ -824,6 +845,18 @@ const Pokerdex = () => {
         title='Delete Note'
         message={`Are you sure you want to delete "${noteToDelete?.title}"? This action cannot be undone.`}
       />
+
+      {/* Template Selector Modal */}
+      {templateSelectorOpen && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'>
+          <div className='bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto'>
+            <NoteTemplates
+              onSelectTemplate={handleTemplateSelect}
+              onClose={() => setTemplateSelectorOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

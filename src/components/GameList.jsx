@@ -8,6 +8,7 @@ import {
   FiSearch,
   FiX,
   FiMapPin,
+  FiShare2,
 } from 'react-icons/fi';
 import GameEditSuggestionForm from './suggestions/GameEditSuggestionForm';
 import AdvancedFilters from './AdvancedFilters';
@@ -16,6 +17,8 @@ import { getVenueCoordinates } from '../utils/venueCoordinates';
 import QuickLogModal from './dashboard/QuickLogModal';
 import GameConfirmButton from './ui/GameConfirmButton';
 import AddToCalendarButton from './ui/AddToCalendarButton';
+import GameShareMenu from './ui/GameShareMenu';
+import GameActionsMenu from './ui/GameActionsMenu';
 
 const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   const { currentUser } = useAuth();
@@ -35,6 +38,8 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [quickLogModalOpen, setQuickLogModalOpen] = useState(false);
   const [quickLogGame, setQuickLogGame] = useState(null);
+  const [shareMenuOpen, setShareMenuOpen] = useState(false);
+  const [shareGame, setShareGame] = useState(null);
   const [filters, setFilters] = useState({
     buyIn: { min: '', max: '' },
     competitions: [],
@@ -510,47 +515,55 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
                         </div>
                       )}
 
-                      {/* Action buttons */}
-                      {currentUser && (
-                        <>
+                      {/* Quick Actions - Favorite visible for logged in, menu for all */}
+                      <div className='absolute top-2 right-2 flex gap-2'>
+                        {/* Quick Favorite Toggle (visible for logged-in users) */}
+                        {currentUser && (
                           <button
                             onClick={e => {
                               e.preventDefault();
                               e.stopPropagation();
+                              toggleFavorite(game.venue);
+                            }}
+                            className={`w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
+                              isVenueFavorite
+                                ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
+                                : 'bg-gray-700 bg-opacity-90 hover:bg-gray-600 text-gray-300'
+                            }`}
+                            title={
+                              isVenueFavorite
+                                ? 'Remove from favorites'
+                                : 'Add to favorites'
+                            }
+                            aria-label={
+                              isVenueFavorite
+                                ? 'Remove from favorites'
+                                : 'Add to favorites'
+                            }>
+                            <FiHeart
+                              className={isVenueFavorite ? 'fill-current' : ''}
+                            />
+                          </button>
+                        )}
+
+                        {/* Actions Menu (only for logged-in users) */}
+                        {currentUser && (
+                          <GameActionsMenu
+                            game={game}
+                            isFavorite={isVenueFavorite}
+                            onToggleFavorite={() => toggleFavorite(game.venue)}
+                            onSuggestEdit={() => {
                               setSelectedGame(game);
                               setSuggestionFormOpen(true);
                             }}
-                            className='absolute top-2 left-2 w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-80 hover:bg-blue-600 transition-colors border-none text-white text-sm'
-                            title='Suggest edit to this game'>
-                            <FiEdit3 />
-                          </button>
-                          <div className='absolute top-2 right-2 flex gap-1'>
-                            <div className='w-10 h-10 flex items-center justify-center'>
-                              <AddToCalendarButton game={game} />
-                            </div>
-                            <button
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                toggleFavorite(game.venue);
-                              }}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full transition-all border-none text-sm ${
-                                isVenueFavorite
-                                  ? 'bg-yellow-500 bg-opacity-90 hover:bg-yellow-400 text-white'
-                                  : 'bg-gray-600 bg-opacity-80 hover:bg-gray-500 text-gray-300'
-                              }`}
-                              title={
-                                isVenueFavorite
-                                  ? 'Remove from favorites'
-                                  : 'Add to favorites'
-                              }>
-                              <FiHeart
-                                className={isVenueFavorite ? 'fill-current' : ''}
-                              />
-                            </button>
-                          </div>
-                        </>
-                      )}
+                            onShare={() => {
+                              setShareGame(game);
+                              setShareMenuOpen(true);
+                            }}
+                            showEditButton={!!currentUser}
+                          />
+                        )}
+                      </div>
                       <div className='mb-6'>
                         <h3 className='text-xl text-blue-500 font-bold mb-1'>
                           {isVenueFavorite && (
@@ -749,6 +762,15 @@ const GameList = ({ activeDay, dataUrl, facebookPageUrls, region }) => {
         game={quickLogGame}
         autoTriggered={true}
         region={region}
+      />
+
+      <GameShareMenu
+        isOpen={shareMenuOpen}
+        onClose={() => {
+          setShareMenuOpen(false);
+          setShareGame(null);
+        }}
+        game={shareGame}
       />
     </div>
   );

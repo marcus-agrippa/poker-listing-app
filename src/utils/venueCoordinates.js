@@ -456,6 +456,7 @@ export const sunshineCoastVenues = {
     lng: 153.0833,
     address: 'Coolum Beach',
   },
+  'Currimundi Hotel': { lat: -26.7167, lng: 153.1, address: 'Currimundi' },
   'Gympie RSL Club': { lat: -26.1897, lng: 152.6658, address: 'Gympie' },
   'North Shore Tavern': { lat: -26.65, lng: 153.0667, address: 'Mudjimba' },
   'Parklands Tavern': { lat: -26.6667, lng: 153.0833, address: 'Sippy Downs' },
@@ -779,49 +780,141 @@ export const sydneyVenues = {
 
 // Adelaide venue coordinates
 export const adelaideVenues = {
-  'Prince Edward Hotel': { lat: -34.948392, lng: 138.598764, address: 'Keswick' },
-  'Glenelg Football Club': { lat: -34.984189, lng: 138.517892, address: 'Glenelg' },
-  'McQueens Tavern & Gaming': { lat: -34.891653, lng: 138.682514, address: 'Hillbank' },
+  'Prince Edward Hotel': {
+    lat: -34.948392,
+    lng: 138.598764,
+    address: 'Keswick',
+  },
+  'Glenelg Football Club': {
+    lat: -34.984189,
+    lng: 138.517892,
+    address: 'Glenelg',
+  },
+  'McQueens Tavern & Gaming': {
+    lat: -34.891653,
+    lng: 138.682514,
+    address: 'Hillbank',
+  },
   'Blue Gums Hotel': { lat: -34.918756, lng: 138.621445, address: 'Klemzig' },
   'Salisbury Hotel': { lat: -34.765231, lng: 138.641892, address: 'Salisbury' },
   'Stacked Social': { lat: -34.923611, lng: 138.603333, address: 'Adelaide' },
   'Warooka Hotel': { lat: -34.993333, lng: 137.404167, address: 'Warooka' },
   'Railway Hotel': { lat: -34.920556, lng: 138.599167, address: 'Adelaide' },
-  'Middleton Tavern': { lat: -35.504167, lng: 138.717778, address: 'Middleton' },
-  'Regency Tavern': { lat: -34.871944, lng: 138.581667, address: 'Ferryden Park' },
+  'Middleton Tavern': {
+    lat: -35.504167,
+    lng: 138.717778,
+    address: 'Middleton',
+  },
+  'Regency Tavern': {
+    lat: -34.871944,
+    lng: 138.581667,
+    address: 'Ferryden Park',
+  },
   'Pulteney Pokies': { lat: -34.923889, lng: 138.607222, address: 'Adelaide' },
-  'Salisbury North Football & Community Club': { lat: -34.750556, lng: 138.640556, address: 'Salisbury North' },
-  'Modbury Plaza Hotel': { lat: -34.831667, lng: 138.684444, address: 'Modbury' },
-  'Royal Exchange Hotel': { lat: -34.923333, lng: 138.602222, address: 'Adelaide' },
-  'Golden Fleece Hotel': { lat: -34.923333, lng: 138.605000, address: 'Adelaide' },
+  'Salisbury North Football & Community Club': {
+    lat: -34.750556,
+    lng: 138.640556,
+    address: 'Salisbury North',
+  },
+  'Modbury Plaza Hotel': {
+    lat: -34.831667,
+    lng: 138.684444,
+    address: 'Modbury',
+  },
+  'Royal Exchange Hotel': {
+    lat: -34.923333,
+    lng: 138.602222,
+    address: 'Adelaide',
+  },
+  'Golden Fleece Hotel': { lat: -34.923333, lng: 138.605, address: 'Adelaide' },
   'Somerset Hotel': { lat: -34.933333, lng: 138.583333, address: 'Mile End' },
-  '8 Dragons Gaming Lounge & Bar': { lat: -34.925000, lng: 138.600000, address: 'Adelaide' },
-  'West Adelaide Football Club': { lat: -34.908889, lng: 138.571111, address: 'Richmond' },
-  'Hyde Park Tavern': { lat: -34.949167, lng: 138.593056, address: 'Hyde Park' },
-  'The Morphettville Junction': { lat: -34.981111, lng: 138.556667, address: 'Morphettville' },
+  '8 Dragons Gaming Lounge & Bar': {
+    lat: -34.925,
+    lng: 138.6,
+    address: 'Adelaide',
+  },
+  'West Adelaide Football Club': {
+    lat: -34.908889,
+    lng: 138.571111,
+    address: 'Richmond',
+  },
+  'Hyde Park Tavern': {
+    lat: -34.949167,
+    lng: 138.593056,
+    address: 'Hyde Park',
+  },
+  'The Morphettville Junction': {
+    lat: -34.981111,
+    lng: 138.556667,
+    address: 'Morphettville',
+  },
   'Troubridge Hotel': { lat: -34.919722, lng: 138.647778, address: 'Marden' },
   'The V Hotel': { lat: -34.968611, lng: 138.587222, address: 'Plympton' },
   'Bridgeway Hotel': { lat: -34.842222, lng: 138.621944, address: 'Pooraka' },
   'Payneham Tavern': { lat: -34.902778, lng: 138.633889, address: 'Payneham' },
-  'Yankalilla Hotel': { lat: -35.466944, lng: 138.348056, address: 'Yankalilla' },
-  'Brahma Lodge Hotel': { lat: -34.779444, lng: 138.631667, address: 'Brahma Lodge' },
-  'Para Hills Community Club': { lat: -34.816667, lng: 138.659167, address: 'Para Hills' },
-  'Finsbury Hotel': { lat: -34.857222, lng: 138.575000, address: 'Findon' },
-  'Pole Position Entertainment Venue': { lat: -34.900000, lng: 138.600000, address: 'Wingfield' },
+  'Yankalilla Hotel': {
+    lat: -35.466944,
+    lng: 138.348056,
+    address: 'Yankalilla',
+  },
+  'Brahma Lodge Hotel': {
+    lat: -34.779444,
+    lng: 138.631667,
+    address: 'Brahma Lodge',
+  },
+  'Para Hills Community Club': {
+    lat: -34.816667,
+    lng: 138.659167,
+    address: 'Para Hills',
+  },
+  'Finsbury Hotel': { lat: -34.857222, lng: 138.575, address: 'Findon' },
+  'Pole Position Entertainment Venue': {
+    lat: -34.9,
+    lng: 138.6,
+    address: 'Wingfield',
+  },
   'Paradise Hotel': { lat: -34.874444, lng: 138.667778, address: 'Paradise' },
-  'Crown Inn Hotel': { lat: -34.920000, lng: 138.670000, address: 'Magill' },
-  'Whitehorse Inn': { lat: -34.905000, lng: 138.590000, address: 'Welland' },
-  'Lord Melbourne Hotel': { lat: -34.917500, lng: 138.598333, address: 'North Adelaide' },
-  'South Adelaide Football Club': { lat: -34.933333, lng: 138.583333, address: 'Mile End' },
-  'St Francis Winery': { lat: -35.150000, lng: 138.833333, address: 'Currency Creek' },
-  'Grand Junction Tavern': { lat: -34.953056, lng: 138.541944, address: 'Glandore' },
+  'Crown Inn Hotel': { lat: -34.92, lng: 138.67, address: 'Magill' },
+  'Whitehorse Inn': { lat: -34.905, lng: 138.59, address: 'Welland' },
+  'Lord Melbourne Hotel': {
+    lat: -34.9175,
+    lng: 138.598333,
+    address: 'North Adelaide',
+  },
+  'South Adelaide Football Club': {
+    lat: -34.933333,
+    lng: 138.583333,
+    address: 'Mile End',
+  },
+  'St Francis Winery': {
+    lat: -35.15,
+    lng: 138.833333,
+    address: 'Currency Creek',
+  },
+  'Grand Junction Tavern': {
+    lat: -34.953056,
+    lng: 138.541944,
+    address: 'Glandore',
+  },
 };
 
 // Canberra venue coordinates
 export const canberraVenues = {
-  'Queanbeyan Kangaroo Leagues Club': { lat: -35.353889, lng: 149.232222, address: 'Queanbeyan' },
-  'Eagle Hawk Hotel': { lat: -35.385556, lng: 149.066944, address: 'Richardson' },
-  'Casino Canberra': { lat: -35.279444, lng: 149.130556, address: 'Canberra City' },
+  'Queanbeyan Kangaroo Leagues Club': {
+    lat: -35.353889,
+    lng: 149.232222,
+    address: 'Queanbeyan',
+  },
+  'Eagle Hawk Hotel': {
+    lat: -35.385556,
+    lng: 149.066944,
+    address: 'Richardson',
+  },
+  'Casino Canberra': {
+    lat: -35.279444,
+    lng: 149.130556,
+    address: 'Canberra City',
+  },
 };
 
 // Melbourne venue coordinates

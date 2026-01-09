@@ -366,5 +366,21 @@
     "starting_stack": "20,000",
     "guarantee": "",
     "prize_pool": ""
+  },
+  {
+    "day": "Saturday",
+    "venue": "Currimundi Hotel",
+    "competition": "APL Poker",
+    "rego_time": "17:30",
+    "game_time": "18:00",
+    "late_rego": "",
+    "buy_in": "50",
+    "re_buy": "",
+    "re_entry": "",
+    "addons": "",
+    "bounty": "",
+    "starting_stack": "",
+    "guarantee": "",
+    "prize_pool": ""
   }
 ]

@@ -25,14 +25,14 @@
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
 
     # Content Security Policy
-    # This allows Firebase, Google APIs, and inline styles/scripts
+    # This allows Firebase, Google APIs, Google Analytics, and inline styles/scripts
     Content-Security-Policy = '''
       default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://accounts.google.com https://*.firebase.google.com https://*.firebaseio.com;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://accounts.google.com https://*.firebase.google.com https://*.firebaseio.com https://www.googletagmanager.com https://www.google-analytics.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       img-src 'self' data: https: blob:;
       font-src 'self' data: https://fonts.gstatic.com;
-      connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.google.com https://*.firebase.google.com;
+      connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.google.com https://*.firebase.google.com https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com;
       frame-src https://accounts.google.com https://*.firebaseapp.com;
       object-src 'none';
       base-uri 'self';

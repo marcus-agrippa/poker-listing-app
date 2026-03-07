@@ -1,7 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  isCentralCoast,
+  isNewcastle,
+  isBallarat,
+  isWollongong,
+  isTownsville,
+  isSunshineCoast,
+  isPerth,
+  isGeelong,
+  isGoldCoast,
+  isBrisbane,
+  isSydney,
+  isMelbourne,
+  isAdelaide,
+  isCanberra,
+} from '../hostname';
 
 const ContactPage = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [region, setRegion] = useState('');
+
+  // Auto-detect region based on hostname
+  useEffect(() => {
+    if (isCentralCoast) setRegion('Central Coast');
+    else if (isNewcastle) setRegion('Newcastle');
+    else if (isBallarat) setRegion('Ballarat');
+    else if (isWollongong) setRegion('Wollongong');
+    else if (isTownsville) setRegion('Townsville');
+    else if (isSunshineCoast) setRegion('Sunshine Coast');
+    else if (isPerth) setRegion('Perth');
+    else if (isGeelong) setRegion('Geelong');
+    else if (isGoldCoast) setRegion('Gold Coast');
+    else if (isBrisbane) setRegion('Brisbane');
+    else if (isSydney) setRegion('Sydney');
+    else if (isMelbourne) setRegion('Melbourne');
+    else if (isAdelaide) setRegion('Adelaide');
+    else if (isCanberra) setRegion('Canberra');
+    else setRegion('Unknown');
+  }, []);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -33,6 +69,7 @@ const ContactPage = () => {
           onSubmit={handleSubmit}
           className='max-w-lg mx-auto'>
           <input type='hidden' name='form-name' value='contact' />
+          <input type='hidden' name='region' value={region} />
 
           <div className='mb-4'>
             <label

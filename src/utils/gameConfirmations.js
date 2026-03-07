@@ -90,20 +90,57 @@ export const isConfirmationExpired = (expiresAt) => {
 };
 
 /**
- * Format time ago string
+ * Format time ago string with relative labels
+ * Returns: "confirmed today", "confirmed yesterday", "confirmed this week",
+ *          "confirmed last week", "confirmed this month", or fallback to date
  */
 export const getTimeAgo = (timestamp) => {
   const now = new Date();
   const then = new Date(timestamp);
-  const diffMs = now - then;
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
+
+  // Reset hours for day comparison
+  const nowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const thenDate = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+
+  const diffMs = nowDate - thenDate;
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-  return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+  // Today
+  if (diffDays === 0) {
+    return 'confirmed today';
+  }
+
+  // Yesterday
+  if (diffDays === 1) {
+    return 'confirmed yesterday';
+  }
+
+  // This week (within last 7 days, but not today/yesterday)
+  if (diffDays <= 6) {
+    return 'confirmed this week';
+  }
+
+  // Last week (7-13 days ago)
+  if (diffDays <= 13) {
+    return 'confirmed last week';
+  }
+
+  // This month (same month and year)
+  if (now.getMonth() === then.getMonth() && now.getFullYear() === then.getFullYear()) {
+    return 'confirmed this month';
+  }
+
+  // Last month (previous month)
+  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1);
+  if (then.getMonth() === lastMonth.getMonth() && then.getFullYear() === lastMonth.getFullYear()) {
+    return 'confirmed last month';
+  }
+
+  // Fallback: show date for older confirmations
+  const month = String(then.getMonth() + 1).padStart(2, '0');
+  const day = String(then.getDate()).padStart(2, '0');
+  const year = then.getFullYear();
+  return `confirmed ${month}/${day}/${year}`;
 };
 
 /**

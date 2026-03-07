@@ -82,8 +82,8 @@ export const FavoritesProvider = ({ children }) => {
         );
         const snapshot = await getDocs(favoritesQuery);
         
-        for (const docRef of snapshot.docs) {
-          await deleteDoc(docRef.ref);
+        for (const docSnapshot of snapshot.docs) {
+          await deleteDoc(doc(db, 'favorites', docSnapshot.id));
         }
         
         setFavoriteVenues(prev => {

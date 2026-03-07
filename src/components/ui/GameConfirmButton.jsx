@@ -151,10 +151,7 @@ const GameConfirmButton = ({ game, region }) => {
           <FiCheckCircle className="text-green-400 flex-shrink-0 mt-0.5" />
           <div className="flex flex-col items-center">
             <span className="text-green-400 font-semibold">
-              Likely running now. {confirmationData.confirmCount} player{confirmationData.confirmCount !== 1 ? 's' : ''} confirmed.
-            </span>
-            <span className="text-gray-400 text-xs">
-              {getTimeAgo(confirmationData.lastConfirmedAt)}
+              Likely running now. {confirmationData.confirmCount} player{confirmationData.confirmCount !== 1 ? 's' : ''} {getTimeAgo(confirmationData.lastConfirmedAt)}.
             </span>
           </div>
         </div>

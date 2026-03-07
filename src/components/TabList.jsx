@@ -13,32 +13,32 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek, gameCounts = {} }) => {
     hostname === 'pokercentralcoast.com'
       ? 'Central Coast, NSW, AUS'
       : hostname === 'pokernewcastle.com'
-      ? 'Newcastle, NSW, AUS'
-      : hostname === 'pokerballarat.com'
-      ? 'Ballarat, VIC, AUS'
-      : hostname === 'pokerwollongong.com'
-      ? 'Wollongong, NSW, AUS'
-      : hostname === 'pokertownsville.com'
-      ? 'Townsville, QLD, AUS'
-      : hostname === 'pokersunshinecoast.com'
-      ? 'Sunshine Coast, QLD, AUS'
-      : hostname === 'pokerperth.com'
-      ? 'Perth, WA, AUS'
-      : hostname === 'pokergeelong.com'
-      ? 'Geelong, VIC, AUS'
-      : hostname === 'pokergoldcoast.com'
-      ? 'Gold Coast, VIC, AUS'
-      : hostname === 'pokerbrisbane.com'
-      ? 'Brisbane, QLD, AUS'
-      : hostname === 'pokersydney.com'
-      ? 'Sydney, NSW, AUS'
-      : hostname === 'pokermelbourne.com'
-      ? 'Melbourne, VIC, AUS'
-      : hostname === 'pokeradelaide.com'
-      ? 'Adelaide, SA, AUS'
-      : hostname === 'pokercanberra.com'
-      ? 'Canberra, ACT, AUS'
-      : 'NSW, AUS';
+        ? 'Newcastle, NSW, AUS'
+        : hostname === 'pokerballarat.com'
+          ? 'Ballarat, VIC, AUS'
+          : hostname === 'pokerwollongong.com'
+            ? 'Wollongong, NSW, AUS'
+            : hostname === 'pokertownsville.com'
+              ? 'Townsville, QLD, AUS'
+              : hostname === 'pokersunshinecoast.com'
+                ? 'Sunshine Coast, QLD, AUS'
+                : hostname === 'pokerperth.com'
+                  ? 'Perth, WA, AUS'
+                  : hostname === 'pokergeelong.com'
+                    ? 'Geelong, VIC, AUS'
+                    : hostname === 'pokergoldcoast.com'
+                      ? 'Gold Coast, VIC, AUS'
+                      : hostname === 'pokerbrisbane.com'
+                        ? 'Brisbane, QLD, AUS'
+                        : hostname === 'pokersydney.com'
+                          ? 'Sydney, NSW, AUS'
+                          : hostname === 'pokermelbourne.com'
+                            ? 'Melbourne, VIC, AUS'
+                            : hostname === 'pokeradelaide.com'
+                              ? 'Adelaide, SA, AUS'
+                              : hostname === 'pokercanberra.com'
+                                ? 'Canberra, ACT, AUS'
+                                : 'NSW, AUS';
 
   return (
     <div>
@@ -46,7 +46,7 @@ const TabList = ({ activeDay, setActiveDay, daysOfWeek, gameCounts = {} }) => {
         Location: <br></br>
         <span className='text-xl text-blue-500 font-bold'>{location}</span>
       </p>
-      <LastUpdated lastUpdated='January 12, 2026' />
+      <LastUpdated lastUpdated='March 7, 2026' />
       <br></br>
       <div className='lg:hidden mb-4'>
         <label
